@@ -27,7 +27,7 @@ namespace Windy.WebMVC.Web2.EFDao
             {
                 result = result.Where(m => m.Name.Contains(Name));
             }
-            result = result.OrderByDescending(m => m.Name);
+            result = result.OrderBy(m => m.PageNumber);
 
             rowCount = result.Count();
             return result.Skip(startNum).Take(pageSize);

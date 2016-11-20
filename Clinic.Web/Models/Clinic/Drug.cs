@@ -14,6 +14,8 @@ namespace Windy.WebMVC.Web2.Models
         public int ID { get; set; }
         [Column(TypeName = "varchar")]
         public string Name { get; set; }
+        public int PageNumber { get; set; }
+
     }
 
 }

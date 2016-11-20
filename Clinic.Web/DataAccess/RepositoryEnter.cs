@@ -135,6 +135,10 @@ namespace Windy.WebMVC.Web2.EFDao
         /// 获取药品仓储
         /// </summary>
         public DrugRepository DrugRepository { get { return new DrugRepository(); } }
+        /// <summary>
+        /// 获取药械购进记录仓储
+        /// </summary>
+        public DrugPurchaseRepository DrugPurchaseRepository { get { return new DrugPurchaseRepository(); } }
 
     }
 }

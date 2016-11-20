@@ -45,5 +45,6 @@ namespace Windy.WebMVC.Web2.EFDao
         public DbSet<Invite> Invite { get; set; }
         public DbSet<Lottery> Lottery { get; set; }
         public DbSet<Drug> Drug { get; set; }
+        public DbSet<DrugPurchase> DrugPurchase { get; set; }
     }
 }

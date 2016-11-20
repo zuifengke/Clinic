@@ -221,8 +221,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\Controllers\AdvertController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DrugPurchaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\InviteController.cs" />
     <Compile Include="Areas\Admin\Controllers\LotteryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DrugController.cs" />
     <Compile Include="Areas\Admin\Controllers\ToutiaoController.cs" />
     <Compile Include="Areas\Admin\Controllers\BlogController.cs" />
     <Compile Include="Areas\Admin\Controllers\ConfigController.cs" />
@@ -253,6 +255,7 @@
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="DataAccess\Clinic\DrugPurchaseRepository.cs" />
     <Compile Include="DataAccess\Zyldingfang\AdvertRepository.cs" />
     <Compile Include="DataAccess\Clinic\DrugRepository.cs" />
     <Compile Include="DataAccess\Zyldingfang\InviteRepository.cs" />
@@ -282,7 +285,8 @@
     <Compile Include="Job\JobScheduler.cs" />
     <Compile Include="Job\SpiderPageJob.cs" />
     <Compile Include="Job\UpdateIndexJob.cs" />
-    <Compile Include="Models\Drug.cs" />
+    <Compile Include="Models\Clinic\DrugPurchase.cs" />
+    <Compile Include="Models\Clinic\Drug.cs" />
     <Compile Include="Models\Lottery.cs" />
     <Compile Include="Models\Advert.cs" />
     <Compile Include="Models\Invite.cs" />
@@ -645,6 +649,8 @@
     <Content Include="Areas\Admin\Views\Toutiao\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Lottery\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Invite\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Drug\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\DrugPurchase\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
