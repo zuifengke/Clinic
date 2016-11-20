@@ -655,7 +655,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\120.26.224.22-web2.pubxml" />
-    <None Include="Properties\PublishProfiles\211.149.149.117-web2.pubxml" />
+    <None Include="Properties\PublishProfiles\211.149.149.117-clinic.pubxml" />
     <Content Include="Scripts\ace.min.js" />
     <Content Include="Scripts\ajaxfileupload.js" />
     <None Include="Properties\PublishProfiles\43.277.192.236-web3.pubxml" />
