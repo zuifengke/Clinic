@@ -131,6 +131,10 @@ namespace Windy.WebMVC.Web2.EFDao
         /// 获取抽奖仓储
         /// </summary>
         public LotteryRepository LotteryRepository { get { return new LotteryRepository(); } }
+        /// <summary>
+        /// 获取药品仓储
+        /// </summary>
+        public DrugRepository DrugRepository { get { return new DrugRepository(); } }
 
     }
 }
