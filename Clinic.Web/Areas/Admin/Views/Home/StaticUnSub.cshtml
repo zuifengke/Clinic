@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "考点未提交统计";
+}
+
+<div>
+    <div id="main" style="height:800px;width:1000px;border:1px solid #ccc;padding:10px;"></div>
+   
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="//cdn.bootcss.com/echarts/3.1.9/echarts.min.js"></script>
+    <script type="text/javascript">
+        // Step:3 echarts & zrender as a Global Interface by the echarts-plain.js.
+        // Step:3 echarts和zrender被echarts-plain.js写入为全局接口
+        var myChart = echarts.init(document.getElementById('main'));
+        $.get("StaticUnSubExamPlace", function (data, textStatus) {
+            var arrCount =new Array();
+            var arrName= new Array();
+            $(data).each(function () {
+                arrCount.push(this.Count);
+                arrName.push(this.Name);
+            })
+            var option = {
+                title: {
+                    text: '考点未提交统计',
+                    subtext: '数据来自状元乐订房平台'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['2015年']
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'category',
+                        data: arrName
+                    }
+                ],
+                series: [
+                    {
+                        name: '2015年',
+                        type: 'bar',
+                        data: arrCount
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+        }
+           );
+
+
+    </script>
+</div>

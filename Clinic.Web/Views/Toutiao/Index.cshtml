@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "头条";
+    ViewBag.Description = "今日头条";
+    ViewBag.Keywords = "资讯,今日头条,资讯列表";
+    string mine = ViewBag.mine as string;
+    var pagination = ViewBag.Pagination as Windy.WebMVC.Web2.ViewsModels.Pagination;
+    var categoryCode = pagination.CategoryCode;
+    var categoryName = pagination.CategoryName;
+    var order = pagination.Order;
+    var mytoutiaos = ViewBag.mytoutiaos as List<Windy.WebMVC.Web2.Models.Toutiao>;
+    var keyword = ViewBag.keyword as string;
+    var time = ViewBag.time as string;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="icon" href="/logo.ico" type="image/x-icon" />
+
+<div class="am-container " id="main">
+
+    <div class="am-g am-g-fixed">
+        <div class="am-u-md-8">
+            <ol class="am-breadcrumb">
+                <li><a href="/index.html" class="am-icon-home">首页</a></li>
+                <li><a href="/@pagination.ActionUrl">博客列表</a></li>
+                @if (mine == "true")
+                {
+                    <li href="/@pagination.ActionUrl?mine=true">我的博客</li>
+                }
+                @if (!string.IsNullOrEmpty(categoryCode))
+                {
+                    <li class="am-active" href="/@pagination.ActionUrl?mine=@mine&categorycode=@categoryCode">@categoryName</li>
+                }
+
+                (@time)
+            </ol>
+            <div class="am-g">
+
+                <div class="am-u-md-2 am-u-sm-1 am-u-lg-2">&nbsp;</div>
+                <div class="am-u-md-8 am-u-sm-10 am-u-lg-8">
+                    <form class="" action="/toutiao/index" method="get">
+                        <div class="am-input-group am-input-group-danger">
+                            <input type="text" name="keyword" value="@keyword" class="am-form-field" placeholder="搜索...">
+                            <span class="am-input-group-btn">
+                                <button class="am-btn am-btn-lg am-btn-danger" type="submit"><span class="am-icon-search"></span></button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="am-u-md-2 am-u-sm-1 am-u-lg-2"></div>
+            </div>
+            <div class="banner_navbg">
+                <div class="am-g">
+                    <div class="am-u-md-12">
+                        <div class="banner_nav am-fr">
+
+                            <span class="am-icon-caret-right" style="width:160px">
+                                排序：
+
+                                @if (string.IsNullOrEmpty(order) || order == "default")
+                                {
+                                    <a class="banner_hover" href="/@pagination.ActionUrl?mine=@mine&categorycode=@categoryCode&&order=default">默认</a>
+                                    <a href="/@pagination.ActionUrl?mine=@mine&categorycode=@categoryCode&&order=latest">最新</a>
+                                    <a href="/@pagination.ActionUrl?mine=@mine&categorycode=@categoryCode&&order=hot">最热</a>
+                                }
+                                else if (order == "latest")
+                                {
+                                    <a href="/@pagination.ActionUrl?mine=@mine&categorycode=@categoryCode&&order=default">默认</a>
+                                    <a class="banner_hover" href="/@pagination.ActionUrl?mine=@mine&categorycode=@categoryCode&&order=latest">最新</a>
+                                    <a href="/@pagination.ActionUrl?mine=@mine&categorycode=@categoryCode&&order=hot">最热</a>
+                                }
+                                else if (order == "hot")
+                                {
+                                    <a href="/@pagination.ActionUrl?mine=@mine&categorycode=@categoryCode&&order=default">默认</a>
+                                    <a href="/@pagination.ActionUrl?mine=@mine&categorycode=@categoryCode&&order=latest">最新</a>
+                                    <a class="banner_hover" href="/@pagination.ActionUrl?mine=@mine&categorycode=@categoryCode&&order=hot">最热</a>
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (mytoutiaos != null)
+            {
+                foreach (var item in mytoutiaos)
+                {
+                    <div class="inner-box blog-img">
+                        <div class="am-g">
+                            <div class="am-u-sm-3">
+                                <a class="blog-a-curse" target="_blank" href="/toutiao/view/@(new HtmlString(item.ID.ToString() + ".htm"))">
+                                    <img alt="" class="am_img animated" src="~/Content/images/amazeui/loading.gif" data-original="@item.ImagePath">
+                                </a>
+                            </div>
+                            <div class="am-u-sm-9">
+                                <div class="blog-header">
+                                    <a href="/@pagination.ActionUrl?categorycode=@item.CategoryCode" target="_blank" class="blog-category">@item.CategoryName</a>
+                                    <h2><a href="/toutiao/view/@(new HtmlString(item.ID.ToString()+".htm"))" target="_blank">@item.Title.Replace("- 今日头条(TouTiao.org)", "").Replace("- 今日头条(www.toutiao.com)", "")</a></h2>
+                                </div>
+
+                                <p class="blog-ext">
+                                    <span class="blog-ext-ico">
+                                        <i class="am-icon-user  blog-ext-ico"></i>
+                                        @item.MemberName
+                                    </span>
+                                    <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@item.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                    <span class="blog-ext-ico">
+                                        <i class="am-icon-eye  blog-ext-ico"></i>
+                                        @item.ViewCount
+                                    </span>
+                                </p>
+                                <p class="blog-content-show">
+                                    @item.Summary...
+                                </p>
+                                <span class="blog-keyword-show">@item.Keywords</span>
+
+                                <div class="am-fr">
+
+                                    <button type="button" class="am-badge am-badge-primary am-round " onclick="location.href='/toutiao/viewrelation?url=@item.ReprintUrl'">相关</button>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <center>
+                @Html.Partial("_paginate")
+            </center>
+
+        </div>
+
+        <script type="text/javascript">
+
+            $(function () {
+                $(".blog-keyword-show").each(function () {
+                    var ht = $(this).html();
+                    $(this).html('');
+                    if (ht != '' && ht != undefined && ht != ' ') {
+                        var arr = ht.split(",");
+                        for (var i = 0; i < arr.length; i++) {
+                            if (arr[i].trim() != "") {
+                                $(this).append("<a class='tag'  href='/toutiao/index?keyword=" + arr[i] + "'>" + arr[i] + "</a>");
+                            }
+                        }
+                    }
+                })
+            });
+            $("img").lazyload({ effect: 'fadeIn' });
+        </script>
+        <div class="am-u-md-4" id="my-side">
+
+            @Html.Partial("sidebox")
+            @Html.Partial("sidebox2")
+            @Html.Partial("sidebox3")
+            @Html.Partial("sidebox4")
+
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+

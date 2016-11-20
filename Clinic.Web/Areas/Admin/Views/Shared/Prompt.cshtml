@@ -1,0 +1,28 @@
+﻿@model  Windy.WebMVC.Web2.Areas.Admin.Models.Prompt
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<ol class="breadcrumb">
+   
+    <li class="active">@Model.Title</li>
+</ol>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><div class="panel-title">@Model.Title</div></div>
+    <div class="panel-body">
+        <p>@Html.Raw(Model.Message)</p>
+        @if(Model.Buttons!=null && Model.Buttons.Count > 0) {
+        <p>
+            @foreach(var item in Model.Buttons)
+            {
+                @Html.Raw(item+ "&nbsp;&nbsp;")
+
+            }
+        </p>
+        }
+    </div>
+</div>
+
+

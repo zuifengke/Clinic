@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<body style="margin:8px;">
+
+    <form id="form_list" name="form_list" method="post"  style="padding:2px;">
+        <table id="tab_list"></table>
+        <div id="tab_toolbar" style="padding:  2px;">
+            <table cellpadding="0" cellspacing="0" style="width: 100%">
+                <tr>
+                    <td style="padding: 4px">
+                        <a href="#" onclick="$('#form_edit input').val('');Add();return false;" id="a_add"
+                           class="easyui-linkbutton" iconcls="icon-add">添加</a> <a href="#" onclick="DelData(0);return false;"
+                                                                                  id="a_del" class="easyui-linkbutton" iconcls="icon-cancel">删除</a>
+                    </td>
+                    <td style="text-align: right; padding-right: 15px">
+                        <input id="ipt_search" menu="#search_menu" />
+                        <div id="search_menu" style="width: 120px">
+                            <div name="UserName">
+                                用户登录名
+                            </div>
+                            <div name="ReallyName">
+                                用户名称
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <div id="edit" class="easyui-dialog" title="新闻资讯"
+         modal="true" closed="true"  fit="true"  data-options="iconCls:'icon-save',
+        
+        collapsible:true,
+        resizable:false,"
+         buttons="#edit-buttons">
+        <div>
+            <form>
+                <textarea name="editor"></textarea>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+       
+        $(function () {
+            CKEDITOR.replace('editor');
+            InitGird();
+            InitSearch();
+            $("#edit").dialog({
+                onClose: function () {
+                    $("#tab_list").datagrid("reload");
+                }
+            });
+          
+
+            function myparser(s) {
+                if (!s) return new Date();
+                var ss = (s.split('-'));
+                var y = parseInt(ss[0], 10);
+                var m = parseInt(ss[1], 10);
+                var d = parseInt(ss[2], 10);
+                if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+                    return new Date(y, m - 1, d);
+                } else {
+                    return new Date();
+                }
+            }
+        });
+        //初始化表格
+        function InitGird() {
+            $('#tab_list').datagrid({
+                title: '新闻资讯列表', //表格标题
+                url: 'News/QueryData', //请求数据的页面
+                sortName: 'ID', //排序字段
+                idField: 'ID', //标识字段,主键
+                iconCls: '', //标题左边的图标
+                width: '98%', //宽度
+                height: $(parent.document).find("#tabs").height() - 50 > 0 ? $(parent.document).find("#tabs").height() - 50 : 300, //高度
+                nowrap: false, //是否换行，True 就会把数据显示在一行里
+                striped: true, //True 奇偶行使用不同背景色
+                collapsible: false, //可折叠
+                sortOrder: 'desc', //排序类型
+                remoteSort: true, //定义是否从服务器给数据排序
+                frozenColumns: [[//冻结的列，不会随横向滚动轴移动
+	                { field: 'cbx', checkbox: true },
+                ]],
+                columns: [[
+
+                    { title: '标题', field: 'NewsTitle', width: 150 },
+                    { title: '类别', field: 'CategoryName', width: 100 },
+                    { title: '创建时间', field: 'CreateTime', width: 200 },
+                    { title: '创建人', field: 'CreateUser', width: 100 },
+                    { title: '修改时间', field: 'ModifyTime', width: 150 },
+                    { title: '修改人', field: 'ModifyUser', width: 150 },
+                    {
+                        title: '操作', field: 'ID', width: 80, formatter: function (value, rec) {
+                            return '<a style="color:red" href="javascript:;" onclick="EditData(\'' + value + '\');$(this).parent().click();return false;">修改</a>&nbsp<a style="color:red" target="_blank"  href="../../newsForm.aspx?id=' + value + '">预览</a>';
+                        }
+                    }
+                ]],
+                toolbar: "#tab_toolbar",
+                queryParams: { "action": "query" },
+                pagination: true, //是否开启分页
+                pageNumber: 1, //默认索引页
+                pageSize: 10, //默认一页数据条数
+                rownumbers: true //行号
+            });
+        }
+
+        //初始化搜索框
+        function InitSearch() {
+            $("#ipt_search").searchbox({
+                width: 200,
+                iconCls: 'icon-save',
+                searcher: function (val, name) {
+                    $('#tab_list').datagrid('options').queryParams.search_type = name;
+                    $('#tab_list').datagrid('options').queryParams.search_value = val;
+                    $('#tab_list').datagrid('reload');
+                },
+                prompt: '请输入要查询的信息'
+            });
+        }
+        function GetInputData(id, cmd) {
+            var postdata = "{ \"action\":\"" + cmd + "\",";
+            $("#" + id + " input[type!='checkbox']").each(function () {
+                postdata += "\"" + $(this).attr("name") + "\":\"" + $(this).val() + "\",";
+            });
+            $("#" + id + " input[type='checkbox']").each(function () {
+                postdata += "\"" + $(this).attr("name") + "\":\"" + this.checked + "\",";
+            });
+            postdata = postdata.substr(0, postdata.length - 1);
+            postdata += "}";
+            return eval("(" + postdata + ")");
+        }
+
+        //提交按钮事件
+        function Add() {
+
+            $("#edit").dialog("open");
+        }
+
+        //修改链接 事件
+        function EditData(uid) {
+            $('#submitFrame')[0].src = '../Aspx/NewsSubmit.aspx?id=' + uid;
+            $("#edit").dialog("open");
+
+        }
+
+        //删除按钮事件
+        function DelData(id) {
+            $.messager.confirm('提示', '确认删除？', function (r) {
+                if (r) {
+                    var selected = "";
+                    if (id <= 0) {
+                        $($('#tab_list').datagrid('getSelections')).each(function () {
+                            selected +=  this.ID + ",";
+                        });
+                        selected = selected.substr(0, selected.length - 1);
+                        if (selected == "") {
+                            $.messager.alert('提示', '请选择要删除的数据！', 'info');
+                            return;
+                        }
+                    }
+                    else {
+                        selected = id;
+                    }
+                    $.post('News/DelData', {  "cbx_select": selected }, function (data) {
+                        $.messager.alert('提示', data, 'info', function () { $("#tab_list").datagrid("reload"); });
+                    });
+                }
+            });
+        }
+        function d_close() {
+            $('#edit').dialog('close');
+
+        }
+    </script>
+</body>

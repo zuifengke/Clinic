@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "步行路线";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    body, html { width: 100%; height: 100%; margin: 0; font-family: "微软雅黑"; }
+    #l-map { height: 300px; width: 100%; }
+    #r-result, #r-result table { width: 100%; }
+</style>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=InKh3KKKjGLTSV6YAHNyGfM9BjvtGojj"></script>
+<title>获取步行导航的结果面板</title>
+
+
+<div class="am-container " id="main">
+
+    @Html.Partial("JDSearch")
+    <div class="am-g am-g-fixed">
+
+        <ol class="am-breadcrumb">
+            <li><a href="/" class="am-icon-home">首页</a></li>
+
+            <li class="am-active">订房报名</li>
+        </ol>
+        <div>
+            <ul class="am-nav  am-nav-tabs">
+                <li ><a href="/users/userinfo">订房报名</a></li>
+                <li><a href="/users/examplace">提交考点</a></li>
+                <li><a href="/users/roominfo">酒店安排</a></li>
+                <li class="am-active" ><a href="/users/map">步行图</a></li>
+            </ul>
+        </div>
+
+        <div class="am-u-md-8" style="padding-top:20px;" id="blog-main">
+            <div id="l-map"></div>
+            <div id="r-result"></div>
+           
+        </div>
+        <div class="am-u-md-4" id="my-side">
+            @Html.Partial("sidebox3")
+            @Html.Partial("sidebox")
+            @Html.Partial("sidebox2")
+
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("l-map");
+	map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+	var walking = new BMap.WalkingRoute(map, {renderOptions: {map: map, panel: "r-result", autoViewport: true}});
+	walking.search("浙江理工", "杭州电子科技大学");
+</script>

@@ -1,0 +1,237 @@
+﻿@{
+    ViewBag.Title = "提交考点";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Windy.WebMVC.Web2.Models.Users
+<script>
+    $(document).ready(function () {
+        GetByJquery();
+        $("#ddlProvince").change(function () { GetCity() });
+        $("#ddlCity").change(function () { GetDistrict() });
+
+        //$("#chkOther").click(function () {
+
+        //    if ($("#chkOther").is(':checked') == true) {
+        //        $("#Place").show();
+        //    } else {
+        //        $("#Place").hide();
+        //    }
+        //})
+    });
+
+    function GetByJquery() {
+
+        $("#ddlProvince").empty(); //清空省份SELECT控件
+        $("<option></option>")
+                    .val("")
+                    .text("请选择")
+                    .appendTo($("#ddlProvince"));
+        $.getJSON("/sui/account/GetProvinceList", function (data) {
+
+            $.each(data, function (i, item) {
+                $("<option></option>")
+                    .val(item["ID"])
+                    .text(item["PlaceName"])
+                    .appendTo($("#ddlProvince"));
+            });
+
+            GetCity();
+        });
+
+    }
+
+    function GetCity() {
+        $("#ddlCity").empty(); //清空城市SELECT控件
+        if ($("#ddlProvince").val() == "")
+            return;
+        var url = "/sui/account/GetCityList/" + $("#ddlProvince").val();
+        $("<option></option>")
+                      .val("")
+                      .text("请选择")
+                      .appendTo($("#ddlCity"));
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                $("<option></option>")
+                    .val(item["ID"])
+                    .text(item["PlaceName"])
+                    .appendTo($("#ddlCity"));
+            });
+
+            GetDistrict();
+        });
+    }
+
+    function GetDistrict() {
+        $("#ddlSchool").empty(); //清空市区SELECT控件
+        if ($("#ddlCity").val() == "")
+            return;
+        var url = "/sui/account/GetSchoolList/" + $("#ddlCity").val();
+
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                $("<option></option>")
+                    .val(item["PlaceName"])
+                    .text(item["PlaceName"])
+                    .appendTo($("#ddlSchool"));
+            });
+
+        });
+        $("<option></option>")
+                   .val("")
+                   .text("")
+                   .appendTo($("#ddlSchool"));
+    }
+
+</script>
+
+<div class="am-container " id="main">
+
+    @Html.Partial("JDSearch")
+
+    <div class="am-g am-g-fixed">
+        <ol class="am-breadcrumb">
+            <li><a href="/" class="am-icon-home">首页</a></li>
+
+            <li class="am-active">订房报名</li>
+        </ol>
+        <div>
+            <ul class="am-nav  am-nav-tabs">
+
+                <li><a href="/users/userinfo">订房报名</a></li>
+                <li class="am-active"><a href="/users/examplace">提交考点</a></li>
+                <li><a href="/users/roominfo">酒店安排</a></li>
+                <li><a href="/users/map">步行图</a></li>
+            </ul>
+        </div>
+
+        <div class="am-u-md-8" style="padding-top:20px;" id="blog-main">
+
+
+            <div class="am-panel am-panel-secondary">
+                <div class="am-panel-hd">
+                    <h1 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}">
+                        <i class="am-icon-envelope-o"></i> 提交考试地点 <small></small>
+                    </h1>
+                </div>
+                <div id="do-not-say-2" class="am-panel-collapse am-collapse am-in">
+                    <div class="am-panel-bd">
+                        <hr>
+                        <form class="am-form am-form-horizontal" id="form_user" action="/users/examplace" method="POST">
+                            <input type="hidden" name="ID" value="@Model.ID" />
+                            <div class="am-form-group">
+                                <label for="ddlProvince">省份</label>
+                                <select id="ddlProvince"></select>
+                                <span class="am-form-caret"></span>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="ddlCity">城市</label>
+                                <select id="ddlCity"></select>
+                                <span class="am-form-caret"></span>
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="ddlSchool">考点</label>
+                                <select id="ddlSchool" name="ddlSchool"></select>
+                                <span class="am-form-caret"></span>
+                            </div>
+
+
+                            <div class="am-form-group">
+
+                                <div class="am-u-md-12">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-archive"></i></span>
+                                        <input type="text" class="am-form-field" name="Place" id="Place" placeholder="找不到标准选择考点，手动输入 " value="@Model.ExamPlace">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="am-form-group">
+                                <div class="am-u-sm-6 am-u-sm-push-3">
+                                    <div id="error_msg" style="color: #c00;display:none;">正在审核，请您耐心等待...</div>
+
+                                    <button id="forum-user-reg" type="submit" name="sub" class="am-btn am-btn-primary am-btn-block btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">提交</button>
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                                var $btn = $('#forum-user-reg');
+
+                                $('#form_user').ajaxForm({
+                                    beforeSubmit: function (a, f, o) {
+                                        var dllSchool = $("#ddlSchool").val();
+                                        var Place = $("#Place").val();
+                                        if (dllSchool == ""
+                                            && Place == "") {
+                                            $.toast("请输入考点");
+                                            return;
+                                        }
+                                        $('#error_msg').html(" 正在审核，请您耐心等待...");
+                                        $('#error_msg').show();
+                                        $btn.button('loading');
+                                    },
+                                    success: function (html) {
+                                        if (html.length > 0) {
+                                            $('#error_msg').hide();
+                                            $('#error_msg').html(html);
+                                            $('#error_msg').show();
+                                            $btn.button('reset');
+                                        } else {
+                                            $('#error_msg').hide();
+                                            if ($("#ddlSchool").val() != ""
+                                                && $("#ddlSchool").val() != undefined)
+                                                $("#Place").val($("#ddlSchool").val());
+                                            $btn.button('reset');
+                                            //弹出提示对话框
+                                            $('#my-alert').modal();
+
+                                        }
+                                    }
+                                });
+                            </script>
+
+
+
+                    </div>
+                </div>
+            </div>
+            @*alert对话框*@
+
+            <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd">状元乐</div>
+                    <div class="am-modal-bd">
+                        @if (Model.EmployeeID == 0)
+                        {
+                            @(new HtmlString("考点提交失败，请等待代理联系并交定金才能提交考点"))
+                        }
+                        else
+                        {
+                            @(new HtmlString("考点提交成功,请等待系统分房。"))
+                        }
+
+                    </div>
+
+
+
+                    <div class="am-modal-footer">
+                        <span class="am-modal-btn">确定</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="am-u-md-4" id="my-side">
+            @Html.Partial("sidebox3")
+            @*  @Html.Partial("sidebox")
+                @Html.Partial("sidebox2")*@
+        </div>
+
+
+    </div>
+
+
+
+</div>

@@ -1,0 +1,209 @@
+﻿@model Windy.WebMVC.Web2.Areas.Admin.AdminAreaRegistration
+@using Windy.WebMVC.Web2.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    string name = ViewBag.Name;
+}
+
+
+<script type="text/javascript">
+    var _menus = {
+        "menus": [
+        ]
+    };
+    //初始化左侧
+    function InitLeftMenu1() {
+        $(".easyui-accordion1").empty();
+        var menulist = "";
+
+        //加载菜单数据
+        $.post("/Admin/Home/GetEmpMenu", function (data) {
+            if (data == "")
+                return;
+            var _menus = eval("(" + data + ")"); //转换为json对象
+            $.each(_menus.menus, function (i, n) {
+                menulist += '<div title="' + n.menuname + '"  icon="' + n.icon + '" style="overflow:auto;">';
+                menulist += '<ul>';
+                if (n.menus != undefined) {
+                    $.each(n.menus, function (j, o) {
+                        menulist += '<li><div><a ref="' + o.menuid + '" href="#" rel="' + o.url + '" ><span class="icon ' + o.icon + '" >&nbsp;</span><span class="nav">' + o.menuname + '</span></a></div></li> ';
+                    })
+                }
+                menulist += '</ul></div>';
+            })
+            $(".easyui-accordion1").append(menulist);
+            $('.easyui-accordion1 li a').click(function () {
+                var tabTitle = $(this).children('.nav').text();
+                var url = $(this).attr("rel");
+                var menuid = $(this).attr("ref");
+                var icon = getIcon(menuid, icon);
+                addTab(tabTitle, url, icon);
+                $('.easyui-accordion1 li div').removeClass("selected");
+                $(this).parent().addClass("selected");
+            }).hover(function () {
+                $(this).parent().addClass("hover");
+            }, function () {
+                $(this).parent().removeClass("hover");
+            });
+            //导航菜单绑定初始化
+            $(".easyui-accordion1").accordion();
+        });
+    }
+    function GetInputData(id, cmd) {
+        var postdata = "{ \"action\":\"" + cmd + "\",";
+        $("#" + id + " input[type!='checkbox']").each(function () {
+            postdata += "\"" + $(this).attr("name") + "\":\"" + $(this).val() + "\",";
+        });
+        $("#" + id + " input[type='checkbox']").each(function () {
+            postdata += "\"" + $(this).attr("name") + "\":\"" + this.checked + "\",";
+        });
+        postdata = postdata.substr(0, postdata.length - 1);
+        postdata += "}";
+        return eval("(" + postdata + ")");
+    }
+
+    $(function () {
+        InitLeftMenu1();
+        $('#editpass').click(function () {
+            $("#edit").dialog("open");
+        });
+        $('#btnsubmit').click(function () {
+            if (!$("#form_edit").form("validate")) {
+                return;
+            }
+            var pwdnew = $('#pwdnew').val();
+            var pwdconfirm = $('#pwdconfirm').val();
+            if (pwdnew != pwdconfirm) {
+                alert("确认密码和新密码不一致");
+                return;
+            }
+            var json = GetInputData('edit', 'submit');
+            $.post("admin/home/ChangePwd", json, function (data) {
+                $.messager.alert('提示', data, 'info', function () {
+                    if (data.indexOf("成功") > 0) {
+                        console.info(data);
+                        $("#edit").dialog("close");
+                    }
+                });
+            });
+        });
+        $('#btnEp').click(function () {
+            serverLogin();
+        });
+        $('#btnCancel').click(function () { closePwd(); })
+        $('#loginOut').click(function () {
+            $.messager.confirm('系统提示', '您确定要退出本次登录吗?', function (r) {
+
+                if (r) {
+                    location.href = '/Admin/Account/Login';
+                }
+            });
+        })
+    });
+</script>
+<body class="easyui-layout" id="cc" data-options="fit:true,scroll:'no'">
+
+    <div region="north" style="height: 38px; ">
+        <div class="easyui-panel" style="background-color:  #F2F2F2; text-align:right;">
+            <div style="float:left;width:650px;text-align:left">
+                <div style="float:left;">
+                    <img src="~/Content/Images/admin/logo_pic.png" style="height:30px;width:30px;" title="状元乐网络平台">
+                </div>
+                <div style="float:left;">
+                    <h1><strong> 药械购进管理系统</strong></h1>
+                </div>
+            </div>
+            <div style="float:right;text-align:right;">
+               
+                <a href="#" class="easyui-menubutton" data-options="menu:'#mm1',iconCls:'icon-sys'">系统</a>
+                <a href="#" class="easyui-menubutton" data-options="menu:'#mm2',iconCls:'icon-help'">帮助</a>
+            </div>
+
+        </div>
+        <div id="mm1" style="width:150px;">
+            <div data-options="iconCls:'icon-pwd'">
+                <a href="javascript:void()" style="cursor: pointer; text-decoration: none;" id="editpass">
+                    修改密码
+                </a>
+            </div>
+            <div data-options="iconCls:''">
+                </a> <a href="javascript:void()" id="loginOut" style="cursor: pointer; text-decoration: none;">
+                    安全退出
+                </a>
+            </div>
+
+        </div>
+        <div id="mm2" class="menu-content" style="background:#f0f0f0;padding:10px;text-align:left">
+            <img src="~/Content/Images/admin/weixin_yehui.png" title="扫我微信联系" style="height:256px;width:256px;" />
+            <p style="font-size:14px;color:#444;"><a href="tencent://message/?uin=457311681&amp;Site=在线咨询&amp;Menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:457311681:41" alt="点击这里qq技术支持" title="点击qq这里技术支持" /></a></p>
+        </div>
+    </div>
+
+
+    <div data-options="region:'west',split:true,title:'导航菜单'" style="width: 170px;">
+        <div class="easyui-accordion1" fit="true" border="false">
+            <!--  导航内容 -->
+        </div>
+    </div>
+    <div data-options="region:'south',border:false" style="height: 23px;">
+        <div class="footer">
+            @@copyright windy.studio
+            <!--友盟cnzz统计 begin-->
+            <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1259365669'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1259365669%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+            <!--友盟cnzz统计 end-->
+        </div>
+
+    </div>
+    <div data-options="region:'center'">
+        <div id="tabs" class="easyui-tabs" data-options="tools:'#tab-tools',fit:true,border:false">
+            <div title="首页" data-options="iconCls:'icon-home'" style="padding: 10px;">
+                @*<iframe scrolling="auto" frameborder="0" src="~/Admin/Home/Static" style="width:100%;height:98%;"></iframe>*@
+            </div>
+
+        </div>
+        @*<div id="tab-tools">
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="addTab()"></a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" onclick="removeTab()"></a>
+            </div>*@
+    </div>
+    
+    <div id="edit" class="easyui-dialog" title="修改密码" style="width: 300px; height: 200px;"
+         modal="true" closed="true" buttons="#edit-buttons">
+        <form id="form_edit" name="form_edit" method="post" url="EmployeeManage.aspx">
+            <table class="table_edit">
+                <tr>
+                    <td class="tdal">
+                        原密码：
+                    </td>
+                    <td class="tdar">
+                        <input id="pwdold" name="pwdold" type="password" class="easyui-validatebox" required="true" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        新密码：
+                    </td>
+                    <td class="tdar">
+                        <input id="pwdnew" name="pwdnew" type="password" class="easyui-validatebox" required="true" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        确认密码：
+                    </td>
+                    <td class="tdar">
+                        <input id="pwdconfirm" name="pwdconfirm" type="password" class="easyui-validatebox" required="true" />
+
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+        <div id="edit-buttons" style="text-align:center;">
+            <a id="btnsubmit" href="javascript:;" class="easyui-linkbutton">提交</a> <a href="javascript:;" class="easyui-linkbutton" onclick="$('#edit').dialog('close');return false;">取消</a>
+        </div>
+    </div>
+</body>

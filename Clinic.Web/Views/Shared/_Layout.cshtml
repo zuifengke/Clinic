@@ -1,0 +1,210 @@
+﻿@using Windy.WebMVC.Web2;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="@ViewBag.Keywords" name="keywords">
+    <meta content="@ViewBag.Description" name="description">
+    <meta name="author" content="@ViewBag.Author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="360-site-verification" content="ba03887babc55c82a39f4ce43c06be56" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta property="qc:admins" content="41333617676214416761676375" />
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="/logo.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.0/css/amazeui.min.css">
+    <link href="~/Content/css/site.amazeui.css" rel="stylesheet" />
+    <link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+
+    <script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+    <script src="~/Scripts/jquery.scrollbox.js"></script>
+    <script src="//cdn.bootcss.com/jquery.form/3.51/jquery.form.min.js"></script>
+    <script src="//cdn.bootcss.com/jsSHA/2.1.0/sha1.js"></script>
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101322948" data-redirecturi="http://www.zyldingfang.com/member/qqconnect" charset="utf-8"></script>
+
+
+    <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+    <script type='text/javascript' src='http://cdn.amazeui.org/amazeui/2.7.0/js/amazeui.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='http://cdn.amazeui.org/amazeui/2.7.0/js/amazeui.ie8polyfill.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='http://cdn.amazeui.org/amazeui/2.7.0/js/amazeui.widgets.helper.min.js' charset='utf-8'></script>
+
+    <!--ckeditor编辑器-->
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/ckeditor.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/config.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/lang/zh.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/flash/dialogs/flash.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/flash/plugin.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/flash/lang/zh.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/embed/plugin.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/embedbase/plugin.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/embedbase/dialogs/embedbase.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/embedbase/lang/zh-cn.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/autoembed/plugin.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/autoembed/lang/zh-cn.js"></script>
+
+
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/colorbutton/plugin.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/colorbutton/lang/zh-cn.js"></script>
+
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/colordialog/dialogs/colordialog.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/colordialog/plugin.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/colordialog/lang/zh-cn.js"></script>
+
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/justify/plugin.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/justify/lang/zh-cn.js"></script>
+
+
+
+    <script src="~/Content/js/ckeditor.js"></script>
+   
+
+
+</head>
+
+<body>
+    <!--navbar begin-->
+    @Html.Partial("Navbar")
+    <!--navbar end-->
+    @Html.Partial("Header")
+    @RenderBody()
+
+    <!--侧边浮动工具栏 begin-->
+
+    <div class="side-tool">
+        <ul style="list-style-type: none;">
+            <li>
+                <a href="/advice">
+                    <div class="sidebox" style="width: 54px; opacity: 0.8; background: rgb(0, 0, 0);">
+                        <img src="~/Content/images/amazeui/side_liuyan.png">意见和留言
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="tencent://message/?uin=1140046717&amp;Site=在线咨询&amp;Menu=yes">
+                    <div class="sidebox" style="width: 54px; opacity: 0.8; background: rgb(0, 0, 0);">
+                        <img src="~/Content/images/amazeui/side_qq.png">QQ联系
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <div class="sidebox" style="width: 54px; opacity: 0.8; background: rgb(0, 0, 0);" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 455}">
+                        <img src="~/Content/images/amazeui/side_weixin.png" />关注微信号
+                    </div>
+                    <div style="display:none">
+
+                    </div>
+                </a>
+            </li>
+            <li style="border:none;">
+                <a href="javascript:goTop();" class="sidetop">
+                    <img src="~/Content/images/amazeui/side_up.png">
+                </a>
+            </li>
+            <li style="border:none;">
+                <a href="javascript:goBottom();" class="sidetop">
+                    <img src="~/Content/images/amazeui/side_down.png">
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--侧边浮动工具栏 end-->
+    <!--footer begin-->
+    @Html.Partial("Footer")
+    <!--footer end-->
+
+
+    <!--侧边工具栏 js代码 begin-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".side-tool ul li").hover(function () {
+                $(this).find(".sidebox").stop().animate({ "width": "124px" }, 200).css({ "opacity": "1", "filter": "Alpha(opacity=100)", "background": "#0E90D2" })
+            }, function () {
+                $(this).find(".sidebox").stop().animate({ "width": "54px" }, 200).css({ "opacity": "0.8", "filter": "Alpha(opacity=80)", "background": "#000" })
+            });
+
+        });
+        function goTop() {
+            $('html,body').animate({ 'scrollTop': 0 }, 600);
+        }
+        function goBottom() {
+            $('html,body').animate({ 'scrollTop': $(document).height() }, 600);
+        }
+    </script>
+    <!--侧边工具栏 js代码 end-->
+    <!--分享 begin-->
+    <div class="share">
+        <script>
+            var ua = window.navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) != 'micromessenger'
+                && ua.match(/UCBrowser/i) != 'ucbrowser'
+                 && document.body.clientWidth > 1024) {
+                window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "slide": { "type": "slide", "bdImg": "2", "bdPos": "left", "bdTop": "173.5" } }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+            }
+        </script>
+    </div>
+    <!--分享 end-->
+    <!--微信关注模态窗 begin-->
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">
+                关注微信公众号，更多优惠活动等着你
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <img src="http://ww2.sinaimg.cn/mw690/5ce46c7dgw1f5ogtdboxqj209k09kmx3.jpg" />
+                <div class="am_footer_d_dxz am-icon-cloud-download"> 手机扫码</div>
+            </div>
+        </div>
+    </div>
+    <!--微信关注模态窗 end-->
+    <!--360自动收录begin-->
+    <script>
+        (function () {
+            var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?7d1deeaa7e7981765db01aff42a87288" : "https://jspassport.ssl.qhimg.com/11.0.1.js?7d1deeaa7e7981765db01aff42a87288";
+            document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+    <!--360统计-->
+    <script type="text/javascript" src="//s.union.360.cn/55831.js"></script>
+    <!--360自动收录 end-->
+    <!--百度自动提交 begin -->
+    <script>
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+    <!--百度自动提交 end -->
+    <!-- 请置于所有广告位代码之前 -->
+    <script src="http://dup.baidustatic.com/js/ds.js"></script>
+
+    <!--百度站点统计 begin-->
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?e9489310b1cf9cd5168d722f4a4e0feb";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    <!--百度站点统计 end-->
+</body>
+
+</html>

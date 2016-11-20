@@ -1,0 +1,267 @@
+﻿@using Windy.WebMVC.Web2.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/sui/Views/Shared/_Layout.cshtml";
+    var articles = ViewBag.Articles as List<Article>;
+}
+<style>
+    .list-block { margin-top: 0; }
+    .infinite-scroll-preloader { margin-top: -20px; }
+</style>
+<script>
+    function refresh() {
+        document.location.href = "http://mp.weixin.qq.com/s?__biz=MzAwNzI0MjQ0Ng==&mid=400934769&idx=4&sn=f8c84d408d8a1189e735575b951989d0&scene=4#wechat_redirect";
+    }
+    $.config = {
+        // 路由功能开关过滤器，返回 false 表示当前点击链接不使用路由
+        routerFilter: function ($link) {
+            // 某个区域的 a 链接不想使用路由功能
+            if ($link.is('.disable-router a')) {
+                return false;
+            }
+
+            return true;
+        }
+    };
+</script>
+    <div class="page page-current" id="page-infinite-scroll-bottom">
+
+        <nav class="bar bar-tab">
+            <a class="tab-item active disable-router" href="/sui/home/index">
+                <span class="icon icon-home"></span>
+                <span class="tab-label">首页</span>
+            </a>
+            <a class="tab-item disable-router" href="/sui/star/index">
+                <span class="icon icon-star"></span>
+                <span class="tab-label">收藏</span>
+            </a>
+            <a class="tab-item disable-router" href="/sui/order/index">
+                <span class="icon icon-cart"></span>
+                <span class="tab-label">订单</span>
+            </a>
+            <a class="tab-item disable-router" href="/sui/Account/Index">
+                <span class="icon icon-me"></span>
+                <span class="tab-label">我</span>
+            </a>
+        </nav>
+        <div class="content infinite-scroll" data-distance="50">
+            <!-- Slider -->
+            @*<div id="swiper" class="swiper-container" data-space-between='10' data-animation="3">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="~/Content/Images/sui/logo_2.jpg" onclick="refresh()" style="width:100%;height:100px" alt=""></div>
+                        <div class="swiper-slide"><img src="~/Content/Images/sui/logo_1.jpg" style="width:100%;height:100px" alt=""></div>
+
+                    </div>
+                </div>*@
+            <!-- 广告位：微官网-横幅 -->
+            <script>
+                (function () {
+                    var s = "_" + Math.random().toString(36).slice(2);
+                    document.write('<div id="' + s + '"></div>');
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: '2625690',
+                        container: s,
+                        size: '20,5',
+                        display: 'inlay-fix'
+                    });
+                })();
+            </script>
+            <script src="http://dup.baidustatic.com/js/om.js"></script>
+            <div class="home-menu row  no-gutter">
+                <div class="col-25" onclick="loadcategory('hotel'); return false;">
+
+
+                    <div class="home-menu-item1">
+                    </div>
+                    <div class="home-menu-title">酒店</div>
+
+                </div>
+                <div class="col-25">
+                    <div class="home-menu-item2"></div>
+                    <div class="home-menu-title">培训</div>
+                </div>
+                <div class="col-25" onclick="loadcategory('book'); return false;">
+                    <div class="home-menu-item3"></div>
+                    <div class="home-menu-title">书籍</div>
+                </div>
+                <div class="col-25" onclick="loadcategory('news'); return false;">
+                    <div class="home-menu-item4"></div>
+                    <div class="home-menu-title">资讯</div>
+                </div>
+            </div>
+            <div class="list-block media-list">
+
+                <ul class="list-container">
+                    @if (articles != null && articles.Count > 0)
+                    {
+                        foreach (var item in articles)
+                        {
+                            <li>
+                                <a href="#detail" onclick="setArticle(@item.ID)" class="item-link item-content">
+                                    <div class="item-media">
+                                        @if (string.IsNullOrEmpty(item.ImagePath))
+                                        {
+
+                                            <img src="~/content/images/sui/defaultpic.gif" style='width: 3rem;' /> ;
+                                        }
+                                        else
+                                        {
+                                            <img src="@item.ImagePath" style='width: 3rem;' />
+                                        }
+
+                                    </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-title">@item.Title</div>
+                                            <div class="item-after"></div>
+                                        </div>
+
+                                        <div class="item-text">@item.Summary</div>
+                                    </div>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                </ul>
+                <!-- 广告位：微官网-9 -->
+                <script>
+                    (function () {
+                        var s = "_" + Math.random().toString(36).slice(2);
+                        document.write('<div id="' + s + '"></div>');
+                        (window.slotbydup = window.slotbydup || []).push({
+                            id: '2625693',
+                            container: s,
+                            size: '20,5',
+                            display: 'inlay-fix'
+                        });
+                    })();
+                </script>
+                <script src="http://dup.baidustatic.com/js/om.js"></script>
+            </div>
+            <!-- 加载提示符 -->
+            <div class="infinite-scroll-preloader">
+                <div class="preloader">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="page" id='detail'>
+        
+        <div class="content profile">
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left back" href="#">
+                    <span class="icon icon-left"></span>
+                    返回
+                </a>
+                <h1 class='title'>详情</h1>
+            </header>
+            <div class="card demo-card-header-pic">
+
+                <div class="card-content">
+                    <div class="card-content-inner">
+                        <p class="color-gray" id="modifytime"></p>
+                        <p id="content"></p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="link">赞</a>
+                    <a href="#" class="link">更多</a>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+<script>
+    var loading = false;
+    // 每次加载添加多少条目
+    var itemsPerLoad = 10;
+    var categorycode = "";
+    // 最多可加载的条目
+    var maxItems = 100;
+    var lastIndex = $('.list-container li').length;
+    function addItems(number, index, code) {
+        $.post('/sui/home/LoadArticle', { "lastindex": index, "categorycode": categorycode }, function (data) {
+            var html = '';
+            if (data.state == "success" && data.result.length > 0) {
+                data.result.forEach(function (e) {
+                    html += '<li> <a href="#detail" onclick="setArticle('+e.ID+')" class="item-link item-content"> <div class="item-media"><img src="' + e.ImagePath + '" style="width:3rem;"></div> <div class="item-inner"> <div class="item-title-row">  <div class="item-title">' + e.Title + '</div> <div class="item-after"></div>  </div>   <div class="item-text">' + e.Summary + '...</div>  </div> </a> </li>';
+                })
+                // 添加新条目
+                $('.infinite-scroll .list-container').append(html);
+                // 更新最后加载的序号
+                lastIndex = $('.list-container li').length;
+            }
+            else {
+                // 删除加载提示符
+                $('.infinite-scroll-preloader').hide();
+            }
+
+        });
+
+    }
+    function setArticle(id)
+    {
+        $.post('/sui/home/GetArticle', { "id": id}, function (data) {
+            var html = '';
+            if (data.state == "success" ) {
+                var article = data.result;
+               
+                $("#modifytime").html('发表于' + article.ModifyTime);
+                $("#content").html(article.Content);
+            }
+            else {
+
+            }
+
+        });
+    }
+
+    $(function () {
+
+        //var swiper = document.getElementById("swiper");
+        //var scale = window.screen.height / window.screen.width;
+        //swiper.style.height = document.body.clientHeight * 20 % + "px";
+        //$(".swiper-container").swiper({
+        //    autoplay: 3000
+        //});
+        //无限滚动
+        $(document).on("pageInit", "#page-infinite-scroll-bottom", function (e, id, page) {
+
+            $(page).on('infinite', function () {
+                // 如果正在加载，则退出
+                if (loading) return;
+                // 设置flag
+                loading = true;
+                // 模拟1s的加载过程
+                setTimeout(function () {
+                    // 重置加载flag
+                    loading = false;
+                    if (lastIndex >= maxItems) {
+                        // 加载完毕，则注销无限加载事件，以防不必要的加载
+                        $.detachInfiniteScroll($('.infinite-scroll'));
+                        // 删除加载提示符
+                        $('.infinite-scroll-preloader').hide();
+                        return;
+                    }
+                    addItems(itemsPerLoad, lastIndex, categorycode);
+
+                    $.refreshScroller();
+                }, 1000);
+            });
+
+        });
+
+        $.init();
+    });
+    function loadcategory(code) {
+        categorycode = code
+        $('.infinite-scroll-preloader').show();
+        $('.infinite-scroll .list-container').html("");
+        lastIndex = 0;
+        addItems(itemsPerLoad, lastIndex, categorycode);
+    }
+
+</script>

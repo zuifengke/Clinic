@@ -1,0 +1,19 @@
+﻿
+
+ol, ul { list-style: none; }
+
+table { border-collapse: collapse; border-spacing: 0; }
+
+caption, th, td { text-align: left; font-weight: normal; vertical-align: middle; }
+
+q, blockquote { quotes: none; }
+    q:before, q:after, blockquote:before, blockquote:after { content: ""; content: none; }
+
+a img { border: none; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary { display: block; }
+
+.turntable-bg { width: 320px; height: 295px; margin: 0 auto; position: relative; background: url("../images/site/turntable-bg.jpg");background-repeat:no-repeat; }
+   
+    .turntable-bg .pointer { width: 80px; height: 105px; position: absolute; left: 200px; top: 230px; margin-left: -67px; margin-top: -144px; z-index: 8; }
+    .turntable-bg .rotate { width: 220px; height: 220px; position: absolute; left: 58px; top: 28px; }

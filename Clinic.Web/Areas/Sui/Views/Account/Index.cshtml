@@ -1,0 +1,171 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/sui/Views/Shared/_Layout.cshtml";
+}
+@model Windy.WebMVC.Web2.Models.OAuthUser
+<div class="page">
+    <header class="bar bar-nav">
+
+        <h1 class="title">个人中心</h1>
+    </header>
+    <nav class="bar bar-tab">
+        <a class="tab-item disable-router" href="/sui/Home/Index">
+            <span class="icon icon-home"></span>
+            <span class="tab-label">首页</span>
+        </a>
+        <a class="tab-item disable-router" href="/sui/star/index">
+            <span class="icon icon-star"></span>
+            <span class="tab-label">收藏</span>
+        </a>
+        <a class="tab-item disable-router" href="/sui/order/index">
+            <span class="icon icon-cart"></span>
+            <span class="tab-label">订单</span>
+        </a>
+        <a class="tab-item active disable-router" href="#">
+            <span class="icon icon-me"></span>
+            <span class="tab-label">我</span>
+        </a>
+    </nav>
+    <div class="content">
+        <div class="list-block">
+            <ul>
+                <li style="height: 3rem;text-align:left;">
+
+                    <div class="item-content" style="min-height: 3rem;">
+                        <div class="item-media">
+                            <img src="@Model.Headimgurl" height="auto" style='width: 2.5rem;' class="circular-square">
+                            <div style="text-align:left;margin-left:1em;font-size:0.75em;">
+                                <div>
+                                    @Model.Name
+                                </div>
+                                <div>
+                                    @if (string.IsNullOrEmpty(Model.Tel))
+                                    {
+                                        <a href="/sui/account/telephone">绑定手机号</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/sui/account/telephone">@Model.Tel</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+        <div class="list-block">
+            <ul>
+                <li>
+                    <a class="item-content item-link" href="/sui/account/detail">
+                        <div class="item-media"><i class="icon icon-me"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">个人资料</div>
+                            <div class="item-after"></div>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+        <div class="list-block">
+
+            <ul>
+                <li>
+                    <a class="item-content item-link" href="/sui/account/userinfo">
+                        <div class="item-media"><i class="icon icon-cart"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">订房报名</div>
+                            <div class="item-after"></div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="item-content item-link" href="/sui/account/examplace">
+                        <div class="item-media"><i class="icon icon-edit"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">考点提交</div>
+                            <div class="item-after"></div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="item-content item-link" href="/sui/account/roominfo">
+                        <div class="item-media"><i class="icon icon-card"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">酒店安排</div>
+                            <div class="item-after"></div>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="list-block">
+            <ul>
+                <li>
+                    <a class="item-content item-link" href="/sui/account/advice">
+                        <div class="item-media"><i class="icon icon-message"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">意见反馈</div>
+                            <div class="item-after"></div>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+        @*<div class="list-block">
+            <ul>
+                <li>
+                    <a class="item-content item-link" href="~/test.html" >
+                        <div class="item-media"><i class="icon icon-me"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">测试页</div>
+                            <div class="item-after"></div>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>*@
+       
+    </div>
+
+</div>
+<script>
+    
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + "; " + expires + ";path=/";
+    }
+    //获取cookie
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1);
+            if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+        }
+        return "";
+    }
+    //清除cookie  
+    function clearCookie(name) {
+        setCookie(name, "", -1);
+    }
+    function Relogin() {
+        clearCookie("UserCookie");
+        window.location = "/sui/account";
+    }
+</script>

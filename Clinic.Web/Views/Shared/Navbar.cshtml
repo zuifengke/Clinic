@@ -1,0 +1,47 @@
+﻿@using Windy.WebMVC.Web2.Config
+@{
+    ViewBag.Title = "Navbar";
+    SiteConfig _siteConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~").GetSection("SiteConfig") as SiteConfig;
+    string[] arrmenu = _siteConfig.MenuName.Split(',');
+}
+<div class="navbar">
+
+    <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default navbar"
+         id="">
+        <ul class="am-navbar-nav am-cf am-avg-sm-4">
+            <li>
+                <a href="/" class="">
+                    <span class="am-icon-home"></span>
+                    <span class="am-navbar-label">@arrmenu[0]</span>
+                </a>
+            </li>
+            <li >
+                <a href="/product/index" class="">
+                    <span class="am-icon-shopping-cart"></span>
+                    <span class="am-navbar-label">@arrmenu[1]</span>
+                </a>
+            </li>
+
+            <li >
+                <a href="/users/userinfo" class="">
+                    <span class="am-icon-hotel"></span>
+                    <span class="am-navbar-label">@arrmenu[2]</span>
+                </a>
+            </li>
+            <li>
+                <a href="/member/personalinfo" class="">
+                    <span class="am-icon-user"></span>
+                    <span class="am-navbar-label">@arrmenu[3]</span>
+                </a>
+            </li>
+            <li>
+                <a href="/blog/index" class="">
+                    <span class="am-icon-bold"></span>
+                    <span class="am-navbar-label">@arrmenu[4]</span>
+                </a>
+            </li>
+           
+
+        </ul>
+    </div>
+</div>

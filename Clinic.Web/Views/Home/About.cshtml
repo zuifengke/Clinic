@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "关于我们";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var about = ViewBag.About as List<Windy.WebMVC.Web2.Models.Article>;
+    var aboutus = about.Where(m => m.CategoryCode == Windy.WebMVC.Web2.SystemConst.CategoryCode.AboutUs).FirstOrDefault();
+    var aboutcontact = about.Where(m => m.CategoryCode == Windy.WebMVC.Web2.SystemConst.CategoryCode.AboutContact).FirstOrDefault();
+    var aboutcard = about.Where(m => m.CategoryCode == Windy.WebMVC.Web2.SystemConst.CategoryCode.AboutCard).FirstOrDefault();
+    var aboutjoin = about.Where(m => m.CategoryCode == Windy.WebMVC.Web2.SystemConst.CategoryCode.AboutJoin).FirstOrDefault();
+}
+<div class="banner about-bg">
+    <div class="banner-theme banner-theme-about">
+        <h1>关于我们</h1>
+    </div>
+</div>
+<div class="am-g am-container tr-main-container" id="about">
+    <div class="am-tabs" data-am-tabs="">
+        <ul class="am-tabs-nav am-nav am-nav-tabs am-nav-justify">
+            <li class="am-active"><a href="#about_us">关于我们</a></li>
+            <li class=""><a href="#join_us">加入我们</a></li>
+            <li class=""><a href="#contact_us">联系我们</a></li>
+            <li class=""><a href="#card">营业执照</a></li>
+
+        </ul>
+        <div class="am-tabs-bd tr-article-list" style="touch-action: pan-y; -webkit-user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+            <div class="am-tab-panel am-active am-in" id="about_us">
+                <div class="am-g am-container">
+                    <h3>关于我们</h3>
+                </div>
+                <div class="am-g am-container">
+                    <hr>
+                </div>
+
+                <div class="am-g am-container">
+                    <div class="am-u-sm-12 am-u-md-12">
+                        @if (aboutus != null)
+                        {
+                            @Html.Raw(aboutus.Content);
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="am-tab-panel  am-in" id="join_us">
+                <div class="am-g am-container">
+                    <h3>加入我们</h3>
+                </div>
+                <div class="am-g am-container">
+                    <hr>
+                    <div class="am-u-sm-12 am-u-md-12">
+                        @if (aboutjoin != null)
+                        {
+                            @Html.Raw(aboutjoin.Content);
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="am-tab-panel" id="contact_us">
+                <div class="am-g am-container">
+                    <h3>联系我们</h3>
+                </div>
+                <div class="am-g am-container">
+                    <hr>
+                    <div class="am-u-sm-12 am-u-md-12">
+                        @if (aboutcontact != null)
+                        {
+
+                            @Html.Raw(aboutcontact.Content);
+                        }
+                    </div>
+
+                </div>
+                <div class="am-g am-container">
+                    <div class="am-u-sm-12 am-u-md-12">
+                        <div data-am-widget="map" class="am-map am-map-default"
+                             data-name="状元乐公司地址" data-address="杭州经济开发区白杨街道金沙居A座1230室" data-longitude="120.390786" data-latitude="30.312394" data-scaleControl="" data-zoomControl="true" data-setZoom="17" data-icon="http://amuituku.qiniudn.com/mapicon.png">
+                            <div id="bd-map"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="am-tab-panel  am-in" id="card">
+                <div class="am-g am-container">
+                    <h3>营业执照</h3>
+                </div>
+                <div class="am-g am-container">
+                    <hr>
+
+                    <div class="am-u-sm-12 am-u-md-12">
+                        @if (aboutcard != null)
+                        {
+
+                            @Html.Raw(aboutcard.Content);
+
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+﻿
+.profile .list-block { margin: 2.4rem 0 1rem 0; font-size: .65rem; }
+    .profile .list-block .item-subtitle { font-size: .65rem; }
+    .profile .list-block .item-input { margin-top: .06rem; margin-bottom: .06rem; }
+    .profile .list-block input { font-size: .65rem; }
+    .profile .list-block select { font-size: .65rem; }
+    .profile .list-block textarea { font-size: .65rem; }
+    .profile .list-block .item-title.label { width: 30%; }
+.profile .submit-button { margin: 0 auto 2rem auto; width: 100%; padding: 0 .45rem; }
+    .profile .submit-button button { background-color: #ed8e07; width: 100%; line-height: 2.1rem !important; height: 2.1rem !important; }
+
+/*首页*/
+.swiper-container { padding-bottom: 0; }
+.home-menu { background-color: white; height: 80px; width: 100%; text-align: center; }
+.home-menu-item1 { background-color: white; background-image: url(../Images/sui/menu_button.png); background-repeat: no-repeat; width: 40px; height: 40px; background-position: 0 0; margin: auto; margin-top: 10px; }
+
+.home-menu-item2 { background-color: white; background-image: url(../Images/sui/menu_button.png); background-repeat: no-repeat; width: 40px; height: 40px; background-position: -40px 0; margin: auto; margin-top: 10px; }
+
+.home-menu-item3 { background-color: white; background-image: url(../Images/sui/menu_button.png); background-repeat: no-repeat; width: 40px; height: 40px; background-position: -80px 0; margin: auto; margin-top: 10px; }
+
+.home-menu-item4 { background-color: white; background-image: url(../Images/sui/menu_button.png); background-repeat: no-repeat; width: 40px; height: 40px; background-position: -120px 0; margin: auto; margin-top: 10px; }
+.home-menu-title { font-size: 0.75em; margin-top: 5px; }
+
+/*个人中心*/
+.circular-square { border-radius: 50%; }
+/*意见反馈*/
+.icon.icon-form-comment { width: 1.45rem; height: 1.45rem; background-image: url("../images/sui/i-form-comment.png"); }

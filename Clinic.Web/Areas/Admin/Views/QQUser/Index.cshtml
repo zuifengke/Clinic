@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <form id="form_list" name="form_list" method="post">
+        <table id="tab_list"></table>
+        <div id="tab_toolbar" style="padding: 0 1px;">
+            <table cellpadding="0" cellspacing="0" style="width: 98%">
+                <tr>
+                    <td style="padding-left: 1px"></td>
+                    <td style="text-align: right; padding-right: 15px">
+                        QQ会员姓名或昵称（可模糊查询）：
+                        <input id="Name" name="Name" type="text" />
+                        
+                        <a href="#" onclick="Search();return false;"
+                           id="btnSearch" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+
+        $(function () {
+            InitGird();
+
+        });
+        //初始化表格
+        function InitGird() {
+            $('#tab_list').datagrid({
+                title: 'QQ会员', //表格标题
+                url: "QQUser/QueryData", //请求数据的页面
+                sortName: 'ID', //排序字段
+                idField: 'ID', //标识字段,主键
+                iconCls: '', //标题左边的图标
+                width: '98%', //宽度
+                height: $(parent.document).find("#tabs").height() - 50 > 0 ? $(parent.document).find("#tabs").height() - 50 : 300, //高度
+                nowrap: false, //是否换行，True 就会把数据显示在一行里
+                striped: true, //True 奇偶行使用不同背景色
+                collapsible: false, //可折叠
+                sortOrder: 'desc', //排序类型
+                remoteSort: true, //定义是否从服务器给数据排序
+                frozenColumns: [[//冻结的列，不会随横向滚动轴移动
+	                { field: 'cbx', checkbox: true }
+                ]],
+                columns: [[
+                    {
+                        title: 'ID', field: 'ID', width: 100,hidden:true
+                    },
+                    {
+                        title: '头像', field: 'Figureurl', width: 40, formatter: function (value, rec) {
+                            return '<img src=' + value + ' style="width:30px;height:30px;" />';
+                        }
+                    },
+                    {
+                        title: '创建时间', field: 'CreateTime', width: 120, formatter: function (value, rec) {
+                            var date = new Date(parseInt(value.substr(6)));
+                            return date.format("yyyy-MM-dd hh:mm");
+
+                        }
+                    },
+                    { title: '昵称', field: 'NickName', width: 100 },
+
+                    { title: '真实姓名', field: 'Name', width: 100 },
+                   
+                    {
+                        title: '性别', field: 'Gender', width: 100
+                    }
+
+                ]],
+                toolbar: "#tab_toolbar",
+                queryParams: { "action": "query" },
+                pagination: true, //是否开启分页
+                pageNumber: 1, //默认索引页
+                pageSize: 10, //默认一页数据条数
+                rownumbers: true //行号
+            });
+        }
+
+        //初始化搜索框
+        function InitSearch() {
+            $("#ipt_search").searchbox({
+                width: 200,
+                iconCls: 'icon-save',
+                searcher: function (val, name) {
+                    $('#tab_list').datagrid('options').queryParams.search_type = name;
+                    $('#tab_list').datagrid('options').queryParams.search_value = val;
+                    $('#tab_list').datagrid('reload');
+                },
+                prompt: '请输入要查询的信息'
+            });
+        }
+
+        //初始化搜索框
+        function Search() {
+            $('#tab_list').datagrid('options').queryParams.Name = $("#Name").val();
+            $('#tab_list').datagrid('options').queryParams.Tel = $("#Tel").val();
+            $("#tab_list").datagrid("reload");
+            $("#tab_list").datagrid("clearChecked");
+
+        }
+    </script>
+</body>

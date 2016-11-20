@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "FileUpload";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/ajaxfileupload.js"></script>
+<body>
+
+    <div>
+        <span style="color:red;font-size:larger"> 选择要导入的Excel文件，点击上传后</span>
+
+    </div>
+     
+    <br />
+    <div>
+        <img id="loading" src="~/Content/Images/admin/loading.gif" style="display: none;">
+        <form name="form" action="" method="POST" enctype="multipart/form-data">
+            选择导出格式：<input type="radio" name="TemplateType" checked="checked" value="研究生考试"/>研究生考试
+            <input type="radio" name="TemplateType" value="司法考试" />司法考试
+            <input type="radio" name="TemplateType" value="成人考试"   />成人考试
+            <br />
+            <input id="fileToUpload" accept=".xls" type="file" name="fileToUpload" class="input">
+            <br />
+            <br />
+            <a id="buttonUpload" href="javascript:;" class="easyui-linkbutton" onclick="return ajaxFileUpload();">上传并导入</a>
+        </form>
+    </div>
+
+
+     
+
+</body>
+<script type="text/javascript">
+    function ajaxFileUpload() {
+        //$("#loading")
+        //.ajaxStart(function () {
+        //    $(this).show();
+        //})
+        //.ajaxComplete(function () {
+        //    $(this).hide();
+        //});
+        $("#loading").show();
+        var Template = $('input[name="TemplateType"]:checked').val();
+        $.ajaxFileUpload
+        (
+            {
+                url: "Upload",
+                secureuri: false,
+
+                fileElementId: 'fileToUpload',
+                dataType: 'json',
+                data: { name: 'logan', id: 'id', TemplateType: Template },
+                success: function (data, status) {
+                    $("#loading").hide();
+                    if (typeof (data.error) != 'undefined') {
+                        if (data.error != '') {
+                            alert(data.error);
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                },
+                error: function (data, status, e) {
+                    $("#loading").hide();
+                    alert(e);
+
+                }
+            }
+        )
+
+        return false;
+
+    }
+</script>

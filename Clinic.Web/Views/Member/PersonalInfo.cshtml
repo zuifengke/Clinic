@@ -1,0 +1,357 @@
+﻿@model Windy.WebMVC.Web2.Models.Member
+@{
+    ViewBag.Title = "个人主页";
+    int blogsum = ViewBag.blogsum;
+    int blogvideosum = ViewBag.blogvideosum;
+    int blogpicturesum = ViewBag.blogpicturesum;
+    var employee = ViewBag.employee as Windy.WebMVC.Web2.Models.Employee;
+    var figureUrl = ViewBag.FigureUrl as string;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="am-container" id="main">
+    <div class="am-g am-g-fixed">
+        <ol class="am-breadcrumb">
+            <li><a href="/" class="am-icon-home">首页</a></li>
+            <li><a href="/member/personalInfo">个人主页</a></li>
+            <li class="am-active">详情</li>
+        </ol>
+        <div class="am-u-md-4 persionalInfo-userinfo">
+
+            <div data-am-widget="intro" class="am-intro am-cf am-intro-default">
+                <div class="am-g am-intro-bd">
+                    <div class="am-intro-left am-u-sm-4">
+                        @if (!string.IsNullOrEmpty(figureUrl))
+                        {
+                            <img alt="@Model.UserName" class="figure" src="@figureUrl">
+                        }
+                    </div>
+                    <div class="am-intro-right am-u-sm-8" style="margin-top: 10px;font-size: 18px;font-weight: 500;line-height: 1.1;">
+                        <p><span data-am-popover="{content: '用户名', trigger: 'hover focus'}">@Model.UserName</span></p>
+                        <p><span data-am-popover="{content: '昵称', trigger: 'hover focus'}">@Model.RealName</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-alert am-alert-secondary">
+                <p class="am-text-xl">尊敬的考生您好！</p>
+                <p>
+                    状元乐推出新版优惠活动，成功邀请好友订房赢更多优惠，详情请咨询本校代理。
+                    <br />每成功邀请一人可获得一次抽奖机会<img src="~/Content/Images/site/money.png" /> 有随机免单5元，最高可优惠房价100元。
+                    <br />
+                    <br />邀请入口→<button type="button" class="am-btn am-btn-success" onclick="javascript: location.href = '/invite/write'"> 邀请好友</button>
+                     抽奖入口→<button type="button" class="am-btn am-btn-success" onclick="javascript: location.href = '/Lottery/LuckyRoller'"> 去抽奖</button>
+
+                </p>
+            </div>
+            <!-- 其他信息 -->
+            <ul class="am-list am-list-static am-list-border">
+                <li>
+                    <i class="am-icon-pencil"></i>
+                    您的博客
+                    <button class="am-btn am-badge-warning am-btn-xs am-fr" data-am-popover="{content: '点我管理您的博客', trigger: 'hover focus'}" onclick="javascript: location.href = '/blog/index.htm?mine=true'">@blogsum</button>
+                </li>
+                <li>
+                    <i class="am-icon-photo"></i>
+                    您的美图
+                    <button class="am-btn am-badge-warning am-btn-xs am-fr" data-am-popover="{content: '点我管理您的美图', trigger: 'hover focus'}" onclick="javascript: location.href = '/blog/index.htm?mine=true&CategoryCode=blog-picture'">@blogpicturesum</button>
+                </li>
+                <li>
+                    <i class="am-icon-play-circle-o"></i>
+                    您的视频
+                    <button class="am-btn am-badge-warning am-btn-xs am-fr" data-am-popover="{content: '点我管理您的视频', trigger: 'hover focus'}" onclick="javascript: location.href = '/blog/index.htm?mine=true&CategoryCode=blog-video'">@blogvideosum</button>
+                </li>
+                <li>
+                    <i class="am-icon-hand-o-right"></i>
+                    快捷入口
+                    <div class="am-btn-group am-btn-group-xs am-fr">
+                        <button type="button" class="am-btn am-btn-secondary" onclick="javascript:location.href='/blog/write/'"> 写博客</button>
+                        <button type="button" class="am-btn am-btn-secondary" onclick="javascript: location.href = '/blog/write/'"> 传美图</button>
+                        <button type="button" class="am-btn am-btn-secondary" onclick="javascript: location.href = '/blog/write/'">发视频</button>
+                    </div>
+                </li>
+            </ul>
+            <div class="am-alert am-alert-secondary">
+                @*<p class="am-text-xl">尊敬的用户您好！</p>*@
+                <p>
+                    注意用户名是您登陆系统的重要信息，用户名不能与系统中的其他用户相同且不能用系统保留字段。
+
+                </p>
+                @if (employee != null)
+                {
+                    <p>
+                        状元乐校园代理后台，点击→<button type="button" class="am-btn am-btn-success" onclick="javascript: location.href = '/employee/index/1'"> 代理入口</button>
+                    </p>
+                }
+                <p>
+                    查看其它用户报名信息，点击→<button type="button" class="am-btn am-btn-danger" onclick="javascript: location.href = '/member/loginout'"> 切换账号</button>
+                </p>
+            </div>
+
+        </div>
+        <div class="am-u-md-8">
+
+            <div data-am-widget="tabs" class="am-tabs am-tabs-default">
+                <ul class="am-tabs-nav am-cf">
+                    <li class="">
+                        <a href="[data-tab-panel-0]">我的资料</a>
+                    </li>
+                    <li class="">
+                        <a href="[data-tab-panel-1]">资料修改</a>
+                    </li>
+
+                    <li class="">
+                        <a href="[data-tab-panel-3]">密码修改</a>
+                    </li>
+                </ul>
+                <div class="am-tabs-bd">
+                    <div data-tab-panel-0 class="am-tab-panel">
+                        <table class="am-table am-table-bordered am-table-striped am-table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="20%">类别</th>
+                                    <th width="80%">内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>用户名</td>
+                                    <td>@Model.UserName</td>
+                                </tr>
+                                <tr>
+                                    <td>昵称</td>
+                                    <td>@Model.RealName</td>
+                                </tr>
+                                <tr>
+                                    <td>性别</td>
+                                    @if (Model.Sex == 0)
+                                    {
+                                        <td>男</td>
+                                    }
+                                    else
+                                    {
+                                        <td>女</td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>年龄</td>
+                                    <td>@Model.Age</td>
+                                </tr>
+                                <tr>
+                                    <td>邮箱</td>
+                                    <td>@Model.Mail</td>
+                                </tr>
+                                <tr>
+                                    <td>手机</td>
+                                    <td>@Model.Tel</td>
+                                </tr>
+                                <tr>
+                                    <td>QQ</td>
+                                    <td>@Model.QQ</td>
+                                </tr>
+                                <tr>
+                                    <td>创建时间</td>
+                                    <td>@Model.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 资料修改tab -->
+                    <div data-tab-panel-1 class="am-tab-panel">
+                        <form class="am-form" id="form_user" data-am-validator action="/member/update" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="ID" value="@Model.ID" />
+                            <fieldset>
+                                <div class="am-form-group">
+                                    <label for="f-username">用户名 <span style="color: red;">*</span></label>
+                                    <input type="text" id="f-username" name="Username" value="@Model.UserName" required />
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="f-realname">昵称 </label>
+                                    <input type="text" id="f-realname" name="Realname" value="@Model.RealName" maxlength="6" placeholder="请输入呢称（&lt;=6位任意字符)" />
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="f-sex">性别</label>
+                                    <select id="f-sex" name="Sex">
+                                        @if (Model.Sex == 0)
+                                        {
+                                            <option value="0" selected="selected">男</option>
+                                            <option value="1">女</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="0">男</option>
+                                            <option value="1" selected="selected">女</option>
+                                        }
+
+                                    </select>
+                                    <span class="am-form-caret"></span>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="f-age">年龄</label>
+                                    <input type="number" name="Age" value="@Model.Age" id="f-age" max="100" placeholder="请输入年龄">
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="f-mail">邮件</label>
+                                    <input type="email" name="Mail" value="@Model.Mail" id="f-mail" placeholder="请输入电子邮件" required>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="f-tel">手机</label>
+                                    <input type="number" name="Tel" value="@Model.Tel" id="f-tel" maxlength="11" placeholder="请输入手机">
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="f-qq">QQ</label>
+                                    <input type="number" name="QQ" value="@Model.QQ" id="f-qq" maxlength="20" placeholder="请输入QQ">
+                                </div>
+
+
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-6 am-u-sm-push-3">
+                                        <div id="error_msg" style="color: #c00;display:none;">正在提交，请您耐心等待...</div>
+
+                                        <button id="submit" type="submit" name="sub" class="am-btn am-btn-primary am-btn-block btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">提交</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+
+                        <script type="text/javascript">
+                            var $btn = $('#submit');
+                            var pwd = "";
+                            var pwd2 = "";
+                            $('#form_user').bind('form-pre-serialize', function (event, form, options, veto) {
+
+                            });
+                            $('#form_user').ajaxForm({
+                                beforeSubmit: function (a, f, o) {
+                                    if ($('#f-mail').val().length == 0) {
+                                        $('#f-mail').focus();
+                                        $('#error_msg').html(" 邮箱地址必须填写");
+                                        $('#error_msg').show();
+                                        return false;
+                                    }
+                                    if ($('#f-username').val().length < 2) {
+                                        $('#f-username').focus();
+                                        $('#error_msg').html(" 账号必须填写,请填写2~10个字符串！");
+                                        $('#error_msg').show("fast");
+                                        return false;
+                                    }
+
+
+                                    $('#error_msg').html(" 正在审核，请您耐心等待...");
+                                    $('#error_msg').show();
+                                    $btn.button('loading');
+                                },
+                                success: function (html) {
+                                    if (html.length > 0) {
+                                        $('#error_msg').hide();
+                                        $('#error_msg').html(html);
+                                        $('#error_msg').show();
+                                        $btn.button('reset');
+                                    } else {
+                                        //location.href = "http://www.tngou.net/reg/sendmail?email=" + $('#f_email').val() + "&type=activate";
+                                        $('#error_msg').hide();
+                                        $btn.button('reset');
+                                        //弹出提示对话框
+                                        $('#my-alert').modal();
+                                    }
+                                }
+                            });
+                        </script>
+                    </div>
+                    <!-- 密码修改pannel -->
+                    <div data-tab-panel-3 class="am-tab-panel">
+                        <div class="am-g">
+                            <div class="am-u-md-8 am-u-sm-centered">
+                                <form class="am-form" style="padding-top:20px;" enctype="multipart/form-data" id="form-password" method="post" action="/member/updatePassword">
+                                    <fieldset class="am-form-set">
+                                        <input type="password" name="oldpwd" id="f_oldpwd" placeholder="原密码">
+                                        <input type="password" name="pwd" id="f_pwd" placeholder="新密码">
+                                        <input type="password" name="pwd2" id="f_pwd2" placeholder="重复密码">
+                                    </fieldset>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-6 am-u-sm-push-3">
+                                            <div id="error_msg2" style="color: #c00;display:none;">正在提交，请您耐心等待...</div>
+
+                                            <button id="submit2" type="submit" name="sub" class="am-btn am-btn-primary am-btn-block btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script type="text/javascript">
+                        var $btn = $('#submit2');
+                        var pwd = "";
+                        var pwd2 = "";
+                        $('#form-password').bind('form-pre-serialize', function (event, form, options, veto) {
+                            pwd = $('#f_pwd').val();
+                            pwd2 = $('#f_pwd2').val();
+                        });
+                        $('#form-password').ajaxForm({
+                            beforeSubmit: function (a, f, o) {
+                                pwd = $('#f_pwd').val();
+                                pwd2 = $('#f_pwd2').val();
+                                if (pwd.length < 6 || $('#f_pwd').val() != $('#f_pwd2').val()) {
+                                    $('#f_pwd').val(pwd);
+                                    $('#f_pwd2').val(pwd2);
+                                    $('#f_pwd').focus();
+                                    $('#error_msg2').html(" 两次密码必须填写，且要匹配 (最少6位)");
+                                    $('#error_msg2').show();
+                                    return false;
+                                }
+
+                                $('#error_msg2').html(" 正在审核，请您耐心等待...");
+                                $('#error_msg2').show();
+                                $btn.button('loading');
+                            },
+                            success: function (html) {
+                                if (html.length > 0) {
+                                    $('#error_msg2').hide();
+                                    $('#error_msg2').html(html);
+                                    $('#error_msg2').show();
+                                    $btn.button('reset');
+                                } else {
+                                    //location.href = "http://www.tngou.net/reg/sendmail?email=" + $('#f_email').val() + "&type=activate";
+                                    $('#error_msg2').hide();
+                                    $btn.button('reset');
+                                    //弹出提示对话框
+                                    $('#my-alert2').modal();
+                                }
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">状元乐</div>
+        <div class="am-modal-bd">
+            个人资料修改成功
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn">确定</span>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert2">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">状元乐</div>
+        <div class="am-modal-bd">
+            密码修改成功
+        </div>
+        <div class="am-modal-footer">
+            <span class="am-modal-btn">确定</span>
+        </div>
+    </div>
+</div>

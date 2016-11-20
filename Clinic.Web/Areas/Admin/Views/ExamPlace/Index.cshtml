@@ -1,0 +1,456 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    td { vertical-align: top; }
+
+    table { }
+
+    .tr-vline { height: inherit; }
+
+    .tr-hline { }
+
+    .tr-hline td table { height: inherit; width: 100%; border-spacing: 0px; }
+    .treedot { background-image: url(../../../../Content/images/admin/Tree_Heng.gif); width: 26%; }
+
+    .treeempty { width: 49%; }
+
+    .tr-node { }
+
+    .td-node { min-width: 20px; max-width: 60px; WORD-WRAP: break-word; cursor: pointer; padding: 0; text-align: center; float: left; position: relative; }
+
+    .td-node em { background: url('~/Content/Images/admin/hover.png') no-repeat; width: 180px; height: 45px; position: absolute; top: -85px; left: -80px; text-align: center; padding: 20px 12px 10px; font-style: normal; z-index: 2; display: none; }
+</style>
+
+
+<script>
+    function transData(a, idStr, pidStr, chindrenStr) {
+        var r = [], hash = {}, id = idStr, pid = pidStr, children = chindrenStr, i = 0, j = 0, len = a.length;
+        for (; i < len; i++) {
+            hash[a[i][id]] = a[i];
+        }
+        for (; j < len; j++) {
+            var aVal = a[j], hashVP = hash[aVal[pid]];
+            if (hashVP) {
+                !hashVP[children] && (hashVP[children] = []);
+                hashVP[children].push(aVal);
+            } else {
+                r.push(aVal);
+            }
+        }
+        return r;
+    }
+    $(document).ready(function () {
+
+        //var jsonData = eval('[{"id":"1","pid":"0","name":"家用电器"},{"id":"2","pid":"0","name":"服饰"},{"id":"3","pid":"0","name":"化妆"},{"id":"4","pid":"1","name":"大家电"},{"id":"5","pid":"1","name":"生活电器"},{"id":"7","pid":"4","name":"空调"},{"id":"9","pid":"4","name":"洗衣机"},{"id":"10","pid":"4","name":"热水器"},{"id":"11","pid":"3","name":"面部护理"},{"id":"12","pid":"3","name":"口腔护理"},{"id":"13","pid":"2","name":"男装"},{"id":"14","pid":"2","name":"女装"},{"id":"15","pid":"7","name":"海尔空调"},{"id":"16","pid":"7","name":"美的空调"},{"id":"19","pid":"5","name":"加湿器"},{"id":"20","pid":"5","name":"电熨斗"}]');
+
+        //var jsonData = eval('[{"id":"1","ParentID":"0","name":"家用电器"},{"id":"2","ParentID":"1","name":"大家电"},{"id":"3","ParentID":"1","name":"生活电器"}]');
+        InitTreeOrg();
+
+
+    });
+
+    function InitTreeOrg() {
+        $.post("ExamPlace/QueryData", {}, function (data) {
+            var jsonData;
+
+            jsonData = eval(data);
+            var jsonDataTree = transData(jsonData, 'id', 'pid', 'chindren');
+
+            viewModelOrganize(jsonData)
+        });
+    }
+    function OpenWin() {
+        $("#edit").dialog("open");
+        $("#edit-buttons a:first").attr("onclick", "Add(0); return false;");
+        if (orgSelectNode != null) {
+            $("#edit #ParentID").val(orgSelectNode.id);
+            $("#edit #ParentName").val(orgSelectNode.innerText);
+
+        }
+    }
+    function Add(uid) {
+        if (!$("#form_edit").form("validate")) {
+            return;
+        }
+        var json = GetInputData('edit', 'submit');
+
+        json.id = uid;
+        $.post("ExamPlace/UpdateData", json, function (data) {
+            $.messager.alert('提示', data, 'info', function () {
+                if (data.indexOf("成功") > 0) {
+                    console.info(data);
+                    $("#tab_list").datagrid("reload");
+                    $("#edit").dialog("close");
+                    InitTreeOrg();
+                }
+            });
+        });
+    }
+
+    //修改链接 事件
+    function Edit() {
+        var uid;
+        if (orgSelectNode != null) {
+            uid = orgSelectNode.id;
+        }
+        else {
+            $.messager.alert("提示", "未选中需要编辑的对象", 'info', function () {
+
+            });
+            return;
+        }
+        $("#edit").dialog("open");
+        $("#btn_add").attr("onclick", "Add(" + uid + "); return false;")
+
+        $.post("ExamPlace/QueryOneData", { "id": uid }, function (data) {
+            var dataObj = eval("(" + data + ")"); //转换为json对象
+            //   console.info(dataObj);
+            $("#form_edit").form('load', dataObj[0]);
+            $("#PlaceType").val(dataObj[0].PlaceType);
+        });
+    }
+
+    //修改链接 事件
+    function SetEmp() {
+        var uid;
+        if (orgSelectNode != null) {
+            uid = orgSelectNode.id;
+        }
+        else {
+            $.messager.alert("提示", "未选中需要编辑的对象", 'info', function () {
+
+            });
+            return;
+        }
+        $("#Emp_Dialog").dialog("open");
+        $("#btn_SetEmp").attr("onclick", "SubmitEmpSelect(" + uid + "); return false;");
+        $.post(location.href, { "action": "QueryEmployee", "OrgID": uid }, function (data) {
+
+            $("#checkboxlist").html(data);
+        });
+
+    }
+
+    function SubmitEmpSelect(uid) {
+        var empid = "";
+        $(".empid").each(function () {
+            if ($(this)[0].checked) {
+                if (empid != "")
+                    empid = "," + empid
+                empid = $(this)[0].id + empid;
+            }
+        });
+        $.post(location.href, { "action": "SaveByOrgID", "OrgID": uid, "EmpID": empid }, function (data) {
+            $.messager.alert('提示', data, 'info', function () {
+                if (data.indexOf("成功") > 0) {
+
+                }
+            });
+        });
+    }
+
+
+    function DelData() {
+        var uid;
+        if (orgSelectNode != null) {
+            uid = orgSelectNode.id;
+        }
+        else {
+            $.messager.alert("提示", "未选中需要编辑的对象", 'info', function () {
+
+            });
+            return;
+        }
+        $.messager.confirm('提示', '确认删除？', function (r) {
+            if (r) {
+
+                $.post("ExamPlace/DelData", { "cbx_select": uid }, function (data) {
+                    if (data.indexOf("成功")) {
+                        InitTreeOrg();
+                        return;
+                    }
+
+                    $.messager.alert('提示', data, 'info', function () {
+
+                    });
+                });
+            }
+        });
+    }
+    function GetInputData(id, cmd) {
+        var postdata = "{ \"action\":\"" + cmd + "\",";
+        $("#" + id + " input[type!='checkbox']").each(function () {
+            postdata += "\"" + $(this).attr("name") + "\":\"" + $(this).val() + "\",";
+        });
+        $("#" + id + " input[type='checkbox']").each(function () {
+            postdata += "\"" + $(this).attr("name") + "\":\"" + this.checked + "\",";
+        });
+        postdata += "\"PlaceType\":\"" + $("#PlaceType").val() + "\",";
+        postdata = postdata.substr(0, postdata.length - 1);
+        postdata += "}";
+        return eval("(" + postdata + ")");
+    }
+</script>
+<body style="background-color:white">
+
+    <div class="easyui-panel" style="padding:-2px;background:#fafafa;">
+        <div class="z-toolbar">
+            <a id="a_refresh" href="#" plain="true" class="easyui-linkbutton" icon="icon-reload" title="刷新" data-bind="click: refreshClick">刷新</a>
+            <a id="a_add" href="#" plain="true" class="easyui-linkbutton" icon="icon-add" title="新增" onclick="$('#form_edit input').val('');OpenWin();return false;">新增</a>
+            <a id="a_edit" href="#" plain="true" class="easyui-linkbutton" icon="icon-edit" title="编辑" onclick="$('#form_edit input').val('');Edit();return false;">编辑</a>
+            <a id="a_del" href="#" plain="true" class="easyui-linkbutton" icon="icon-cancel" title="删除" onclick="DelData()">删除</a>
+
+        </div>
+    </div>
+
+    <div class="wrapper" style="width: 100%; height:420px; max-height:500px; overflow:scroll; margin-top: 15px;"></div>
+
+
+    <div id="edit" class="easyui-dialog" title="编辑组织机构" style="width: 400px; height: 400px;"
+         modal="true" closed="true" buttons="#edit-buttons">
+        <form id="form_edit" name="form_edit" method="post" url="OrgnizationMap.aspx">
+            <table class="table_edit">
+                <tr>
+                    <td class="tdal">
+                        上级地址名称：
+                    </td>
+                    <td class="tdar">
+                        <input id="ParentName" name="ParentName" readonly="true" type="text" class="easyui-validatebox" />
+                        <input id="ParentID" name="ParentID" hidden="hidden" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        考点名称：
+                    </td>
+                    <td class="tdar">
+                        <input id="PlaceName" name="PlaceName" type="text" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        级别：
+                    </td>
+                    <td class="tdar">
+                        <select id="PlaceType">
+                            <option value="省份">省份</option>
+                            <option value="城市">城市</option>
+                            <option value="考点">考点</option>
+                        </select>
+
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td class="tdal">
+                        描述：
+                    </td>
+                    <td class="tdar">
+                        <input id="Description" name="Description" type="text" style="width: 300px; height: 150px;" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="edit-buttons">
+        <a id="btn_add" href="javascript:;" class="easyui-linkbutton">提交</a> <a href="javascript:;"
+                                                                                class="easyui-linkbutton" onclick="$('#edit').dialog('close');return false;">取消</a>
+    </div>
+
+    <div id="Emp_Dialog" class="easyui-dialog" closed="true" style="width: 400px; height: 500px;">
+        <div class="easyui-panel" style="width: 385px; height: 440px;">
+            <div id="checkboxlist" style=" vertical-align:central"></div>
+        </div>
+        <div id="edit-buttons_tree">
+            <a id="btn_SetEmp" href="javascript:;" class="easyui-linkbutton">提交</a> <a href="javascript:;"
+                                                                                       class="easyui-linkbutton" onclick="$('#Emp_dialog').dialog('close');return false;">取消</a>
+        </div>
+    </div>
+
+</body>
+
+<script type="text/html" id="tr-node-template">
+    <tr class="tr-node">
+        <td colspan="{0}">
+            <table align="center" border="1" cellpadding="2" cellspacing="0">
+                <tr>
+                    <td class="td-node" id="td{3}" data-node="{2}" align="center" valign="top">{1}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="tr-hline-template">
+    <tr class="tr-hline">
+        <td>
+            <table>
+                <tr>
+                    <td class="treeempty"></td>
+                    <td class="treedot"></td>
+                    <td class="treedot"></td>
+                </tr>
+            </table>
+        </td>
+        <td class="treedot" colspan="{0}"></td>
+        <td>
+            <table>
+                <tr>
+                    <td class="treedot"></td>
+                    <td class="treedot"></td>
+                    <td class="treempty"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+</script>
+
+</html>
+
+<script type="text/javascript">
+
+    var orgSelectNode;
+    function viewModelOrganize(data) {
+        var self = this;
+        this.save = function (vm, win) {
+            var post = { form: ko.toJS(vm.form) };
+            com.ajax({
+                type: 'POST',
+                url: "UpdateData",
+                data: JSON.stringify(post),
+                success: function (d) {
+                    com.message('success', '保存成功！');
+                    win.dialog('close');
+                    self.initGraph(d);
+                }
+            });
+        }
+        this.addClick = function () {
+            var defaults = { pid: (self.selectNode || {}).id || 0 };
+            self.openDiloag("添加新机构", defaults, function (vm, win) {
+                if (com.formValidate(win)) {
+                    vm.form._OrganizeCode = vm.form.OrganizeCode();
+                    self.save(vm, win);
+                }
+            });
+        };
+        this.initGraph = function (data) {
+            self.data = data;
+            var wrapper = $("div.wrapper").empty();
+            var treeData = transData(data, "id", "pid", "children");
+
+            var tb = renderTreeGraph(treeData);
+            tb.appendTo(wrapper);
+
+            //绑定事件
+            $(wrapper).find(".td-node").click(function () {
+                $(".td-node").css({ "background-color": "", "color": "" });
+                self.selectNode = $(this).data("node");
+                if (orgSelectNode != null && orgSelectNode.id == $(this)[0].id) {
+                    orgSelectNode = null;
+                    $(this).css({ "background-color": "", color: "" });
+                    $(this).find("em").animate({ opacity: "hide", top: "-85" }, "fast");
+                }
+                else {
+                    $(this).css({ "background-color": "#faffbe", color: "#FF0000" });
+
+                    orgSelectNode = $(this)[0];
+
+
+
+
+                }
+            }).dblclick(self.editClick);
+            if (self.selectNode) {
+                $("#td" + self.selectNode.OrganizeCode).css({ "background-color": "#faffbe", "color": "#FF0000" });
+            }
+        };
+        this.initGraph(data);
+    }
+
+    function renderTreeGraph(treeData) {
+        //生成图形
+        var tb = $('<table class="tb-node" cellspacing="0" cellpadding="0" align="center" border="0" style="border-width:0px;border-collapse:collapse;margin:0 auto;vertical-align:top"></table>');
+        var tr = $('<tr></tr>');
+        for (var i in treeData) {
+            if (i > 0) $('<td>&nbsp;</td>').appendTo(tr);
+            $('<td style="vertical-align:top;text-align:center;"></td>').append(createChild(treeData[i])).appendTo(tr);
+        }
+        tr.appendTo(tb);
+        return tb;
+    }
+
+    //递归生成机构树图形
+    function createChild(node, ischild) {
+        var length = (node.children || []).length;
+        var colspan = length * 2 - 1;
+        if (length == 0)
+            colspan = 1;
+
+        var fnTrVert = function () {
+            var tr1 = $('<tr class="tr-vline"><td colspan="' + colspan + '"><img class="img-v" src="../../../Content/Images/admin/Tree_Vert.gif" ></td></tr>');
+            return tr1;
+        };
+        //1.创建容器
+        var tb = $('<table class="tb-node" cellspacing="0" cellpadding="0" align="center" border="0"></table>');
+
+        //2.如果本节点是子节点，添加竖线在节点上面
+        if (ischild) {
+            fnTrVert().appendTo(tb);
+        }
+
+        // 3.添加本节点到图表
+        var tr3 = $("#tr-node-template").html();
+
+        //tr3='<tr class="tr-node">  <td colspan="3"> <table align="center" border="1" cellpadding="2" cellspacing="0">  <tr> <td class="td-node" id="td1" data-node="" align="center" valign="top">家用电器</td> </tr> </table> </td> </tr> ';
+        tr3 = '<tr class="tr-node"> <td colspan="{0}"><table align="center" border="1" cellpadding="2" cellspacing="0"> <tr> <td class="td-node" id="{3}" data-node="{2}" align="center" valign="top">{1}</td> </tr> </table>  </td> </tr> '
+        tr3 = stringFormat(tr3, colspan, node.name, "", node.id);
+        $(tr3).appendTo(tb);
+
+        // 4.增加上下级的连接线
+        if (length > 1) {
+            //增加本级连接下级的首节点竖线，在节点下方
+            fnTrVert().appendTo(tb);
+
+            //增加本级连接下级的中间横线
+            var tr4 = $("#tr-hline-template").html();
+
+            tr4 = '<tr class="tr-hline"><td>  <table > <tr>  <td class="treeempty"></td> <td class="treedot"></td><td class="treedot" ></td></tr></table></td>  <td class="treedot" style="width:2px;" colspan="{0}"></td>  <td><table><tr> <td class="treedot"></td> <td class="treedot"></td> <td class="treempty"></td> </tr> </table>  </td> </tr>';
+
+            tr4 = stringFormat(tr4, colspan - 2);
+            $(tr4).appendTo(tb);
+        }
+
+        //5.递归增加下级所有子节点到图表
+        if (length > 0) {
+            var tr5 = $('<tr></tr>');
+
+            for (var i in node.children) {
+                if (i > 0) {
+                    $('<td ></td>').appendTo(tr5);
+                }
+                $('<td></td>').append(createChild(node.children[i], true)).appendTo(tr5);
+            }
+
+            tr5.appendTo(tb);
+        }
+
+        return tb;
+    }
+    function stringFormat() {
+        if (arguments.length == 0)
+            return null;
+        var str = arguments[0];
+        for (var i = 1; i < arguments.length; i++) {
+            var re = new RegExp('\\{' + (i - 1) + '\\}', 'gm');
+            str = str.replace(re, arguments[i]);
+        }
+        return str;
+    }
+
+</script>

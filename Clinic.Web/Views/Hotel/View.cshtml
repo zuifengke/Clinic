@@ -1,0 +1,101 @@
+﻿@model Windy.WebMVC.Web2.Models.Hotel
+@{
+    ViewBag.Title = Model.Title;
+    ViewBag.Description = Model.Summary;
+    if (string.IsNullOrEmpty(Model.Keywords))
+    {
+        ViewBag.Keywords = Windy.WebMVC.Web2.SystemContext.Instance.PageInfo.Keywords;
+    }
+    else
+    {
+        ViewBag.Keywords = Model.Keywords;
+    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var next = ViewBag.next as Windy.WebMVC.Web2.Models.Hotel;
+    var pre = ViewBag.pre as Windy.WebMVC.Web2.Models.Hotel;
+}
+
+
+<div class="am-container " id="main">
+
+    <div class="am-g am-g-fixed">
+        <div class="am-u-md-8" id="hotel-main">
+            <ol class="am-breadcrumb">
+                <li><a href="/" class="am-icon-home">首页</a></li>
+                @if (Model.CategoryCode.Contains("hotel"))
+                {
+                    <li><a href="/hotel/index.htm?&categorycode=@Model.CategoryCode">@Model.CategoryName</a></li>
+                }
+                <li class="am-active">详情</li>
+            </ol>
+
+
+
+            <article class="am-article">
+                <div class="am-article-hd">
+                    <h1 class="am-article-title">@Model.Title</h1>
+                    <div class="am_list_author">
+
+                        <p class="blog-ext">
+                            <span class="blog-ext-ico">
+                                <i class="am-icon-user  blog-ext-ico"></i>
+                                @Model.CreateName
+                            </span>
+                            <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@Model.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                            <span class="blog-ext-ico">
+                                <i class="am-icon-eye  blog-ext-ico"></i>
+                                @Model.ViewCount
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div id="hotelcontentid" class="am-article-bd">
+                    @Html.Raw(Model.Content)
+                </div>
+
+                <hr data-am-widget="divider" style="" class="am-divider am-divider-dashed am-no-layout">
+                <ul class="am-pagination blog-pagination">
+                    @if (pre != null)
+                    {
+                        <li class="am-pagination-prev"><a href="/hotel/view/@(new HtmlString(pre.ID.ToString() + ".htm"))">« 上一篇 @pre.Title</a></li>
+                    }
+                    @if (next != null)
+                    {
+                        <li class="am-pagination-next"><a href="/hotel/view/@(new HtmlString(next.ID.ToString() + ".htm")) ">下一篇 » @next.Title</a></li>
+                    }
+                </ul>
+                <div class="shengming">声明：若要转载状元乐中的任何文章请注明转载地址</div>
+
+
+            </article>
+            <!-- 分割线 -->
+            <hr data-am-widget="divider" style="" class="am-divider am-divider-dashed am-no-layout">
+            @Html.Partial("Advert1")
+            <!-- 分割线 -->
+            <hr data-am-widget="divider" style="" class="am-divider am-divider-dashed am-no-layout">
+
+            <!-- 多说评论框 start -->
+            <div data-am-widget="duoshuo" class="am-duoshuo am-duoshuo-default" data-ds-short-name="zyldingfang">
+                <div class="ds-thread" data-thread-key="article_@Model.ID" data-title="@Model.Title" data-url="@HttpContext.Current.Request.Url">
+
+                </div>
+            </div>
+            <!-- 多说评论框 end -->
+            <!-- 多说分享 -->
+
+
+        </div>
+
+        <div class="am-u-md-4" id="my-side">
+            @Html.Partial("sidebox")
+            @Html.Partial("sidebox2")
+            @Html.Partial("sidebox3")
+
+        </div>
+
+    </div>
+
+
+
+</div>

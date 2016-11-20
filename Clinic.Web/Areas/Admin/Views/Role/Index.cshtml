@@ -1,0 +1,225 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <form id="form_list" name="form_list" method="post">
+        <table id="dg"></table>
+        <div id="tab_toolbar" style="padding: 0 2px;">
+            <table cellpadding="0" cellspacing="0" style="width: 100%">
+                <tr>
+                    <td style="padding-left: 2px">
+                        <a href="#" onclick="$('#form_edit input').val('');manage.openWin();return false;" id="a_add"
+                           class="easyui-linkbutton" iconcls="icon-add">添加</a> <a href="#" onclick="manage.delRefresh(); return false;"
+                                                                                  id="a_del" class="easyui-linkbutton" iconcls="icon-cancel">删除</a>
+                    </td>
+                    <td style="text-align: right; padding-right: 15px">
+                        角色名（可模糊查询）：
+                        <input id="Name" name="Name" type="text" />
+                        <a href="#" onclick="manage.search();return false;"
+                           id="btnSearch" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <div id="edit" class="easyui-dialog" title="编辑员工信息" style="width: 320px; height: 250px;"
+         modal="true" closed="true" buttons="#edit-buttons">
+        <form id="form_edit" name="form_edit" method="post" url="">
+            <table class="table_edit">
+
+                <tr>
+                    <td class="tdal">
+                        名称：
+                    </td>
+                    <td class="tdar">
+                        <input id="Name" name="Name" type="text" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        描述：
+                    </td>
+                    <td class="tdar">
+                        <input id="Description" name="Description" type="text" style="width: 250px; height: 100px;" class="easyui-validatebox" />
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+    </div>
+    <div id="edit-buttons">
+        <a id="btn_add" href="javascript:;" class="easyui-linkbutton">提交</a> <a href="javascript:;"
+                                                                                class="easyui-linkbutton" onclick="$('#edit').dialog('close');return false;">取消</a>
+    </div>
+    <div id="edit_tree" class="easyui-dialog" title="角色授权" closed="true" style="width: 400px; height: 450px;">
+        <div class="easyui-panel" style="width: 385px; height: 380px;">
+            <ul id="tree"></ul>
+        </div>
+        <div id="edit-buttons_tree">
+            <a id="btn_add_tree" href="javascript:;" class="easyui-linkbutton">提交</a> <a href="javascript:;"
+                                                                                         class="easyui-linkbutton" onclick="$('#edit_tree').dialog('close');return false;">取消</a>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $(function () {
+            manage.initData();
+        });
+
+        var manage = {
+            initTreeData: function (id) {
+                $("#edit_tree").dialog("open");
+                $("#edit-buttons_tree a:first").attr("onclick", "manage.submitTree(" + id + "); return false;")
+                $('#tree').tree({
+                    url: 'menu/GetMenuTreeByRoleID?RoleID=' + id,
+                    checkbox: true,
+                    onClick: function (node) {
+                        alert(node.text);
+                    },
+                    onContextMenu: function (e, node) {
+                        e.preventDefault();
+                        $('#tree').tree('select', node.target);
+                        $('#mm').menu('show', {
+                            left: e.pageX,
+                            top: e.pageY
+                        });
+                    }
+                });
+            },
+            openWin: function () {
+                $("#edit").dialog("open");
+                $("#edit-buttons a:first").attr("onclick", "manage.add(0); return false;")
+            },
+            delRefresh: function () {
+                $.messager.confirm('提示', '确认删除？', function (r) {
+                    if (r) {
+                        var selected = "";
+                        $($('#dg').datagrid('getSelections')).each(function () {
+                            selected += this.ID + ",";
+                        });
+                        selected = selected.substr(0, selected.length - 1);
+                        if (selected == "") {
+                            $.messager.alert('提示', '请选择要删除的数据！', 'info');
+                            return;
+                        }
+
+                        $.post("Role/DelData", { "cbx_select": selected }, function (data) {
+                            $.messager.alert('提示', data, 'info', function () { $("#dg").datagrid("reload"); });
+                            $('#dg').datagrid('clearSelections');
+                        });
+                    }
+                });
+            },
+            add: function (uid) {
+                if (!$("#form_edit").form("validate")) {
+                    return;
+                }
+                var json = manage.getInputData('edit', 'submit');
+                json.id = uid;
+                $.post("Role/UpdateData", json, function (data) {
+                    $.messager.alert('提示', data, 'info', function () {
+                        if (data.indexOf("成功") > 0) {
+                            console.info(data);
+                            $("#dg").datagrid("reload");
+                            $("#edit").dialog("close");
+                        }
+                    });
+                });
+            },
+            editData: function (uid) {
+                $("#edit").dialog("open");
+                $("#btn_add").attr("onclick", "manage.add(" + uid + "); return false;")
+
+                $.post("Role/QueryOneData", { "id": uid }, function (data) {
+                    var dataObj = eval("(" + data + ")"); //转换为json对象
+                    //console.info(dataObj);
+                    $("#form_edit").form('load', dataObj);
+                });
+            },
+            getInputData: function (id, cmd) {
+                var postdata = "{ \"action\":\"" + cmd + "\",";
+                $("#" + id + " input[type!='checkbox']").each(function () {
+                    postdata += "\"" + $(this).attr("name") + "\":\"" + $(this).val() + "\",";
+                });
+                $("#" + id + " input[type='checkbox']").each(function () {
+                    postdata += "\"" + $(this).attr("name") + "\":\"" + this.checked + "\",";
+                });
+                postdata = postdata.substr(0, postdata.length - 1);
+                postdata += "}";
+                return eval("(" + postdata + ")");
+            },
+            submitTree: function (id) {
+                var nodes = $('#tree').tree('getChecked');
+                var s = '';
+                for (var i = 0; i < nodes.length; i++) {
+                    if (s != '') s += ',';
+                    s += nodes[i].id;
+                }
+                //提交机构树选择结果
+                $.post("menu/SaveByRoleID", { "MenuID": s, "RoleID": id }, function (data) {
+                    $.messager.alert('提示', data, 'info', function () {
+
+                    });
+                });
+            },
+            refresh: function () {
+                manage.initData();
+            },
+            initData: function () {
+                manage.initGrid();
+            },
+            initGrid: function () {
+                $('#dg').datagrid({
+                    title: '角色管理', //表格标题
+                    url: "Role/QueryData", //请求数据的页面
+                    sortName: 'ID', //排序字段
+                    idField: 'ID', //标识字段,主键
+                    iconCls: '', //标题左边的图标
+                    width: '100%', //宽度
+                    height: $(parent.document).find("#tabs").height() - 50 > 0 ? $(parent.document).find("#tabs").height() - 50 : 300, //高度
+                    nowrap: false, //是否换行，True 就会把数据显示在一行里
+                    striped: true, //True 奇偶行使用不同背景色
+                    collapsible: false, //可折叠
+                    sortOrder: 'desc', //排序类型
+                    remoteSort: true, //定义是否从服务器给数据排序
+                    frozenColumns: [[//冻结的列，不会随横向滚动轴移动
+                        { field: 'cbx', checkbox: true }
+                    ]],
+                    columns: [[
+                        {
+                            title: 'ID', field: 'ID', width: 100, formatter: function (value, rec) {
+                                return '<a style="color:red" href="javascript:;" onclick="manage.editData(' + value + ');$(this).parent().click();return false;">修改</a>&nbsp<a style="color:red" href="javascript:;" onclick="manage.initTreeData(' + value + ');$(this).parent().click();return false;">授权</a>';
+                            }
+                        },
+                        { title: '角色名', field: 'Name', width: 150 },
+                        { title: '描述', field: 'Description', width: 300 }
+
+                    ]],
+                    toolbar: "#tab_toolbar",
+                    queryParams: { "action": "query" },
+                    pagination: true, //是否开启分页
+                    pageNumber: 1, //默认索引页
+                    pageSize: 10, //默认一页数据条数
+                    rownumbers: true //行号
+                });
+                //设置分页的显示
+                $('#dg').datagrid('getPager').pagination({//分页栏下方文字显示
+                    displayMsg: '当前显示从第{from}条到{to}条 共{total}条记录',
+                    onBeforeRefresh: function (pageNumber, pageSize) {
+                        $(this).pagination('loading');
+                        $(this).pagination('loaded');
+                    }
+                });
+            },
+            search: function () {
+                $('#dg').datagrid('options').queryParams.Name = $("#Name").val();
+
+                $("#dg").datagrid("reload");
+                $("#dg").datagrid("clearChecked");
+            }
+        }
+    </script>
+</body>

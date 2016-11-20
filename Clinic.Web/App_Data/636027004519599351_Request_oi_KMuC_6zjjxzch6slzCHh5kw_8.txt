@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xml>
+  <ToUserName><![CDATA[gh_335dac269805]]></ToUserName>
+<FromUserName><![CDATA[oi_KMuC_6zjjxzch6slzCHh5kw_8]]></FromUserName>
+<CreateTime>1467074818</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[VIEW]]></Event>
+<EventKey><![CDATA[http://weixin_sandbox.3w.net579.com/weixin/Account]]></EventKey>
+<MenuId>403193186</MenuId>
+</xml>

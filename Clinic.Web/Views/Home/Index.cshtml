@@ -1,0 +1,622 @@
+﻿@using Windy.WebMVC.Web2.Models
+@{
+    ViewBag.Title = Windy.WebMVC.Web2.SystemContext.Instance.PageInfo.Title;
+    ViewBag.Keywords = Windy.WebMVC.Web2.SystemContext.Instance.PageInfo.Keywords;
+    ViewBag.Description = Windy.WebMVC.Web2.SystemContext.Instance.PageInfo.Description;
+    ViewBag.Author = Windy.WebMVC.Web2.SystemContext.Instance.PageInfo.Author;
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var newsGonggao = ViewBag.NewsGonggao as List<Article>;
+    var newsExamData = ViewBag.NewsExamData as List<Article>;
+    var newsReview = ViewBag.NewsReview as List<Article>;
+    var newsScore = ViewBag.NewsScore as List<Article>;
+    var hotel = ViewBag.Hotel as List<Hotel>;
+    var book = ViewBag.Book as List<Book>;
+    var train = ViewBag.Train as List<Train>;
+    var blog = ViewBag.Blog as List<Blog>;
+    var product = ViewBag.Product as List<Product>;
+}
+<!--图片轮播 begin-->
+<!--图片轮播 end-->
+<!--活动和广告begin-->
+<div class="am-g am-container">
+    <!-- 幻灯片 -->
+    <div class="am-u-sm-0 am-hide-sm am-u-md-12 am-u-lg-8">
+        @*<div data-am-widget="slider" class="am-slider am-slider-c1 am-no-layout" data-am-slider="{&quot;directionNav&quot;:false}" style="margin-top: 10px">
+
+            <div class="am-viewport" style="overflow: hidden; position: relative;">
+                <ul class="am-slides" style="width: 1200%; transition-duration: 0.6s; transform: translate3d(-2421px, 0px, 0px);">
+                    <li class="clone" aria-hidden="true" style="width: 807px; float: left; display: block;">
+                        <a href="http://mp.weixin.qq.com/s?__biz=MzAwNzI0MjQ0Ng==&mid=402688208&idx=1&sn=b2643740f79cee7baa6803fd2eb0aafa&scene=4" target="_blank">
+
+                            <img src="http://ww2.sinaimg.cn/large/5ce46c7dgw1f7jow8578uj20m80ciwh7.jpg" draggable="false" />
+                            <div class="am-slider-desc">
+                                考研复试，状元乐房费免费送
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div><ol class="am-control-nav am-control-paging"><li><a class="">1</a><i></i></li><li><a class="">2</a><i></i></li><li><a class="am-active">3</a><i></i></li><li><a class="">4</a><i></i></li></ol>
+        </div>*@
+        <div data-am-widget="slider" class="am-slider am-slider-c2" data-am-slider='{&quot;directionNav&quot;:false}'>
+            <ul class="am-slides">
+                <li>
+                    <a href="http://mp.weixin.qq.com/s?__biz=MzAwNzI0MjQ0Ng==&mid=402688208&idx=1&sn=b2643740f79cee7baa6803fd2eb0aafa&scene=4" target="_blank">
+
+                        <img src="http://ww2.sinaimg.cn/large/5ce46c7dgw1f7jow8578uj20m80ciwh7.jpg" draggable="false" />
+                        <div class="am-slider-desc">
+                            考研复试，状元乐房费免费送
+                        </div>
+                    </a>
+                   
+
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+    <!-- 荣誉榜 -->
+    <div class="am-u-sm-0  am-u-md-0 am-u-lg-4 padding-none ">
+        <div class="star am-container"><span><img src="http://www.html5dw.com/static/img/star.png">荣誉榜</span></div>
+        <ul class="padding-none am-gallery am-avg-sm-2 am-avg-md-4 am-avg-lg-2 am-gallery-overlay" data-am-gallery="{ pureview: true }">
+            <li>
+                <div class="am-gallery-item">
+                    <!-- 广告位：荣誉榜1 -->
+                    <script>
+                        (function () {
+                            var s = "_" + Math.random().toString(36).slice(2);
+                            document.write('<div id="' + s + '"></div>');
+                            (window.slotbydup = window.slotbydup || []).push({
+                                id: '2617048',
+                                container: s,
+                                size: '160,160',
+                                display: 'inlay-fix'
+                            });
+                        })();
+                    </script>
+                </div>
+            </li>
+            <li>
+                <div class="am-gallery-item">
+                    <!-- 广告位：荣誉榜2 -->
+                    <script>
+                        (function () {
+                            var s = "_" + Math.random().toString(36).slice(2);
+                            document.write('<div id="' + s + '"></div>');
+                            (window.slotbydup = window.slotbydup || []).push({
+                                id: '2617065',
+                                container: s,
+                                size: '160,160',
+                                display: 'inlay-fix'
+                            });
+                        })();
+                    </script>
+                </div>
+            </li>
+            <li>
+                <div class="am-gallery-item">
+                    <!-- 广告位：荣誉榜3 -->
+                    <script>
+                        (function () {
+                            var s = "_" + Math.random().toString(36).slice(2);
+                            document.write('<div id="' + s + '"></div>');
+                            (window.slotbydup = window.slotbydup || []).push({
+                                id: '2617073',
+                                container: s,
+                                size: '160,160',
+                                display: 'inlay-fix'
+                            });
+                        })();
+                    </script>
+                </div>
+            </li>
+            <li>
+                <div class="am-gallery-item">
+                    <!-- 广告位：荣誉榜4 -->
+                    <script>
+                        (function () {
+                            var s = "_" + Math.random().toString(36).slice(2);
+                            document.write('<div id="' + s + '"></div>');
+                            (window.slotbydup = window.slotbydup || []).push({
+                                id: '2617077',
+                                container: s,
+                                size: '160,160',
+                                display: 'inlay-fix'
+                            });
+                        })();
+                    </script>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<!--活动和广告end-->
+<!--1F信息咨询 begin-->
+<div class="am-g am-container am-g-collapse">
+
+    <div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi am-no-layout" style="margin:0">
+        <h2 class="am-titlebar-title  " data-am-scrollspy="{animation:'fade'}">1F考试咨讯</h2>
+        <nav class="am-titlebar-nav"><a href="/article/news.htm">更多 »</a></nav>
+    </div>
+    <div class="am-u-sm-12 am-u-md-12 am-u-lg-8" style="padding-top:15px;">
+        <div data-am-widget="tabs" class="am-tabs  am-tabs-default am-no-layout" style="margin:0">
+            <ul class="am-tabs-nav ">
+                <li class="am-active"><a href="[data-tab-panel-1]">官网公告</a></li>
+                <li><a href="[data-tab-panel-2]">考试资料</a></li>
+                <li><a href="[data-tab-panel-4]">复习秘籍</a></li>
+                <li><a href="[data-tab-panel-6]">成绩查询</a></li>
+            </ul>
+
+            <div class="am-tabs-bd" style="border: none; touch-action: pan-y; -webkit-user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); background: rgb(248, 248, 248);">
+                <div data-tab-panel-1="" class="am-tab-panel am-active">
+                    @if (newsGonggao != null)
+                    {
+                        foreach (var item in newsGonggao)
+                        {
+                            <div class="inner-box blog-img">
+                                <div class="am-g">
+                                    <div class="am-u-sm-3">
+                                        <a class="blog-a-curse" href="/article/view/@(new HtmlString((@item.ID + ".htm").ToString()))">
+                                            <img alt="" class="am_img animated" src="@item.ImagePath" style="display: inline;">
+                                        </a>
+                                    </div>
+                                    <div class="am-u-sm-9">
+                                        <div class="blog-header">
+                                            <a href="/article/hotel?categorycode=@item.CategoryCode" class="blog-category">@item.CategoryName</a>
+                                            <h2><a href="/article/view/@(new HtmlString((@item.ID + ".htm").ToString()))">@item.Title</a></h2>
+                                        </div>
+                                        <p class="blog-ext">
+                                            <span class="blog-ext-ico">
+                                                <i class="am-icon-user  blog-ext-ico"></i>
+                                                @item.ModifyName
+                                            </span>
+                                            <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@item.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                            <span class="blog-ext-ico">
+                                                <i class="am-icon-eye  blog-ext-ico"></i>
+                                                @item.ViewCount
+                                            </span>
+                                        </p>
+                                        <p class="blog-content-show">
+                                            @Html.Raw(@item.Summary)
+                                        </p>
+                                        <span class="blog-keyword-show">
+                                            @item.Keywords
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                </div>
+                <div data-tab-panel-2="" class="am-tab-panel">
+                    @if (newsExamData != null)
+                    {
+                        foreach (var item in newsExamData)
+                        {
+                            <div class="inner-box blog-img">
+                                <div class="am-g">
+                                    <div class="am-u-sm-3">
+                                        <a class="blog-a-curse" href="/article/view/@(new HtmlString((@item.ID + ".htm").ToString()))">
+                                            @*<img alt="" class="am_img animated" src="@item.ImagePath" style="display: inline;">*@
+                                            <img alt="" class="am_img animated" src="~/Content/images/amazeui/loading.gif" style="display: inline;" data-original="@item.ImagePath">
+                                        </a>
+                                    </div>
+                                    <div class="am-u-sm-9">
+                                        <div class="blog-header">
+                                            <a href="/article/hotel?categorycode=@item.CategoryCode" class="blog-category">@item.CategoryName</a>
+                                            <h2><a href="/article/view/@(new HtmlString((@item.ID + ".htm").ToString()))">@item.Title</a></h2>
+                                        </div>
+                                        <p class="blog-ext">
+                                            <span class="blog-ext-ico">
+                                                <i class="am-icon-user  blog-ext-ico"></i>
+                                                @item.ModifyName
+                                            </span>
+                                            <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@item.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                            <span class="blog-ext-ico">
+                                                <i class="am-icon-eye  blog-ext-ico"></i>
+                                                @item.ViewCount
+                                            </span>
+                                        </p>
+                                        <p class="blog-content-show">
+                                            @Html.Raw(@item.Summary)
+                                        </p>
+                                        <span class="blog-keyword-show">
+                                            @item.Keywords
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                </div>
+                <div data-tab-panel-4="" class="am-tab-panel">
+                    @if (newsReview != null)
+                    {
+                        foreach (var item in newsReview)
+                        {
+                            <div class="inner-box blog-img">
+                                <div class="am-g">
+                                    <div class="am-u-sm-3">
+                                        <a class="blog-a-curse" href="/article/view/@(new HtmlString((@item.ID + ".htm").ToString()))">
+                                            @*<img alt="" class="am_img animated" src="@item.ImagePath" style="display: inline;">*@
+                                            <img alt="" class="am_img animated" src="~/Content/images/amazeui/loading.gif" style="display: inline;" data-original="@item.ImagePath">
+                                        </a>
+                                    </div>
+                                    <div class="am-u-sm-9">
+                                        <div class="blog-header">
+                                            <a href="/article/hotel?categorycode=@item.CategoryCode" class="blog-category">@item.CategoryName</a>
+                                            <h2><a href="/article/view/@(new HtmlString((@item.ID + ".htm").ToString()))">@item.Title</a></h2>
+                                        </div>
+                                        <p class="blog-ext">
+                                            <span class="blog-ext-ico">
+                                                <i class="am-icon-user  blog-ext-ico"></i>
+                                                @item.ModifyName
+                                            </span>
+                                            <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@item.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                            <span class="blog-ext-ico">
+                                                <i class="am-icon-eye  blog-ext-ico"></i>
+                                                @item.ViewCount
+                                            </span>
+                                        </p>
+                                        <p class="blog-content-show">
+                                            @Html.Raw(@item.Summary)
+                                        </p>
+                                        <span class="blog-keyword-show">
+                                            @item.Keywords
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                </div>
+                <div data-tab-panel-6="" class="am-tab-panel">
+                    @if (newsScore != null)
+                    {
+                        foreach (var item in newsScore)
+                        {
+                            <div class="inner-box blog-img">
+                                <div class="am-g">
+                                    <div class="am-u-sm-3">
+                                        <a class="blog-a-curse" href="/article/view/@(new HtmlString((@item.ID + ".htm").ToString()))">
+                                            @*<img alt="" class="am_img animated" src="@item.ImagePath" style="display: inline;">*@
+                                            <img alt="" class="am_img animated" src="~/Content/images/amazeui/loading.gif" style="display: inline;" data-original="@item.ImagePath">
+                                        </a>
+                                    </div>
+                                    <div class="am-u-sm-9">
+                                        <div class="blog-header">
+                                            <a href="/article/hotel?categorycode=@item.CategoryCode" class="blog-category">@item.CategoryName</a>
+                                            <h2><a href="/article/view/@(new HtmlString((@item.ID + ".htm").ToString()))">@item.Title</a></h2>
+                                        </div>
+                                        <p class="blog-ext">
+                                            <span class="blog-ext-ico">
+                                                <i class="am-icon-user  blog-ext-ico"></i>
+                                                @item.ModifyName
+                                            </span>
+                                            <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@item.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                            <span class="blog-ext-ico">
+                                                <i class="am-icon-eye  blog-ext-ico"></i>
+                                                @item.ViewCount
+                                            </span>
+                                        </p>
+                                        <p class="blog-content-show">
+                                            @Html.Raw(@item.Summary)
+                                        </p>
+                                        <span class="blog-keyword-show">
+                                            @item.Keywords
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="am-u-sm-0 am-u-md-0 am-u-lg-4  am-hide-sm" style="padding-left:20px;">
+        @Html.Partial("sidebox")
+    </div>
+</div>
+<!--1F信息咨询 end-->
+<!--2F酒店推荐 begin-->
+<div class="am-g am-container am-g-collapse">
+
+    <div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi am-no-layout" style="margin:0">
+        <h2 class="am-titlebar-title  " data-am-scrollspy="{animation:'fade'}">2F合作酒店</h2>
+        <nav class="am-titlebar-nav"><a href="/hotel/index.htm">更多 »</a></nav>
+    </div>
+    <div>
+        @if (hotel != null)
+        {
+            if (hotel.Count > 0)
+            {
+                <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-4 am-avg-lg-5 am-gallery-bordered"  data-am-gallery="{ }">
+
+                    @foreach (var item in hotel)
+                    {
+                        <li>
+                            <div class="am-gallery-item">
+                                <a href="/hotel/view/@(new HtmlString((@item.ID + ".htm").ToString()))" target="_blank" class="">
+                                    @*<img src="@item.ImagePath" style="height:140px;" alt="@item.Summary" />*@
+                                    <img alt="@item.Summary" class="am_img animated" style="height:140px;"   src="~/Content/images/amazeui/loading.gif" data-original="@item.ImagePath">
+                                    <h3 class="am-gallery-title">@item.Title</h3>
+                                    <div class="am-gallery-desc">@item.ModifyTime.ToString("yyyy-MM-dd")</div>
+                                </a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+        }
+
+    </div>
+</div>
+<!--2F酒店推荐 end-->
+<!--3F教育培训 begin-->
+<div class="am-g am-container am-g-collapse">
+
+    <div data-am-widget="list_news" class="am-list-news am-list-news-default">
+        <!--列表标题-->
+        <div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi am-no-layout" style="margin:0">
+            <h2 class="am-titlebar-title  " data-am-scrollspy="{animation:'fade'}">3F教育培训</h2>
+            <nav class="am-titlebar-nav"><a href="/train/index.htm">更多 »</a></nav>
+        </div>
+        <div class="am-u-md-3 am-hide-sm">
+
+            <ul class="am-list am-list-border">
+                @if (train != null)
+                {
+                    foreach (var item in train)
+                    {
+                        <li>
+                            <a href="/train/view/@(new HtmlString(item.ID.ToString()+".htm"))" target="_blank">
+                                <i class="am-icon-video-camera am-icon-fw"></i>
+                                @if (item.Title.Length > 15)
+
+                                {
+                                    <span>@item.Title.Substring(0, 15) ...</span>
+                                }
+                                else
+                                {
+
+                                    <span>@item.Title</span>
+                                }
+                            </a>
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+        <div class="am-u-md-9">
+            <div class="am-g">
+                @if (train != null)
+                {
+
+                    if (train.Count > 0)
+                    {
+                        <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-3 am-avg-lg-4 am-gallery-bordered" data-am-gallery="{ }">
+
+                            @foreach (var item in train)
+                    {
+                                <li>
+                                    <div class="am-gallery-item">
+                                        <a href="/train/view/@(new HtmlString((@item.ID + ".htm").ToString()))" target="_blank" class="">
+                                            <img src="@Html.Raw(item.ImagePath)" alt="@item.Title" />
+                                            <h3 class="am-gallery-title">@item.Title</h3>
+                                            <div class="am-gallery-desc">@item.ModifyTime.ToString("yyyy-MM-dd")</div>
+                                        </a>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                }
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!--3F教育培训 end-->
+<!--4F考试书籍 begin-->
+<div class="am-g am-container am-g-collapse">
+
+    <div data-am-widget="list_news" class="am-list-news am-list-news-default">
+        <!--列表标题-->
+        <div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi am-no-layout" style="margin:0">
+            <h2 class="am-titlebar-title  " data-am-scrollspy="{animation:'fade'}">4F考试书籍</h2>
+            <nav class="am-titlebar-nav"><a href="/book/index.htm">更多 »</a></nav>
+        </div>
+        <div class="am-u-md-3 am-hide-sm">
+
+            <ul class="am-list am-list-border">
+                @if (book != null)
+                {
+                    foreach (var item in book)
+                    {
+                        <li>
+                            <a href="@item.Url" target="_blank">
+                                <i class="am-icon-book am-icon-fw"></i>
+                                @item.Title.Substring(0, 34)
+                            </a>
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+        <div class="am-u-md-9">
+            <div class="am-g">
+                @if (book != null)
+                {
+                    if (book.Count > 0)
+                    {
+                        <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-4 am-avg-lg-5 am-gallery-bordered" data-am-gallery="{ }">
+
+                            @foreach (var item in book)
+                    {
+                                <li>
+                                    <div class="am-gallery-item">
+                                        <a href="/book/view/@(new HtmlString((@item.ID + ".htm").ToString()))" target="_blank" class="">
+                                            <img src="@Html.Raw(item.ImagePath)" alt="@item.Title" />
+
+                                            <h3 class="am-gallery-title">@item.Title</h3>
+                                            <div class="am-gallery-desc">@item.ModifyTime.ToString("yyyy-MM-dd")</div>
+                                            <p>促销价：<em class="tm-yen">¥</em><span class="tm-price">@item.Price</span></p>
+                                            <p>
+                                                <a href="@item.Url" target="_blank"><button class="am-btn am-btn-primary" onclick="">购买</button></a>
+                                                <a href="/book/view/@(new HtmlString((item.ID+".htm")))" target="_blank"><button class="am-btn am-btn-default">详情</button></a>
+
+                                            </p>
+                                        </a>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                }
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<!--4F考试书籍 end-->
+<!--5F网友分享 begin-->
+<div class="am-g am-container am-g-collapse">
+
+    <div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi am-no-layout" style="margin:0">
+        <h2 class="am-titlebar-title  " data-am-scrollspy="{animation:'fade'}">5F网友分享</h2>
+        <nav class="am-titlebar-nav"><a href="/blog/index.htm">更多 »</a></nav>
+    </div>
+    <div class="am-u-sm-12 am-u-md-12 am-u-lg-8" style="padding-top:15px;">
+
+        @if (blog != null)
+        {
+            foreach (var item in blog)
+            {
+        <div class="inner-box blog-img">
+            <div class="am-g">
+                <div class="am-u-sm-3">
+                    <a class="blog-a-curse" target="_blank" href="/blog/view/@(new HtmlString((@item.ID + ".htm").ToString()))">
+                        <img alt="" class="am_img animated" src="@item.ImagePath" style="display: inline;">
+                    </a>
+                </div>
+                <div class="am-u-sm-9">
+                    <div class="blog-header">
+                        <a href="/blog/index?categorycode=@item.CategoryCode" class="blog-category">@item.CategoryName</a>
+                        <h2><a href="/blog/view/@(new HtmlString((@item.ID + ".htm").ToString()))">@item.Title</a></h2>
+                    </div>
+                    <p class="blog-ext">
+                        <span class="blog-ext-ico">
+                            <i class="am-icon-user  blog-ext-ico"></i>
+                            @item.MemberName
+                        </span>
+                        <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@item.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                        <span class="blog-ext-ico">
+                            <i class="am-icon-eye  blog-ext-ico"></i>
+                            @item.ViewCount
+                        </span>
+                    </p>
+                    <p class="blog-content-show">
+                        @Html.Raw(@item.Summary)
+                    </p>
+                    <span class="blog-keyword-show">
+                        @item.Keywords
+                    </span>
+                </div>
+            </div>
+        </div>
+
+            }
+        }
+
+    </div>
+
+    <div class="am-u-sm-0 am-u-md-0 am-u-lg-4  am-hide-sm" style="padding-left:20px;">
+        @Html.Partial("sidebox2")
+    </div>
+</div>
+<!--5F网友分享 end-->
+<!--6F商品购物 begin-->
+<div class="am-g am-container am-g-collapse">
+
+    <div data-am-widget="list_news" class="am-list-news am-list-news-default">
+        <!--列表标题-->
+        <div data-am-widget="titlebar" class="am-titlebar am-titlebar-multi am-no-layout" style="margin:0">
+            <h2 class="am-titlebar-title  " data-am-scrollspy="{animation:'fade'}">6F商品购物</h2>
+            <nav class="am-titlebar-nav"><a href="/product/index.htm">更多 »</a></nav>
+        </div>
+
+        <div class="am-u-md-12">
+            <div class="am-g">
+                @if (product != null)
+                {
+                    if (product.Count > 0)
+                    {
+                        <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-4 am-avg-lg-5 am-gallery-bordered" data-am-gallery="{ }">
+
+                            @foreach (var item in product)
+                    {
+                                <li>
+                                    <div class="am-gallery-item">
+                                        <a href="@item.Url" target="_blank" class="">
+                                            @*<img src="@Html.Raw(item.ImagePath)" alt="@item.Title" />*@
+                                            <img alt="" class="am_img animated" src="~/Content/images/amazeui/loading.gif" style="display: inline;" data-original="@Html.Raw(item.ImagePath)">
+                                            <h3 class="am-gallery-title">@item.Title</h3>
+                                            <p>
+                                               
+                                                促销价：<em class="tm-yen">¥</em><span class="tm-price">@item.Price</span>
+                                                <br />返利：<em class="tm-yen">¥</em><span class="tm-price">@((item.Income*0.5).ToString("F2"))</span>
+
+</p>
+                                            <p>
+                                                <a class="am-btn am-btn-danger" href="@item.Url" target="_blank">购买</a>
+                                                <a class="am-btn am-btn-default" href="@item.Url" target="_blank">详情</a>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                }
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(function () {
+        $(".blog-keyword-show").each(function () {
+            var ht = $(this).html();
+            $(this).html('');
+            if (ht != '' && ht != undefined && ht != ' ') {
+                var arr = ht.split(",");
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].trim() != "") {
+                        $(this).append("<a class='tag' target='_blank' href='http://so.zyldingfang.com/search.aspx?q=" + arr[i] + "'>" + arr[i] + "</a>");
+                    }
+                }
+            }
+        })
+    });
+
+    $("img").lazyload({ effect: 'fadeIn' });
+</script>

@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "书籍推荐";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var order = ViewBag.Order as string;
+    var categroyCode = ViewBag.CategoryCode as string;
+    var categroyName = ViewBag.CategoryName as string;
+    var books = ViewBag.Books as List<Windy.WebMVC.Web2.Models.Book>;
+    var pagination = ViewBag.Pagination as Windy.WebMVC.Web2.ViewsModels.Pagination;
+}
+
+<div class="am-container " id="main">
+
+    <div class="am-g am-g-fixed">
+        <div class="am-u-md-8">
+            <ol class="am-breadcrumb">
+                <li><a href="/" class="am-icon-home">首页</a></li>
+                @if (categroyCode == "book")
+                {
+                    <li class="am-active">考试书籍</li>
+                }
+                else
+                {
+                    <li><a href="/book/index">考试书籍</a></li>
+                    <li class="am-active">@categroyName</li>
+                }
+            </ol>
+
+            <div class="banner_navbg">
+                <div class="am-g">
+                    <div class="am-u-md-12">
+                        <div class="banner_nav am-fr">
+                            <span class="am-icon-caret-right">
+                                排序：
+                            </span>
+                            @if (string.IsNullOrEmpty(order) || order == "default")
+                            {
+                                <a class="banner_hover" href="/article/hotel?categorycode=@categroyCode&&order=default">默认</a>
+                                <a href="/book/index?categorycode=@categroyCode&&order=latest">最新</a>
+                                <a href="/book/index?categorycode=@categroyCode&&order=hot">最热</a>
+                            }
+                            else if (order == "latest")
+                            {
+                                <a href="/book/index?categorycode=@categroyCode&&order=default">默认</a>
+                                <a class="banner_hover" href="/book/index?categorycode=@categroyCode&&order=latest">最新</a>
+                                <a href="/book/index?categorycode=@categroyCode&&order=hot">最热</a>
+                            }
+                            else if (order == "hot")
+                            {
+                                <a href="/book/index?categorycode=@categroyCode&&order=default">默认</a>
+                                <a href="/book/index?categorycode=@categroyCode&&order=latest">最新</a>
+                                <a class="banner_hover" href="/book/index?categorycode=@categroyCode&&order=hot">最热</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (books != null)
+            {
+                foreach (var item in books)
+                {
+                    <div class="inner-box blog-img">
+                        <div class="am-g">
+                            <div class="am-u-sm-3">
+                                <a class="blog-a-curse" target="_blank" href="/book/view/@(new HtmlString((@item.ID + ".htm").ToString()))">
+                                    <img alt="" class="am_img animated" src="@item.ImagePath" style="display: inline;">
+                                </a>
+                            </div>
+                            <div class="am-u-sm-9">
+                                <div class="blog-header">
+                                    <a href="/book/index?categorycode=@item.CategoryCode"  class="blog-category">@item.CategoryName</a>
+                                    <h2><a  target="_blank" href="/book/view/@(new HtmlString((@item.ID + ".htm").ToString()))">@item.Title</a></h2>
+                                </div>
+                                <p class="blog-ext">
+                                    <span class="blog-ext-ico">
+                                        <i class="am-icon-user  blog-ext-ico"></i>
+                                        @item.ModifyName
+                                    </span>
+                                    <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@item.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                    <span class="blog-ext-ico">
+                                        <i class="am-icon-eye  blog-ext-ico"></i>
+                                        @item.ViewCount
+                                    </span>
+                                </p>
+                                <p class="blog-content-show">
+                                    @Html.Raw(@item.Summary)
+                                </p>
+                                <span class="blog-keyword-show">
+                                    @item.Keywords
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+
+            <center>
+
+                <div class="pagination pagination-lg">
+                    <ul>
+                        @if (pagination.TotalPageCount > 0)
+                        {
+                            if (pagination.CurrentPageIndex != 1)
+                            {
+                                <li>
+                                    <a rel="prev" href="/book/index/@pagination.PreviousPageIndex?categorycode=@categroyCode&&order=@order" class="prev">上一页</a>
+                                </li>
+                            }
+                            if (pagination.CurrentPageIndex > 4)
+                            {
+                                <li>
+                                    <a href="/book/index/1?categorycode=@categroyCode&&order=@order" class="">1</a>
+                                </li>
+                                <li>
+                                    <span>...</span>
+                                </li>
+                            }
+                            for (int i = pagination.StartPage; i <= pagination.EndPage; i++)
+                            {
+                                if (i == pagination.CurrentPageIndex)
+                                {
+                                    <li class="active">
+                                        <span class="current">@pagination.CurrentPageIndex</span>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="/book/index/@i?categorycode=@categroyCode&&order=@order" class="">@i</a>
+                                    </li>
+                                }
+                            }
+
+                            if (pagination.TotalPageCount - pagination.CurrentPageIndex >= 4)
+                            {
+                                <li><span>...</span></li>
+                                <li>
+                                    <a href="/book/index/@pagination.TotalPageCount?categorycode=@categroyCode&&order=@order" class="">@pagination.TotalPageCount</a>
+                                </li>
+
+                            }
+                            if (pagination.CurrentPageIndex < pagination.TotalPageCount)
+                            {
+                                <li class="next ">
+                                    <a href="/book/index/@pagination.NextPageIndex?categorycode=@categroyCode&&order=@order" class="next">下一页</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </center>
+        </div>
+
+        <div class="am-u-md-4" id="my-side">
+            @Html.Partial("sidebox")
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $(".blog-keyword-show").each(function () {
+                var ht = $(this).html();
+                $(this).html('');
+                if (ht != '' && ht != undefined && ht != ' ') {
+                    var arr = ht.split(",");
+                    for (var i = 0; i < arr.length; i++) {
+                        if (arr[i].trim() != "") {
+                            $(this).append("<a class='tag' target='_blank' href='http://so.zyldingfang.com/search.aspx?q=" + arr[i] + "'>" + arr[i] + "</a>");
+                        }
+                    }
+                }
+            })
+        });
+        $("img").lazyload({ effect: 'fadeIn' });
+    </script>
+
+</div>
+
+@Html.Partial("Advert2")

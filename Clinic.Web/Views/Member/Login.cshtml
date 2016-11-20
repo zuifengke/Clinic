@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "会员登录";
+    var returnurl = ViewBag.returnurl as string;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<hr class="am-article-divider">
+<div class="am-g">
+    <div class="am-container">
+        <div class="am-u-md-4 am-u-md-offset-1">
+
+
+
+            <div class="am-panel am-panel-secondary am-g" style="float:right;background-color: #F4F4F4;">
+                @*
+                    <div class="am-panel-hd"><i class="am-icon-users"></i> 第三方登录</div>
+                    <div class="am-panel-bd">
+
+                            <hr>
+                            <a href="https://api.weibo.com/oauth2/authorize?client_id=3965582335&amp;redirect_uri=http://www.tngou.net/bind/sina&amp;response_type=code&amp;state=http://www.tngou.net/action/index/execute" class="am-btn am-btn-secondary am-btn-sm am-btn-block am-round"><i class="am-icon-weibo am-icon-sm"></i> 新浪微博</a>
+                            <br>
+                            <a href="https://graph.qq.com/oauth2.0/authorize?client_id=101322948&amp;redirect_uri=http://www.zyldingfang.com&amp;response_type=code&amp;state=http://www.tngou.net/action/index/execute" class="am-btn am-btn-success am-btn-sm am-btn-block am-round"><i class="am-icon-qq am-icon-sm"></i> 腾讯QQ</a>
+
+                            <hr>
+
+                            <p>没有第三方账户，请点击 <a href="/member/register?rurl=/"><i class="am-icon-envelope-o"></i> 邮箱</a> 进行用户注册 ！</p>
+                            <br>
+
+                                </div>
+                *@
+                <img src="~/Content/images/amazeui/222.png" class="am-img-responsive" alt="" />
+            </div>
+
+
+
+        </div>
+
+        <div class="am-u-md-5  am-u-md-offset-1 am-u-end">
+
+
+            <div class="am-panel am-panel-default am-g">
+                <div class="am-panel-hd"><i class="am-icon-user"></i> 用户账户登录（第一次登陆尝试手机号和密码111111）</div>
+                <div class="am-panel-bd">
+                    <hr>
+                    <form method="post" class="am-form" id="form_user" action="/member/login">
+
+                        <div class="am-form-group">
+                            <label class="am-u-md-12">邮箱 /账号 /手机:</label>
+                            <div class="am-input-group  am-input-group-primary am-u-md-12">
+                                <span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
+                                <input type="text" id="f_email" name="name" class="am-form-field" placeholder="邮箱 /账号 /手机" required="">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label class="am-u-md-12">密码:</label>
+                            <div class="am-input-group am-input-group-warning am-u-md-12">
+                                <span class="am-input-group-label"><i class="am-icon-key am-icon-fw"></i></span>
+                                <input type="password" id="f_pwd" name="pwd" class="am-form-field" placeholder="密码" required="">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <br />
+                            <label class="am-u-md-12">
+                                <input type="checkbox" checked="checked" name="save_login">
+                                自动登录
+                            </label>
+                        </div>
+                        <br>
+                        <br />
+                        <div id="error_msg" style="color: #c00;display:none;">正在验证，请您耐心等待...</div>
+                        <div class="am-cf">
+
+                            <div class="am-u-md-12">
+                                <input id="forum-user-login" type="submit" name="sub" value="登 &nbsp;&nbsp;录" class="am-btn am-btn-primary am-btn-sm am-fl btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">
+
+                                &nbsp;&nbsp;
+
+                                <a href="/member/reset" class="am-btn am-btn-default am-btn-sm am-fr"> 忘记密码 ^_^? </a>
+                                <a href="/member/register" class="am-btn am-btn-primary am-btn-sm am-fr "> 注册 </a>
+                            </div>
+                        </div>
+                        <div class="am-cf">
+                            <br />
+                            <div class="am-u-md-12">
+                                <span>其他账号登录：</span>
+
+                                <!--<a href="/member/qqlogin" style="display:inline-block"><img alt="QQ互联登陆" src="~/Content/images/amazeui/qq_logo.png" style="padding-top: 8px;"></a>-->
+                                <span id="qqLoginBtn2"></span>
+                                <script type="text/javascript">
+                                    QC.Login({
+                                        btnId: "qqLoginBtn2"    //插入按钮的节点id
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                    <script type="text/javascript" src="http://www.tngou.net/common/js/jquery.form.js"></script>
+                    <script src="http://www.tngou.net/common/js/SHA1.js"></script>
+                    <script type="text/javascript">
+                        var $btn = $('#forum-user-login');
+                        $('#f_email').focus();
+                        var pwd = "";
+                        $('#form_user').bind('form-pre-serialize', function (event, form, options, veto) {
+                            pwd = $('#f_pwd').val();
+                            $('#f_pwd').val(pwd);
+                        });
+                        $('#form_user').ajaxForm({
+                            beforeSubmit: function (a, f, o) {
+                                if ($('#f_email').val().length == 0) {
+                                    $('#f_pwd').val(pwd);
+                                    $('#f_email').focus();
+                                    $('#error_msg').html("请输入登录的邮箱或者帐号或者手机号");
+                                    $('#error_msg').show();
+                                    return false;
+                                }
+                                if (pwd.length == 0) {
+                                    $('#f_pwd').val(pwd);
+                                    $('#f_pwd').focus();
+                                    $('#error_msg').html("请输入登录密码");
+                                    $('#error_msg').show();
+                                    return false;
+                                }
+                                $('#error_msg').html("正在验证，请您耐心等待...");
+                                $('#error_msg').show();
+                                $btn.button('loading');
+                            },
+                            success: function (html) {
+                                if (html.length > 0) {
+                                    $('#error_msg').hide();
+                                    $('#error_msg').html(html);
+                                    $('#error_msg').show();
+                                    $('#f_pwd').val(pwd);
+                                    $btn.button('reset');
+                                } else {
+                                    setTimeout(function () {
+                                        if ('@returnurl' == "")
+                                            location.href = "/";
+                                        else
+                                            location.href = "@returnurl";
+                                        $btn.button('reset');
+                                    }, 1000)
+                                }
+                            }
+                        });
+                        //-->
+                    </script>
+
+
+
+
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<hr class="am-article-divider">

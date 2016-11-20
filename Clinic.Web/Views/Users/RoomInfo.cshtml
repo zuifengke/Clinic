@@ -1,0 +1,76 @@
+﻿@using Windy.WebMVC.Web2.Models
+@{
+    ViewBag.Title = "酒店房卡";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Users> roomies = ViewData["roomies"] as List<Users>;
+    var lottery = ViewBag.lottery as Windy.WebMVC.Web2.Models.Lottery;
+}
+@model Windy.WebMVC.Web2.Models.Users
+
+<div class="am-container " id="main">
+
+
+    @Html.Partial("JDSearch")
+
+    <div class="am-g am-g-fixed">
+        <ol class="am-breadcrumb">
+            <li><a href="/" class="am-icon-home">首页</a></li>
+
+            <li class="am-active">订房报名</li>
+        </ol>
+
+        <div>
+            <ul class="am-nav  am-nav-tabs">
+
+                <li><a href="/users/userinfo">订房报名</a></li>
+                <li><a href="/users/examplace">提交考点</a></li>
+                <li class="am-active"><a href="/users/roominfo">酒店安排</a></li>
+                <li><a href="/users/map">步行图</a></li>
+            </ul>
+        </div>
+        <div class="am-u-md-8" style="padding-top:20px;" id="blog-main">
+            <ul data-am-widget="gallery" class="am-gallery am-gallery-bordered" data-am-gallery="{  }">
+                <li>
+                    <div class="am-gallery-item">
+                        <a href="#" class="">
+                            <img src="~/Content/images/sui/room.jpg" alt="酒店房间样图" />
+                            <h3 class="am-gallery-title">
+                                酒店：@Model.Hotel &nbsp;房间号：@Model.Room
+                                <p> 房费：@Model.HotelExpense &nbsp;已交：@Model.PayMoney &nbsp;</p>
+                                <p> 多退少补：@Model.MoneyBack</p>
+                                <p>
+                                    室友：
+                                    @if (roomies != null)
+                                    {
+                                        foreach (Users item in roomies)
+                                        {
+                                            if (Model.ID == item.ID)
+                                            {
+                                                continue;
+                                            }
+                                            <a href="/users/RoomieInfo/@item.ID">@item.Name </a>
+                                        }
+                                    }
+                                </p>
+                                <p>
+                                    @if (lottery != null)
+                                    {
+                                        <span>状元乐抽奖福利：@lottery.Prize</span>
+                                    }
+                                </p>
+                            </h3>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="am-u-md-4" id="my-side">
+            @Html.Partial("sidebox3")
+            @Html.Partial("sidebox")
+            @Html.Partial("sidebox2")
+
+        </div>
+    </div>
+
+</div>

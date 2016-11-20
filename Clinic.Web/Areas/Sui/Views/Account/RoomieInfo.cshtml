@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "室友详情";
+    Layout = "~/Areas/sui/Views/Shared/_Layout.cshtml";
+
+}
+@model Windy.WebMVC.Web2.Models.Users
+<script>
+</script>
+<div class="content profile">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left" href="/sui/account/roominfo">
+            <span class="icon icon-left"></span>
+        </a>
+        <h1 class="title">我的室友</h1>
+    </header>
+    <form id="form">
+
+        <input type="hidden" name="ID" value="@Model.ID" />
+        <div class="list-block" id="form">
+            <ul style="margin-top:.5rem;">
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">真实姓名</div>
+                            <div class="item-input">
+                                <input id="Name" type="text" name="Name" placeholder="请输入真实姓名" value="@Model.Name">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">手机号</div>
+                            <div class="item-input">
+                                <input id="Tel" type="text" name="Tel" placeholder="请输入手机号" value="@Model.Tel">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">性别</div>
+                           
+                            <div class="item-input">
+                                <select id="Gender" name="Gender">
+                                    @if (Model.Gender == "男")
+                                    {
+                                        <option selected="selected">男</option>
+                                        <option>女</option>
+                                    }
+                                    else
+                                    {
+                                        <option >男</option>
+                                        <option selected="selected">女</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">所在学校</div>
+                            <div class="item-input">
+                                <input id="School" type="text" name="School" placeholder="" value="@Model.School">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">报考学校</div>
+                            <div class="item-input">
+                                <input id="ExamSchool" type="text" name="ExamSchool" placeholder="" value="@Model.ExamSchool">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">考点</div>
+                            <div class="item-input">
+                                <input id="ExamPlace" type="text" name="ExamPlace" placeholder="" value="@Model.ExamPlace">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </form>
+
+
+    @Html.Partial("Advert")
+</div>

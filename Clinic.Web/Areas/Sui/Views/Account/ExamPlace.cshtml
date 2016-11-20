@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "绑定手机号";
+    Layout = "~/Areas/sui/Views/Shared/_Layout.cshtml";
+
+}
+@model Windy.WebMVC.Web2.Models.Users
+<script>
+    $(document).ready(function () {
+        GetByJquery();
+        $("#ddlProvince").change(function () { GetCity() });
+        $("#ddlCity").change(function () { GetDistrict() });
+
+        //$("#chkOther").click(function () {
+
+        //    if ($("#chkOther").is(':checked') == true) {
+        //        $("#Place").show();
+        //    } else {
+        //        $("#Place").hide();
+        //    }
+        //})
+    });
+
+    function GetByJquery() {
+
+        $("#ddlProvince").empty(); //清空省份SELECT控件
+        $("<option></option>")
+                    .val("")
+                    .text("请选择")
+                    .appendTo($("#ddlProvince"));
+        $.getJSON("GetProvinceList", function (data) {
+
+            $.each(data, function (i, item) {
+                $("<option></option>")
+                    .val(item["ID"])
+                    .text(item["PlaceName"])
+                    .appendTo($("#ddlProvince"));
+            });
+
+            GetCity();
+        });
+
+    }
+
+    function GetCity() {
+        $("#ddlCity").empty(); //清空城市SELECT控件
+        if ($("#ddlProvince").val() == "")
+            return;
+        var url = "GetCityList/" + $("#ddlProvince").val();
+        $("<option></option>")
+                      .val("")
+                      .text("请选择")
+                      .appendTo($("#ddlCity"));
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                $("<option></option>")
+                    .val(item["ID"])
+                    .text(item["PlaceName"])
+                    .appendTo($("#ddlCity"));
+            });
+
+            GetDistrict();
+        });
+    }
+
+    function GetDistrict() {
+        $("#ddlSchool").empty(); //清空市区SELECT控件
+        if ($("#ddlCity").val() == "")
+            return;
+        var url = "GetSchoolList/" + $("#ddlCity").val();
+
+        $.getJSON(url, function (data) {
+            $.each(data, function (i, item) {
+                $("<option></option>")
+                    .val(item["PlaceName"])
+                    .text(item["PlaceName"])
+                    .appendTo($("#ddlSchool"));
+            });
+
+        });
+        $("<option></option>")
+                   .val("")
+                   .text("")
+                   .appendTo($("#ddlSchool"));
+    }
+
+    function submit() {
+
+        var dllSchool = $("#ddlSchool").val();
+        var Place = $("#Place").val();
+        if (dllSchool == ""
+            && Place=="") {
+            $.toast("请输入考点");
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/sui/account/ExamPlace',
+            //data: { "Name": name, "Tel": tel },
+            data: $('#form').serialize(),
+            success: function (response, status, xhr) {
+                $.toast(response.message);
+            },
+            error: function (xhr, status, statusText) {
+                $.toast("操作失败：" + statusText);
+            }
+        });
+    }
+</script>
+<div class="content profile">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left" href="/sui/account/index">
+            <span class="icon icon-left"></span>
+        </a>
+        <h1 class="title">提交考点</h1>
+    </header>
+    <form id="form">
+
+        <div class="list-block" id="form">
+            <ul style="margin-top:.5rem;">
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">省份</div>
+
+                            <div class="item-input">
+                                <select id="ddlProvince" name="ddlProvince">
+                                   
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">城市</div>
+
+                            <div class="item-input">
+                                <select id="ddlCity" name="ddlCity"></select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">考点</div>
+
+                            <div class="item-input">
+                                <select id="ddlSchool" name="ddlSchool"></select>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">手动输入</div>
+                            <div class="item-input">
+                                <input id="Place" type="text" name="Place" placeholder="找不到标准选择考点，手动输入" value="@Model.ExamPlace">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="content-block">
+            <div class="row">
+                <div class="col-50"><a href="/sui/account/" class="button button-big button-fill button-danger">返回</a></div>
+                <div class="col-50"><a href="javascript:void(0);" onclick="submit()" class="button button-big button-fill button-success">提交</a></div>
+            </div>
+        </div>
+    </form>
+
+    @Html.Partial("Advert")
+</div>

@@ -1,0 +1,129 @@
+﻿@using Windy.WebMVC.Web2.Models
+@{
+    ViewBag.Title = "微信手机号绑定";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    OAuthUser user = ViewBag.OAuthUser as OAuthUser;
+}
+<hr class="am-article-divider">
+<div class="am-g">
+
+    <div class="am-container">
+        <div class="am-g am-g-fixed">
+            <div class="am-u-md-8">
+                <div class="am-tabs" data-am-tabs>
+                    <div class="am-tabs-bd">
+                        <div class="am-tab-panel am-fade am-in am-active" id="tab1">
+                            <!-- 绑定手机号 start -->
+                            <div class="am-panel-group" id="accordion">
+
+                                <div class="am-panel am-panel-secondary">
+                                    <div class="am-panel-hd">
+                                        <h1 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}">
+                                            <i class="am-icon-envelope-o"></i> 快速注册 <small>
+                                                此微信账户尚未绑定状元乐账号，请输入手机号邮箱完成绑定：
+                                                绑定成功后，默认密码为111111，即可快速登录状元乐考试订房服务中心！
+                                            </small>
+                                        </h1>
+                                    </div>
+                                    <div id="do-not-say-2" class="am-panel-collapse am-collapse am-in">
+                                        <div class="am-panel-bd">
+                                            <hr>
+                                            <form class="am-form am-form-horizontal" id="form_user" action="/member/weixinregister" method="POST">
+                                               
+                                                <input type="hidden" value="@user.ID" name="OAuthUserID" />
+                                                
+                                                <div class="am-form-group">
+                                                    <label for="user-tel" class="am-u-md-3 am-form-label">手机号</label>
+                                                    <div class="am-u-md-6">
+                                                        <div class="am-input-group  am-input-group-primary">
+                                                            <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-mobile"></i></span>
+                                                            <input type="number" class="am-form-field" name="tel" id="user_tel" minlength="11" maxlength="11" placeholder="手机号" required>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="am-u-md-3">
+                                                        <small>输入你的手机号。</small>
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="user-email" class="am-u-md-3 am-form-label">电子邮件 / Email</label>
+                                                    <div class="am-u-md-6">
+                                                        <div class="am-input-group  am-input-group-primary">
+                                                            <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-fw"></i></span>
+                                                            <input type="email" class="am-form-field" name="mail" id="f_email" placeholder="邮箱 " required>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="am-u-md-3">
+                                                        <small>输入你常用的邮箱。</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <div class="am-u-sm-6 am-u-sm-push-3">
+                                                        <div id="error_msg" style="color: #c00;display:none;">正在审核，请您耐心等待...</div>
+
+                                                        <button id="forum-user-reg" type="submit" name="sub" class="am-btn am-btn-primary am-btn-block btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">绑定账号</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <script type="text/javascript">
+                                                var $btn = $('#forum-user-reg');
+                                            
+                                                $('#form_user').bind('form-pre-serialize', function (event, form, options, veto) {
+                                                   
+                                                });
+                                                $('#form_user').ajaxForm({
+                                                    beforeSubmit: function (a, f, o) {
+                                                        if ($('#f_email').val().length == 0) {
+                                                          
+                                                            $('#f_email').focus();
+                                                            $('#error_msg').html(" 邮箱地址必须填写");
+                                                            $('#error_msg').show();
+                                                            return false;
+                                                        }
+                                                        
+                                                        $('#error_msg').html(" 正在审核，请您耐心等待...");
+                                                        $('#error_msg').show();
+                                                        $btn.button('loading');
+                                                    },
+                                                    success: function (html) {
+                                                        if (html.length > 0) {
+                                                          
+                                                            $('#error_msg').hide();
+                                                            $('#error_msg').html(html);
+                                                            $('#error_msg').show();
+                                                            $btn.button('reset');
+                                                        } else {
+                                                            $btn.button('reset');
+                                                            //location.href = "http://www.tngou.net/reg/sendmail?email=" + $('#f_email').val() + "&type=activate";
+                                                            location.href = "/member/personalinfo";
+                                                        }
+                                                    }
+                                                });
+                                            </script>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- 注册状元乐账号 end -->
+                        </div>
+                       
+
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="am-u-md-4" id="my-side">
+                @Html.Partial("sidebox")
+            </div>
+        </div>
+    </div>
+</div>

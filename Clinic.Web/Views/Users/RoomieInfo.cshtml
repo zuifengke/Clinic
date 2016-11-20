@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "室友信息";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Windy.WebMVC.Web2.Models.Users
+
+
+<div class="am-container " id="main">
+
+
+    @Html.Partial("JDSearch")
+    <div class="am-g am-g-fixed">
+        <ol class="am-breadcrumb">
+            <li><a href="/" class="am-icon-home">首页</a></li>
+
+            <li class="am-active">订房报名</li>
+        </ol>
+
+        <div>
+            <ul class="am-nav  am-nav-tabs">
+
+                <li><a href="/users/userinfo">订房报名</a></li>
+                <li><a href="/users/examplace">提交考点</a></li>
+                <li class="am-active"><a href="/users/roominfo">酒店安排</a></li>
+                <li ><a href="/users/map">步行图</a></li>
+            </ul>
+        </div>
+        <div class="am-u-md-8" style="padding-top:20px;" id="blog-main">
+            <div class="am-panel am-panel-secondary">
+                <div class="am-panel-hd">
+                    <h1 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}">
+                        <i class="am-icon-envelope-o"></i> 室友资料 <small></small>
+                    </h1>
+                </div>
+                <div id="do-not-say-2" class="am-panel-collapse am-collapse am-in">
+                    <div class="am-panel-bd">
+                        <hr>
+                        <form class="am-form am-form-horizontal" id="form_user" action="#" method="POST">
+                            <input type="hidden" name="ID" value="@Model.ID" />
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">真实姓名</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-user"></i></span>
+                                        <input type="text" value="@Model.Name" class="am-form-field" name="Name" id="Name" minlength="2" maxlength="10" placeholder="请输入真实姓名" required="">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">手机号</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-phone"></i></span>
+                                        <input type="text" class="am-form-field" name="Tel" id="Tel" minlength="11" maxlength="11" placeholder="手机号" required="" value="@Model.Tel">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">性别</label>
+                                <div class="am-u-md-6 ">
+                                    @if (Model.Gender == "男")
+                                    {
+
+                                    <label class="am-radio-inline">
+                                        <input type="radio" value="男" checked="checked" name="Gender"> 男
+                                    </label>
+                                    <label class="am-radio-inline ">
+                                        <input type="radio" name="Gender" value="女"> 女
+                                    </label>
+                                    }
+                                    else
+                                    {
+                                    <label class="am-radio-inline">
+                                        <input type="radio" value="男" name="Gender"> 男
+                                    </label>
+                                    <label class="am-radio-inline ">
+                                        <input type="radio" name="Gender" checked="checked" value="女"> 女
+                                    </label>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">所在学校</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-archive"></i></span>
+                                        <input type="text" class="am-form-field" name="School" id="School" placeholder="所在学校 " value="@Model.School">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">报考学校</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-archive"></i></span>
+                                        <input type="text" value="@Model.ExamSchool" class="am-form-field" name="ExamSchool" id="ExamSchool" placeholder="报考学校 ">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">考点</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-archive"></i></span>
+                                        <input type="text" value="@Model.ExamPlace" class="am-form-field" name="ExamPlace" id="ExamPlace" placeholder="考点 ">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="am-u-md-4" id="my-side">
+            @Html.Partial("sidebox3")
+                        @Html.Partial("sidebox")
+                        @Html.Partial("sidebox2")
+        </div>
+    </div>
+
+</div>

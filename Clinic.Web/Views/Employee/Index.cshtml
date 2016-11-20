@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "校园代理移动工作台";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var keyword = ViewBag.keyword as string;
+    var employee = ViewBag.employee as Windy.WebMVC.Web2.Models.Employee;
+    var pagination = ViewBag.Pagination as Windy.WebMVC.Web2.ViewsModels.Pagination;
+    var users = ViewBag.users as List<Windy.WebMVC.Web2.Models.Users>;
+}
+
+
+@model Windy.WebMVC.Web2.Models.Users
+
+
+<div class="am-container " id="main">
+    <div class="am-g">
+
+        <div class="am-u-md-2 am-u-sm-1 am-u-lg-2">&nbsp;</div>
+        <div class="am-u-md-8 am-u-sm-10 am-u-lg-8">
+            <form class="" action="/employee/index" method="get">
+                <div class="am-input-group am-input-group-danger">
+                    <input type="text" name="keyword" value="@keyword" class="am-form-field" placeholder="按考生姓名搜索...">
+                    <span class="am-input-group-btn">
+                        <button class="am-btn am-btn-lg am-btn-danger" type="submit"><span class="am-icon-search"></span></button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="am-u-md-2 am-u-sm-1 am-u-lg-2"></div>
+    </div>
+    <div class="am-g am-g-fixed">
+
+        <ol class="am-breadcrumb">
+            <li><a href="/" class="am-icon-home">首页</a></li>
+
+            <li class="am-active">校园代理移动工作台</li>
+        </ol>
+        <div>
+            <ul class="am-nav  am-nav-tabs">
+                <li class="am-active"><a href="/employee/index">我的考生</a></li>
+                <li><a href="/employee/order">预报名考生</a></li>
+            </ul>
+        </div>
+
+        <div class="am-u-md-8" style="padding-top:20px;" id="blog-main">
+            <div>
+
+            </div>
+
+            <div class="am-panel am-panel-secondary">
+                <div class="am-panel-hd">
+                    <h1 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}">
+                        <i class="am-icon-envelope-o"></i>
+
+                        <strong>列表是您负责的考生列表</strong>
+
+                        <small></small>
+                    </h1>
+                </div>
+                <div id="do-not-say-2" class="am-panel-collapse am-collapse am-in">
+                    <div class="am-panel-bd">
+                        @if (users != null)
+                        {
+                            foreach (var item in users)
+                            {
+                                <div class="inner-box blog-img">
+                                    <div class="am-g">
+                                        <div class="am-u-sm-3">
+                                            <a class="blog-a-curse" target="_blank" href="/employee/edituser/@(new HtmlString(item.ID.ToString() + ".htm"))">
+                                                <img alt="" src="~/Content/images/sui/defaultpic.gif">
+                                            </a>
+                                        </div>
+
+                                        <div class="am-u-sm-9">
+                                            <div class="blog-header">
+                                                <a href="#" target="_blank" class="blog-category">
+                                                    @(new HtmlString("报名成功"))
+                                                </a>
+                                            </div>
+                                            <p class="blog-content-show">
+                                                姓名: @item.Name
+                                                <br />电话：<a href="tel:@item.Tel">@item.Tel</a> 
+                                                <br />所在学校 ：@item.School
+                                                <br />报考学校：@item.ExamSchool
+                                                <br />期望室友：@item.ExceptRoomie
+                                                <br />备注：                                                @item.Baks
+
+                                                <br />代理姓名：@item.EmployeeName
+
+                                            </p>
+                                            <div class="am-fr">
+                                                <button type="button" class="am-badge am-badge-success am-round " onclick="location.href='/employee/edituser/@item.ID'">修改</button>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <center>
+                            @Html.Partial("_paginate")
+                        </center>
+                    </div>
+                </div>
+            </div>
+            @*alert对话框*@
+
+            <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd">状元乐</div>
+                    <div class="am-modal-bd">
+                        @if (employee == null)
+                        {
+                            @( new HtmlString("预报名成功,请等待代理联系后录入考点提交系统"))
+                        }
+                        else
+                        {
+                            @( new HtmlString("订房报名信息修改成功"))
+                        }
+                    </div>
+                    <div class="am-modal-footer">
+                        <span class="am-modal-btn">确定</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            $('#form_user').ajaxForm({
+                beforeSubmit: function (a, f, o) {
+                    var $btn = $('#forum-user-reg');
+                    if ($('#Tel').val().length == 0) {
+
+                        $('#Tel').focus();
+                        $('#error_msg').html("手机号必须填写");
+                        $('#error_msg').show();
+                        return false;
+                    }
+                    $('#error_msg').html(" 正在审核，请您耐心等待...");
+                    $('#error_msg').show();
+                    $btn.button('loading');
+                },
+                success: function (html) {
+                    var $btn = $('#forum-user-reg');
+                    if (html.length > 0) {
+                        $('#error_msg').hide();
+                        $('#error_msg').html(html);
+                        $('#error_msg').show();
+                        $btn.button('reset');
+                    } else {
+                        $('#error_msg').hide();
+                        $btn.button('reset');
+
+                        //弹出提示对话框
+                        $('#my-alert').modal();
+
+                    }
+                }
+            });
+
+        </script>
+        <div class="am-u-md-4" id="my-side">
+            <div class="side-box">
+                <div class="my-side-title">
+                    <span class="am-icon-pencil"> 功能区</span>
+                </div>
+                <button type="button" class="am-btn am-btn-primary am-btn-block" onclick="location.href='/employee/edituser'">
+                    <i class="am-icon-pencil"></i>
+                    新增考生订房信息
+                </button>
+                <button type="button" class="am-btn am-btn-primary am-btn-block" onclick="location.href='/employee/index.htm'">
+                    <i class="am-icon-user"></i>
+                    我的考生订房列表
+                </button>
+            </div>
+            @Html.Partial("sidebox")
+            @Html.Partial("sidebox2")
+            @Html.Partial("sidebox3")
+        </div>
+
+
+    </div>
+
+
+
+</div>

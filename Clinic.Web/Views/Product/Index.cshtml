@@ -1,0 +1,194 @@
+﻿@{
+    ViewBag.Title = "商品购物";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var order = ViewBag.Order as string;
+    var keyword = ViewBag.keyword as string;
+    var categroyCode = ViewBag.CategoryCode as string;
+    var categroyName = ViewBag.CategoryName as string;
+    var product = ViewBag.Products as List<Windy.WebMVC.Web2.Models.Product>;
+    var time = ViewBag.time as string;
+    var pagination = ViewBag.Pagination as Windy.WebMVC.Web2.ViewsModels.Pagination;
+}
+
+<div class="am-container " id="main">
+
+    <div class="am-g am-g-fixed">
+
+
+        <div class="am-u-md-12">
+            <ol class="am-breadcrumb">
+                <li><a href="/" class="am-icon-home">首页</a></li>
+                @if (categroyCode == "advert")
+                {
+                    <li class="am-active">商品推广</li>
+                }
+                else
+                {
+                    <li><a href="/product/index">商品推广</a></li>
+                    <li class="am-active">@categroyName</li>
+                }
+                (@time)
+            </ol>
+            <div class="am-g">
+
+                <div class="am-u-md-2 am-u-sm-1 am-u-lg-2">&nbsp;</div>
+                <div class="am-u-md-8 am-u-sm-10 am-u-lg-8">
+                    <form class="" action="/product/index" method="get">
+                        <div class="am-input-group am-input-group-danger">
+                            <input type="text" name="keyword" value="@keyword" class="am-form-field" placeholder="搜索..." >
+                            <span class="am-input-group-btn">
+                                <button class="am-btn am-btn-lg am-btn-danger" type="submit"><span class="am-icon-search"></span></button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="am-u-md-2 am-u-sm-1 am-u-lg-2"></div>
+            </div>
+            <div class="banner_navbg">
+                <div class="am-g">
+                    <div class="am-u-md-12">
+                        <div class="banner_nav am-fr">
+                            <span class="am-icon-caret-right" style="width:160px">
+                                排序：
+                                @if (string.IsNullOrEmpty(order) || order == "default")
+                                {
+                                    <a class="banner_hover" href="/article/hotel?categorycode=@categroyCode&&order=default">默认</a>
+                                    <a href="/product/index?categorycode=@categroyCode&&order=latest">最新</a>
+                                    <a href="/product/index?categorycode=@categroyCode&&order=hot">最热</a>
+                                }
+                                else if (order == "latest")
+                                {
+                                    <a href="/product/index?categorycode=@categroyCode&&order=default">默认</a>
+                                    <a class="banner_hover" href="/product/index?categorycode=@categroyCode&&order=latest">最新</a>
+                                    <a href="/product/index?categorycode=@categroyCode&&order=hot">最热</a>
+                                }
+                                else if (order == "hot")
+                                {
+                                    <a href="/product/index?categorycode=@categroyCode&&order=default">默认</a>
+                                    <a href="/product/index?categorycode=@categroyCode&&order=latest">最新</a>
+                                    <a class="banner_hover" href="/product/index?categorycode=@categroyCode&&order=hot">最热</a>
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-md-12">
+                <div class="am-g">
+                    @if (product != null)
+                    {
+                        if (product.Count > 0)
+                        {
+                            <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-4 am-avg-lg-5 am-gallery-bordered" data-am-gallery="{ }">
+
+                                @foreach (var item in product)
+                    {
+                                    <li>
+                                        <div class="am-gallery-item">
+                                            <a href="@item.Url" target="_blank" class="">
+                                                @*<img src="@Html.Raw(item.ImagePath)" alt="@item.Title" />*@
+                                                <img alt="@item.Title" class="am_img animated" src="~/Content/images/amazeui/loading.gif" data-original="@item.ImagePath">
+                                                <h3 class="am-gallery-title">@item.Title</h3>
+                                                <p>
+
+                                                    促销价：<em class="tm-yen">¥</em><span class="tm-price">@item.Price</span>
+                                                    <br />返利：<em class="tm-yen">¥</em><span class="tm-price">@((item.Income * 0.5).ToString("F2"))</span>
+                                                </p>
+                                                <p>
+                                                    <a class="am-btn am-btn-danger" href="@item.Url" target="_blank">购买</a>
+                                                    <a class="am-btn am-btn-default" href="@item.Url" target="_blank">详情</a>
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    }
+
+                </div>
+
+            </div>
+
+            <center>
+
+                <div class="pagination pagination-lg">
+                    <ul>
+                        @if (pagination.TotalPageCount > 0)
+                        {
+                            if (pagination.CurrentPageIndex != 1)
+                            {
+                                <li>
+                                    <a rel="prev" href="/product/index/@pagination.PreviousPageIndex?categorycode=@categroyCode&&order=@order" class="prev">上一页</a>
+                                </li>
+                            }
+                            if (pagination.CurrentPageIndex > 4)
+                            {
+                                <li>
+                                    <a href="/product/index/1?categorycode=@categroyCode&&order=@order" class="">1</a>
+                                </li>
+                                <li>
+                                    <span>...</span>
+                                </li>
+                            }
+                            for (int i = pagination.StartPage; i <= pagination.EndPage; i++)
+                            {
+                                if (i == pagination.CurrentPageIndex)
+                                {
+                                    <li class="active">
+                                        <span class="current">@pagination.CurrentPageIndex</span>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="/product/index/@i?categorycode=@categroyCode&&order=@order" class="">@i</a>
+                                    </li>
+                                }
+                            }
+
+                            if (pagination.TotalPageCount - pagination.CurrentPageIndex >= 4)
+                            {
+                                <li><span>...</span></li>
+                                <li>
+                                    <a href="/product/index/@pagination.TotalPageCount?categorycode=@categroyCode&&order=@order" class="">@pagination.TotalPageCount</a>
+                                </li>
+
+                            }
+                            if (pagination.CurrentPageIndex < pagination.TotalPageCount)
+                            {
+                                <li class="next ">
+                                    <a href="/product/index/@pagination.NextPageIndex?categorycode=@categroyCode&&order=@order" class="next">下一页</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </center>
+        </div>
+
+
+    </div>
+
+    <script type="text/javascript">
+
+        $(function () {
+            $(".blog-keyword-show").each(function () {
+                var ht = $(this).html();
+                $(this).html('');
+                if (ht != '' && ht != undefined && ht != ' ') {
+                    var arr = ht.split(",");
+                    for (var i = 0; i < arr.length; i++) {
+                        if (arr[i].trim() != "") {
+                            $(this).append("<a class='tag' target='_blank' href='http://so.zyldingfang.com/search.aspx?q=" + arr[i] + "'>" + arr[i] + "</a>");
+                        }
+                    }
+                }
+            })
+        });
+        $("img").lazyload({ effect: 'fadeIn' });
+    </script>
+
+</div>
+
+@Html.Partial("Advert2")

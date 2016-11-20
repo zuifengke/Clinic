@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+
+  
+    <meta charset="utf-8" />
+    <script>
+
+
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + "; " + expires;
+        }
+        //获取cookie
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+            }
+            return "";
+        }
+        //清除cookie
+        function clearCookie(name) {
+            setCookie(name, "", -1);
+        }
+
+        function setEmployee() {
+            clearCookie("EmployeeCookie");
+            setCookie("EmployeeCookie", "119|*&^%$#@!%e6%b5%99%e6%b1%9f%e8%b4%a2%e7%bb%8f%e5%88%98%e5%9e%9a|*&^%$#@!zjcjly|*&^%$#@!18758025291");
+        }
+        function setAdmin() {
+            clearCookie("EmployeeCookie");
+            setCookie("EmployeeCookie", "84|*&^%$#@!%e7%ae%a1%e7%90%86%e5%91%98|*&^%$#@!admin|*&^%$#@!111111111");
+        }
+        function setHome() {
+            clearCookie("UserCookie");
+            setCookie("UserCookie", "1|*&^%$#@!%e6%9e%97%e6%99%94|*&^%$#@!13616549754|*&^%$#@!12");
+            window.location = "/sui/home/index";
+        }
+        function setUser() {
+            clearCookie("UserCookie");
+            setCookie("UserCookie", "1|*&^%$#@!%e6%9e%97%e6%99%94|*&^%$#@!13616549754|*&^%$#@!12");
+            window.location = "/sui/account"
+        }
+
+        function setUser2() {
+            clearCookie("UserCookie");
+            setCookie("UserCookie", "1|*&^%$#@!%e6%9e%97%e6%99%94|*&^%$#@!13616549754|*&^%$#@!12");
+            window.location = "/admin/blog"
+
+        }
+        function goHomeWithUser() {
+            clearCookie("UserCookie");
+            setCookie("UserCookie", "11|*&^%$#@!windy|*&^%$#@!13616549754|*&^%$#@!|*&^%$#@!");
+            window.location = "/home/index";
+
+        }
+
+        function goHomeWithUserYehui() {
+            clearCookie("UserCookie");
+            setCookie("UserCookie", "11|*&^%$#@!windy|*&^%$#@!13616549754|*&^%$#@!|*&^%$#@!");
+            window.location = "/home/index";
+
+        }
+        function delcookie() {
+            clearCookie("EmployeeCookie");
+            clearCookie("UserCookie");
+        }
+
+        function clearHome() {
+            clearCookie("EmployeeCookie");
+            clearCookie("UserCookie");
+            window.location = "/";
+        }
+
+    </script>
+</head>
+<body>
+    <div>
+        <a href="http://tools.xmt.cn/fastAttentionQrCode?name=zyl2012-china">一点关注【状元乐】公众号</a>
+    </div>
+    <div>
+        <a href="/weixin/Account/Index">个人中心</a>
+    </div>
+    <div>
+        <a href="/weixin/home/weui">weui</a>
+    </div>
+    <div>
+        <a href="/Admin" onclick="setAdmin()">后台管理</a>
+    </div>
+    <div>
+        <a href="/Admin" onclick="setEmployee()">业务员后台管理</a>
+    </div>
+    <div>
+        <a href="#" onclick="setHome()">移动端首页</a>
+    </div>
+
+    <div>
+        <a href="#" onclick="setUser()">移动端个人中心</a>
+    </div>
+
+    <div>
+        <a href="#" onclick="setUser2()">博客管理</a>
+    </div>
+    <div>
+        <a href="#" onclick="delcookie();">删除cookie</a>
+    </div>
+    <div>
+        <a href="#" onclick="clearHome();">清空cookie去主页</a>
+    </div>
+    <div>
+        <a href="#" onclick="goHomeWithUser()">首页</a>
+    </div>
+    <div>
+        <a href="#" onclick="goHomeWithUserYehui()">我的首页</a>
+    </div>
+    <div>
+        <a href="/home/CreateIndexView">更新主页</a>
+    </div>
+    <div>
+        <a href="/test/updateProduct">更新商品</a>
+    </div>
+    <div>
+        <form action="Spider/gethtml" method="post" target="_blank">
+            网址：<textarea type="text" value="" name="url"></textarea>
+            <input type="submit" value="抓取" />
+        </form>
+    </div>
+    <div>
+        <form action="Spider/setmenuname" method="post">
+            菜单名称：<textarea type="text" value="" name="menuname"></textarea>
+            <input type="submit" value="设置" />
+        </form>
+    </div>
+
+    <div>
+        <form action="Spider/gethtmltoutiao" method="post" target="_blank">
+            今日头条网址：<textarea type="text" value="" name="url"></textarea>
+            <input type="submit" value="抓取" />
+        </form>
+    </div>
+    <div>
+        <a href="http://so.zyldingfang.com/backend/updateindex.aspx?safecode=0c398943f2b3035fa3407d6945db6d1c">更新站内搜索索引</a>
+    </div>
+
+    <div>
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1259365669'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1259365669' type='text/javascript'%3E%3C/script%3E"));</script>
+        <br />
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1259365669'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1259365669%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        <br />
+        <br />
+        <div data-am-widget="duoshuo" class="am-duoshuo am-duoshuo-default" data-ds-short-name="amazeui">
+            <div class="ds-thread">
+            </div>
+        </div>
+        <br />
+        <div>
+            <a href="/Test/TopSDK">测试淘宝接口</a>
+        </div>
+        <br />
+        <div>
+            <script type="text/javascript">var jd_union_pid = "455194079"; var jd_union_euid = "";</script>
+            <script type="text/javascript" src="http://ads.union.jd.com/static/js/union.js"></script>
+        </div>
+        <br />
+        <div>
+            <a target="_blank" href="http://s.click.taobao.com/t?e=m%3D2%26s%3DndqPkZojJk0cQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMUGL9p85tRphMMgx22UI05bC5fuAsooPQlcvaUe7Wi9Pj88G70StBrHeqPjy0eZKNsZQGq5XaFgd6zo8YVvCWeNINihqp5B8a8YOae24fhW0&pvid=50_122.234.237.154_356_1469274819536">水中花1</a>
+
+            <a target="_blank" href="http://s.click.taobao.com/t?e=m%3D2%26s%3DaTmEQHQq5Q8cQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMYLcbYo3SX5Nt4hWD5k2kjPC5fuAsooPQlcvaUe7Wi9Pj88G70StBrHeqPjy0eZKNsZQGq5XaFgdxeewB4whE%2F8mj0h%2BaqYGMMYl7w3%2FA2kb&pvid=50_122.234.237.154_427_1469275029974">水中花2</a>
+            <a target="_blank" href="http://s.click.taobao.com/t?e=m%3D2%26s%3Dy6ZPx6rTS7scQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMc9bccBeGn66xq3IhSJN6GTC5fuAsooPQlcvaUe7Wi9Pj88G70StBrG2P8elk7ajwT1SF7Ued4K9WNa7ECMIeH%2B7ghAUcYDbLMYOae24fhW0&pvid=50_122.234.237.154_19925_1469277621097">杜蕾斯</a>
+        </div>
+        <br />
+        <div>
+           
+        </div>
+        <br />
+        <br />
+        <br />
+        <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a></div>
+        <script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "32" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+        <br />
+        <br />
+        <br />
+        <a data-type="4" data-tmpl="390x460" data-tmplid="134" data-style="2" data-border="1" biz-s_logo="1" biz-s_hot="1" href="#">爱淘宝</a>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+    <div>
+        <form name="f1" onsubmit="return g(this)" target="_blank">
+            <table bgcolor="#FFFFFF" style="font-size:9pt;">
+                <tr height="60">
+                    <td valign="top" width="8%">
+                        <a href="https://www.baidu.com/" target="_blank">
+                            <img src="https://www.baidu.com/img/baidu_jgylogo3.gif" border="0" alt="baidu">
+                        </a>
+                    </td>
+                    <td>
+                        <input type="text" name="word" onfocus="checkHttps" size="30" maxlength="100">
+                        <input type="submit" value="百度搜索"><br>
+                        <input name="tn" type="hidden" value="SE_zzsearchcode_shhzc78w">
+                        <input name="cl" type="hidden" value="3">
+                        <input name="ct" type="hidden">
+                        <input name="si" type="hidden" value="www.zyldingfang.com">
+                        <div class="mt10">
+                            <input name="s" type="radio"> 互联网<input name="s" type="radio" checked> 状元乐官网
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div>
+        <style>
+            .taglist { padding: 20px 20px 30px 20px; }
+                .taglist a { padding: 3px; display: inline-block; white-space: nowrap; }
+            a.size1 { font-size: 20px; padding: 10px; color: #804D40; }
+                a.size1:hover { color: #E13728; }
+            a.size2 { padding: 7px; font-size: 20px; color: #B9251A; }
+                a.size2:hover { color: #E13728; }
+            a.size3 { padding: 5px; font-size: 26px; color: #C4876A; }
+                a.size3:hover { color: #E13728; }
+            a.size4 { padding: 5px; font-size: 15px; color: #B46A47; }
+                a.size4:hover { color: #E13728; }
+            a.size5 { padding: 5px; font-size: 25px; color: #E13728; }
+                a.size5:hover { color: #B46A47; }
+            a.size6 { padding: 0px; font-size: 12px; color: #77625E; }
+                a.size6:hover { color: #E13728; }
+            a.size7 { padding: 0px; font-size: 20px; color: #FFCCFF; }
+                a.size7:hover { color: #FF6633; }
+            .scroll-text { width: 100%; height: 14em; overflow: hidden; color: black !important; }
+            .am-nav { font-size: 14px; }
+            .side-box { margin-bottom: 15px; padding: 5px; overflow: hidden; background-color: #fff; border: 1px solid #ebebeb; box-shadow: 0px 1px 1px rgba(209, 212, 221, 0.15); border-radius: 0; }
+        </style>
+
+
+
+
+       
+
+        <div class="side-box" style="margin-top: 15px;">
+            <!--淘宝推广-->
+
+            <a href="http://s.click.taobao.com/t?e=m%3D2%26s%3D2hYsvlXakL0cQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAsF1GKWQXSG%2FyLijLsm%2Be5jeZj7IBDyOyBPvOn4qVscrVJqiRnZ6YVY4tWNv0VWvKOdn1BbglxZYxUhy8exlzcpAFEHVckI7b93srg%2FL%2FeD3keUEnoKELDlWYetMiZZgV%2BSx6OrKqagyklzFeKMz7CcGqhUvUL8KBsEQAuqTQrTJcSpj5qSCmbA%3D" target="_blank">
+
+                <img src="~/Content/images/amazeui/aliyun.jpg" style="margin-bottom: 15px;" />
+            </a>
+        </div>
+
+
+        <div>
+            <script type="text/javascript" charset="utf-8"
+                    src="http://fengche.cpv6.com/load/load_1.php?user_id=13479&site_id=6136&site_md5=a4a383793d3f01312059d855cdf7a1d6&auto_jump=0&cpv6_ad_format_pop=0&cpv6_ad_format_img=1&image_location=right_top,left_lower">
+            </script>
+            <noscript>
+                <a href="http://www.cpv6.com/" target="_blank">风车广告联盟</a>
+            </noscript>
+        </div>
+    </div>
+</body>
+
+</html>

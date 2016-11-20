@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Reset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<hr class="am-article-divider">
+<div class="am-g">
+    <div class="am-container">
+
+
+        <div class="am-u-md-7">
+            <div class="am-panel am-panel-secondary">
+                <div class="am-panel-hd">
+                    <h4 class="am-panel-title"><i class="am-icon-user"></i> 找回密码第一步：输入注册邮件 </h4>
+                </div>
+
+                <div class="am-panel-bd">
+                    <form method="post" class="am-form" id="form_user" action="/member/sendmail">
+                        <label for="email">邮箱:</label>
+                        <div class="am-input-group  am-input-group-primary">
+                            <span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
+                            <input type="text" class="am-form-field" name="name" id="f_email" placeholder="邮箱 " required="">
+                        </div>
+                        <hr>
+
+
+                        <hr>
+
+                        <div class="am-cf">
+                            <div id="error_msg" style="color: #c00;display:none;">正在发送，请您耐心等待... </div>
+                            <input type="submit" id="forum-user-reset" name="sub" value="发送重置链接»" class="am-btn am-btn-primary am-btn-sm am-fl btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">
+                            <a href="/member/login" name="sub" class="am-btn am-btn-default am-btn-sm am-fr"> 转到登录页面？ </a>
+                        </div>
+                    </form>
+
+
+                    <script type="text/javascript">
+                        var $btn = $('#forum-user-reset');
+                        $('#form_user').ajaxForm({
+                            beforeSubmit: function (a, f, o) {
+                                if ($('#f_email').val().length == 0) {
+                                    $('#f_email').focus();
+                                    $('#error_msg').html("邮箱地址/账户必须填写");
+                                    $('#error_msg').show("fast");
+                                    return false;
+                                }
+                               
+                                $btn.button('loading');
+                            },
+                            success: function (json) {
+                                if (json.error) {
+                                    $('#error_msg').hide();
+                                    $('#error_msg').html(json.msg);
+                                    $('#error_msg').show("fast");
+                                    $btn.button('reset');
+
+                                } else {
+
+                                    $btn.button('reset');
+                                    location.href = "/member/sendmail?email=" + json.msg + "&type=pwd";
+
+
+                                }
+
+                            }
+                        });
+
+                    </script>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="am-u-md-5 am-article-lead">
+            <h4><i class="am-icon-info"></i> 找回密码</h4>
+            <ol>
+                <li>用户可以提供邮件与账号找回密码</li>
+                <li>可以通过邮件自助的找回密码</li>
+
+                <li>如果怎么都收不到邮件，可以联系管理员！<br>邮箱：yehui1989@@qq.com</li>
+            </ol>
+
+
+        </div>
+
+    </div>
+
+</div>

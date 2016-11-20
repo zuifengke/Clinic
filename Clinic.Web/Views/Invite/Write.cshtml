@@ -1,0 +1,251 @@
+﻿@using Windy.WebMVC.Web2.Models
+@model Windy.WebMVC.Web2.Models.Users
+@{
+    ViewBag.Title = "邀请好友一起订房";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categorylist = ViewBag.categorylist as List<Category>;
+}
+
+
+<script type="text/javascript">
+    $(function () {
+
+    });
+    function showside() {
+        $("#blog-main").removeClass("am-u-md-12");
+        $("#blog-main").addClass("am-u-md-8");
+        $("#my-side").addClass("am-u-md-4");
+        $("#my-side").show(500);
+    }
+    function hideside() {
+        $("#blog-main").removeClass("am-u-md-8");
+        $("#blog-main").addClass("am-u-md-12");
+        $("#my-side").removeClass("am-u-md-4");
+        $("#my-side").hide(500);
+    }
+</script>
+
+<div class="am-container " id="main">
+
+    <div class="am-g am-g-fixed">
+        <div class="am-u-md-8" id="blog-main">
+            <ol class="am-breadcrumb">
+                <li><a href="/" class="am-icon-home">首页</a></li>
+                <li><a href="/invite/index/1">邀请列表</a></li>
+                <li class="am-active">预报名</li>
+            </ol>
+            <div class="am-panel am-panel-secondary">
+                <div class="am-panel-hd">
+                    <h1 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}">
+                        <i class="am-icon-envelope-o"></i>
+
+                        <strong>填写好友订房预报名信息,提交成功后等待本校代理联系</strong>
+
+                        <small></small>
+                    </h1>
+                </div>
+                <div id="do-not-say-2" class="am-panel-collapse am-collapse am-in">
+                    <div class="am-panel-bd">
+                        <hr>
+                        <form class="am-form am-form-horizontal" id="form_user" action="/invite/userinfo" method="POST">
+                            <input type="hidden" name="ID" value="@Model.ID" />
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">好友真实姓名</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-user"></i></span>
+                                        <input type="text" value="@Model.Name" class="am-form-field" name="Name" id="Name" minlength="2" maxlength="10" placeholder="请输入好友真实姓名，必填" required>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">好友手机号</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-phone"></i></span>
+                                        <input type="text" class="am-form-field" name="Tel" id="Tel" minlength="11" maxlength="11" placeholder="好友手机号，必填" required value="@Model.Tel">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">性别</label>
+                                <div class="am-u-md-6 ">
+                                    @if (Model != null && Model.Gender == "男")
+                                    {
+                                        <label class="am-radio-inline">
+                                            <input type="radio" value="男" checked="checked" name="Gender"> 男
+                                        </label>
+                                        <label class="am-radio-inline ">
+                                            <input type="radio" name="Gender" value="女"> 女
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label class="am-radio-inline">
+                                            <input type="radio" value="男" name="Gender"> 男
+                                        </label>
+                                        <label class="am-radio-inline ">
+                                            <input type="radio" name="Gender" checked="checked" value="女"> 女
+                                        </label>
+                                    }
+                                </div>
+
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">所在学校</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-archive"></i></span>
+                                        <input type="text" class="am-form-field" name="School" id="School" placeholder="好友所在学校，必填 " required value="@Model.School">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">报考学校</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-archive"></i></span>
+                                        <input type="text" value="@Model.ExamSchool" class="am-form-field" name="ExamSchool" id="ExamSchool" placeholder="好友报考学校，选填">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">意向同住人</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-fw"></i></span>
+                                        <input type="text" value="@Model.ExceptRoomie" class="am-form-field" name="ExceptRoomie" id="ExceptRoomie" placeholder="好友意向同住人，选填 ">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">备注</label>
+                                <div class="am-u-md-9">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-fw"></i></span>
+                                        <input type="text" value="@Model.Baks" class="am-form-field" name="Baks" id="Baks" placeholder="备注，选填 ">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="am-form-group">
+                                <div class="am-u-sm-6 am-u-sm-push-3">
+                                    <div id="error_msg" style="color: #c00;display:none;">正在审核，请您耐心等待...</div>
+                                    <button id="forum-user-reg" type="submit" name="sub" class="am-btn am-btn-primary am-btn-block btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">提交</button>
+                                </div>
+                            </div>
+                        </form>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            @*alert对话框*@
+
+            <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd">状元乐</div>
+                    <div class="am-modal-bd">
+                        @if (Model != null && Model.EmployeeID != 0)
+                        {
+                            @( new HtmlString("您已成功邀请好友订房"))
+                        }
+                        else
+                        {
+                            @( new HtmlString("提交好友订房预报名信息成功,请等待代理联系后录入考点提交系统"))
+                        }
+
+                    </div>
+
+
+                    <div class="am-modal-footer">
+                        <span class="am-modal-btn">确定</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        <script type="text/javascript">
+
+
+
+
+            $('#form_user').ajaxForm({
+                beforeSubmit: function (a, f, o) {
+                    var $btn = $('#forum-user-reg');
+                    if ($('#Tel').val().length == 0) {
+
+                        $('#Tel').focus();
+                        $('#error_msg').html("手机号必须填写");
+                        $('#error_msg').show();
+                        return false;
+                    }
+                    $('#error_msg').html(" 正在审核，请您耐心等待...");
+                    $('#error_msg').show();
+                    $btn.button('loading');
+                },
+                success: function (html) {
+                    var $btn = $('#forum-user-reg');
+                    if (html.length > 0) {
+                        $('#error_msg').hide();
+                        $('#error_msg').html(html);
+                        $('#error_msg').show();
+                        $btn.button('reset');
+                    } else {
+                        $('#error_msg').hide();
+                        $btn.button('reset');
+
+                        //弹出提示对话框
+                        $('#my-alert').modal();
+
+                    }
+                }
+            });
+
+        </script>
+        <div class="am-u-md-4" id="my-side">
+
+            <div class="side-box">
+                <div class="my-side-title">
+                    <span class="am-icon-pencil"> 功能区</span>
+                </div>
+                <button type="button" class="am-btn am-btn-primary am-btn-block" onclick="location.href='/invite/write'">
+                    <i class="am-icon-pencil"></i>
+                    邀请新好友订房
+                </button>
+                <button type="button" class="am-btn am-btn-primary am-btn-block" onclick="location.href='/invite/index.htm'">
+                    <i class="am-icon-user"></i>
+                    我邀请好友的列表
+                </button>
+            </div>
+
+            @Html.Partial("SideBox")
+        </div>
+    </div>
+
+
+
+</div>

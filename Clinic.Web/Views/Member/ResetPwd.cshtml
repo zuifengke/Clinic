@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "ResetPwd";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Windy.WebMVC.Web2.Models.Member
+<hr class="am-article-divider">
+<div class="am-g">
+    <div class="am-container">
+
+
+        <div class="am-u-md-7">
+            <div class="am-panel am-panel-secondary">
+                <div class="am-panel-hd">
+                    <h4 class="am-panel-title"><i class="am-icon-user"></i> 找回密码第三步：重置密码 </h4>
+                </div>
+
+                <div class="am-panel-bd">
+                    <form method="post" class="am-form" id="form_user" action="/member/resetpwd">
+                       
+                        <fieldset>
+
+                            <input type="hidden" name="ID" value="@Model.ID" />
+
+                            <div class="am-input-group  am-input-group-default">
+                                <span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
+                                <input type="text" name="UserName" class="am-form-field" value="@Model.UserName" readonly="readonly">
+                            </div>
+                            <hr>
+
+                            <label for="email">密码:</label>
+                            <div class="am-input-group  am-input-group-warning">
+                                <span class="am-input-group-label"><i class="am-icon-key am-icon-fw"></i></span>
+                                <input type="password" name="Password" id="f_pwd" class="am-form-field" placeholder="密码" required="">
+                            </div>
+                            <hr>
+                            <label for="email">确定密码:</label>
+                            <div class="am-input-group  am-input-group-warning">
+                                <span class="am-input-group-label"><i class="am-icon-key am-icon-fw"></i></span>
+                                <input type="password" name="Password2" id="f_pwd2" class="am-form-field" placeholder="确认密码" required="">
+                            </div>
+                            <hr>
+                            <div class="am-cf">
+                                <div id="error_msg" style="color: #c00;display:none;">正在发送，请您耐心等待... </div>
+                                <input type="submit" id="forum-user-reset" name="sub" value="重置密码" class="am-btn am-btn-primary am-btn-sm am-fl btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">
+                                <a href="/member/login" name="sub" class="am-btn am-btn-default am-btn-sm am-fr"> 转到登录页面？ </a>
+
+                            </div>
+
+                        </fieldset>
+                    </form>
+                    <script type="text/javascript">
+                        var pwd = "";
+                        var pwd2 = "";
+                        $('#form_user').bind('form-pre-serialize', function (event, form, options, veto) {
+                            pwd = $('#f_pwd').val();
+                            pwd2 = $('#f_pwd2').val();
+                        });
+
+                        $('#form_user').ajaxForm({
+                            beforeSubmit: function (a, f, o) {
+                                if (pwd.length == 0 || pwd2 != pwd) {
+                                    $('#f_pwd').val(pwd);
+                                    $('#f_pwd2').val(pwd2);
+                                    $('#f_pwd').focus();
+                                    $('#error_msg').html("两次密码必须填写，且要匹配");
+                                    $('#error_msg').show("fast");
+                                    return false;
+                                }
+                            },
+                            success: function (html) {
+                                $('#error_msg').hide();
+                                if (html.length > 0) {
+                                    $('#error_msg').html(html);
+                                    $('#error_msg').show("fast");
+                                }
+                                else {
+                                    $('#error_msg').html('密码重置成功！3秒后跳到登录界面，点击<a href="/member/login">这里</a>登录');
+                                    $('#error_msg').show("fast");
+                                    t = setTimeout(goto_login, 3000);
+                                }
+                            }
+                        });
+
+                        function goto_login() {
+                            clearTimeout(t);
+                            location.href = '/member/login';
+                        }
+
+                    </script>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="am-u-md-5 am-article-lead">
+            <h4><i class="am-icon-info"></i> 找回密码</h4>
+            <ol>
+                <li>输入新的密码</li>
+                <li>如果链接失效，请重新生存重置链接</li>
+                <li>如果有相关问题，可以联系管理员！<br>邮箱：<a href="mailto:tngou@tngou.net">tngou@tngou.net</a><br>QQ：397713572</li>
+            </ol>
+
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,192 @@
+﻿@model Windy.WebMVC.Web2.Models.Blog
+@{
+    ViewBag.Title = Model.Title;
+    ViewBag.Description = Model.Summary;
+    if (string.IsNullOrEmpty(Model.Keywords))
+    {
+        ViewBag.Keywords = Windy.WebMVC.Web2.SystemContext.Instance.PageInfo.Keywords;
+    }
+    else
+    {
+        ViewBag.Keywords = Model.Keywords;
+    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var next = ViewBag.next as Windy.WebMVC.Web2.Models.Blog;
+    var pre = ViewBag.pre as Windy.WebMVC.Web2.Models.Blog;
+    var others = ViewBag.others as List<Windy.WebMVC.Web2.Models.Blog>;
+}
+
+
+<div class="am-container " id="main">
+
+    <div class="am-g am-g-fixed">
+        <div class="am-u-md-8" id="blog-main">
+            <ol class="am-breadcrumb">
+                <li><a href="/" class="am-icon-home">首页</a></li>
+                @if (Model.CategoryCode == "blog")
+                {
+                    <li><a href="/blog/index.htm?&categorycode=@Model.CategoryCode">@Model.CategoryName</a></li>
+                }
+                else
+                {
+                    <li><a href="/blog/index.htm">博客</a></li>
+                    <li><a href="/blog/index.htm?&categorycode=@Model.CategoryCode">@Model.CategoryName</a></li>
+                }
+                <li class="am-active">详情</li>
+            </ol>
+
+
+
+            <article class="am-article">
+                <div class="am-article-hd">
+                    <h1 class="am-article-title">@Model.Title.Replace("- 今日头条(TouTiao.org)", "").Replace("- 今日头条(www.toutiao.com)","")</h1>
+                    <div class="am_list_author">
+
+                        <p class="blog-ext">
+                            <span class="blog-ext-ico">
+                                <i class="am-icon-user  blog-ext-ico"></i>
+                                @Model.MemberName
+                            </span>
+                            <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@Model.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                            <span class="blog-ext-ico">
+                                <i class="am-icon-eye  blog-ext-ico"></i>
+                                @Model.ViewCount
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div id="blogcontentid" class="am-article-bd">
+                    @Html.Raw(Model.Content)
+                </div>
+                <hr data-am-widget="divider" style="" class="am-divider am-divider-dashed am-no-layout">
+                <ul class="am-pagination blog-pagination">
+                    @if (pre != null)
+                    {
+                        <li class="am-pagination-prev"><a href="/blog/view/@(new HtmlString(pre.ID.ToString() + ".htm"))">« 上一篇 @pre.Title.Replace("- 今日头条(TouTiao.org)", "").Replace("- 今日头条(www.toutiao.com)", "")</a></li>
+                    }
+                    @if (next != null)
+                    {
+                        <li class="am-pagination-next"><a href="/blog/view/@(new HtmlString(next.ID.ToString() + ".htm")) ">下一篇 » @next.Title.Replace("- 今日头条(TouTiao.org)", "").Replace("- 今日头条(www.toutiao.com)", "")</a></li>
+                    }
+                </ul>
+                @if (Model.Zhuanzai == 1)
+                {
+                    <div class="shengming">原文地址（版权归原作者所有，如有侵权，请联系删除）：<a href="@Model.ReprintUrl" target="blank">@Model.ReprintUrl</a></div>
+                }
+                else
+                {
+                    <div class="shengming">声明：若要转载状元了中的任何文章请注明转载地址</div>
+                }
+
+            </article>
+            <!-- 分割线 -->
+            <hr data-am-widget="divider" style="" class="am-divider am-divider-dashed am-no-layout">
+
+            <!--推荐阅读-->
+            <div>
+                <div id="pagelet-relatednews">
+                    <div class="dtag"><a href="/blog/viewrelation?url=@Model.ReprintUrl">相关阅读</a></div>
+
+
+                </div>
+                @if (others != null)
+                {
+                    foreach (var item in others)
+                    {
+                        <div class="inner-box blog-img">
+                            <div class="am-g">
+                                <div class="am-u-sm-3">
+                                    <a class="blog-a-curse" href="/blog/view/@(new HtmlString(item.ID.ToString() + ".htm"))">
+                                        <img alt="" class="am_img animated" src="~/Content/images/amazeui/loading.gif" data-original="@item.ImagePath">
+                                    </a>
+                                </div>
+                                <div class="am-u-sm-9">
+                                    <div class="blog-header">
+
+                                        <h2><a href="/blog/view/@(new HtmlString(item.ID.ToString()+".htm"))">@item.Title.Replace("- 今日头条(TouTiao.org)","").Replace("- 今日头条(www.toutiao.com)", "")</a></h2>
+                                    </div>
+
+                                    <p class="blog-ext">
+                                        <span class="blog-ext-ico">
+                                            <i class="am-icon-user  blog-ext-ico"></i>
+                                            @item.MemberName
+                                        </span>
+                                        <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@item.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                        <span class="blog-ext-ico">
+                                            <i class="am-icon-eye  blog-ext-ico"></i>
+                                            @item.ViewCount
+                                        </span>
+                                    </p>
+                                    <p class="blog-content-show">
+                                        <a href="/blog/view/@(new HtmlString(item.ID.ToString() + ".htm"))">
+                                            @item.Summary...
+                                        </a>
+                                    </p>
+                                    <span class="blog-keyword-show">@item.Keywords</span>
+
+                                    <div class="am-fr">
+
+                                        <button type="button" class="am-badge am-badge-primary am-round " onclick="location.href='/blog/viewrelation?url=@item.ReprintUrl'">相关</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <script type="text/javascript">
+
+
+                $(function () {
+                    $(".blog-keyword-show").each(function () {
+                        var ht = $(this).html();
+                        $(this).html('');
+                        if (ht != '' && ht != undefined && ht != ' ') {
+                            var arr = ht.split(",");
+                            for (var i = 0; i < arr.length; i++) {
+                                if (arr[i].trim() != "") {
+                                    $(this).append("<a class='tag' href='/blog/index?keyword=" + arr[i] + "'>" + arr[i] + "</a>");
+                                }
+                            }
+                        }
+                    })
+                });
+                $("img").lazyload({ effect: 'fadeIn' });
+            </script>
+            <!-- 分割线 -->
+            <hr data-am-widget="divider" style="" class="am-divider am-divider-dashed am-no-layout">
+            @Html.Partial("Advert1")
+            <!-- 分割线 -->
+            <hr data-am-widget="divider" style="" class="am-divider am-divider-dashed am-no-layout">
+
+            <!-- 多说评论框 start -->
+            <div data-am-widget="duoshuo" class="am-duoshuo am-duoshuo-default" data-ds-short-name="zyldingfang">
+                <div class="ds-thread" data-thread-key="article_@Model.ID" data-title="@Model.Title" data-url="@HttpContext.Current.Request.Url">
+
+                </div>
+            </div>
+            <!-- 多说评论框 end -->
+            <!-- 多说分享 -->
+
+            <!-- UY BEGIN -->
+            @*<div id="uyan_frame"></div>
+            <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2109661"></script>*@
+            <!-- UY END -->
+        </div>
+
+        <div class="am-u-md-4" id="my-side">
+            @Html.Partial("sidebox")
+            @Html.Partial("sidebox2")
+            @Html.Partial("sidebox3")
+            @Html.Partial("sidebox4")
+           
+        </div>
+
+    </div>
+
+
+
+
+</div>

@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.Title = "SideBox";
+    var adverts = Windy.WebMVC.Web2.SystemContext.Instance.Adverts;
+}
+<div class="detail-right">
+    <!-- 请置于所有广告位代码之前 -->
+    <script src="http://dup.baidustatic.com/js/ds.js"></script>
+    <style>
+        .taglist { padding: 20px 20px 30px 20px; }
+            .taglist a { padding: 3px; display: inline-block; white-space: nowrap; }
+        a.size1 { font-size: 20px; padding: 10px; color: #804D40; }
+            a.size1:hover { color: #E13728; }
+        a.size2 { padding: 7px; font-size: 20px; color: #B9251A; }
+            a.size2:hover { color: #E13728; }
+        a.size3 { padding: 5px; font-size: 26px; color: #C4876A; }
+            a.size3:hover { color: #E13728; }
+        a.size4 { padding: 5px; font-size: 15px; color: #B46A47; }
+            a.size4:hover { color: #E13728; }
+        a.size5 { padding: 5px; font-size: 25px; color: #E13728; }
+            a.size5:hover { color: #B46A47; }
+        a.size6 { padding: 0px; font-size: 12px; color: #77625E; }
+            a.size6:hover { color: #E13728; }
+        a.size7 { padding: 0px; font-size: 20px; color: #FFCCFF; }
+            a.size7:hover { color: #FF6633; }
+        .scroll-text { width: 100%; height: 14em; overflow: hidden; color: black !important; }
+        .am-nav { font-size: 14px; }
+        .side-box { margin-bottom: 15px; padding: 5px; overflow: hidden; background-color: #fff; border: 1px solid #ebebeb; box-shadow: 0px 1px 1px rgba(209, 212, 221, 0.15); border-radius: 0; }
+    </style>
+
+
+    <div class="side-box" style="margin-top:15px;">
+        <div data-am-widget="slider" class="am-slider am-slider-c2" data-am-slider='{&quot;directionNav&quot;:false}'>
+            <ul class="am-slides">
+                @if (adverts != null)
+            {
+                var huodong = adverts.Where(m => m.CategoryCode.Contains("advert-huodong"));
+                if (huodong.Count() > 0)
+                {
+                    foreach (var item in huodong.Take(5).ToList())
+                    {
+                            <li>
+                                <a href="@item.ClickUrl" target="_blank">
+                                    <img src="@item.ImagePath" style="width:350px;height:150px">
+                                    <div class="am-slider-desc">@item.Title</div>
+                                </a>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+
+        </div>
+    </div>
+    <div class="side-box" style="margin-top: 15px;">
+        <div class="am-tabs" data-am-tabs>
+            <ul class="am-tabs-nav am-nav am-nav-tabs" style="margin-left: 0px;">
+                <li class="am-active"><a href="#tab1">热评文章</a></li>
+                <li><a href="#tab2">最新评论</a></li>
+                <li><a href="#tab3">最近访客</a></li>
+            </ul>
+
+            <div class="am-tabs-bd">
+                <div class="am-tab-panel am-fade am-in am-active" id="tab1">
+                    <!-- 多说热评文章 start -->
+                    <div class="ds-top-threads" data-range="monthly" data-num-items="10"></div>
+                    <!-- 多说热评文章 end -->
+                </div>
+                <div class="am-tab-panel am-fade" id="tab2">
+                    <!-- 多说最新评论 start -->
+                    <div class="ds-recent-comments" data-num-items="5"
+                         data-show-avatars="1" data-show-time="1" data-show-title="1"
+                         data-show-admin="1" data-excerpt-length="70"></div>
+                    <!-- 多说最新评论 end -->
+                </div>
+                <div class="am-tab-panel am-fade" id="tab3" style="width: 95%">
+                    <ul class="ds-recent-visitors" data-num-items="18" style="margin-right: 0px;"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-box" style="margin-top: 15px;">
+        <!-- 广告位：官网-1 -->
+        <script>
+            (function () {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup = window.slotbydup || []).push({
+                    id: '2626693',
+                    container: s,
+                    size: '336,280',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+        <script src="http://dup.baidustatic.com/js/os.js"></script>
+    </div>
+
+    <div class="side-box" style="margin-top: 15px;">
+        <!--淘宝推广-->
+
+        <a href="http://s.click.taobao.com/t?e=m%3D2%26s%3D2hYsvlXakL0cQipKwQzePCperVdZeJviEViQ0P1Vf2kguMN8XjClAsF1GKWQXSG%2FyLijLsm%2Be5jeZj7IBDyOyBPvOn4qVscrVJqiRnZ6YVY4tWNv0VWvKOdn1BbglxZYxUhy8exlzcpAFEHVckI7b93srg%2FL%2FeD3keUEnoKELDlWYetMiZZgV%2BSx6OrKqagyklzFeKMz7CcGqhUvUL8KBsEQAuqTQrTJcSpj5qSCmbA%3D" target="_blank">
+
+            <img src="~/Content/images/amazeui/aliyun.jpg" style="margin-bottom: 15px;" />
+        </a>
+    </div>
+
+
+    <div class="side-box" style="margin-top: 15px;">
+        <!-- 广告位：百度广告336*280 -->
+        <script>
+            (function () {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup = window.slotbydup || []).push({
+                    id: '2612763',
+                    container: s,
+                    size: '336,280',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+
+    </div>
+
+
+    <div class="side-box" style="margin-top: 15px;">
+        <!--淘宝推广-->
+        <script charset="gbk" src="http://p.tanx.com/ex?i=mm_15119898_8568227_56984090"></script>
+    </div>
+
+    <div class="side-box" style="margin-top: 15px;">
+        <!-- 广告位：官网-8 -->
+        <script>
+            (function () {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup = window.slotbydup || []).push({
+                    id: '2613576',
+                    container: s,
+                    size: '336,280',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+        <script src="http://dup.baidustatic.com/js/os.js"></script>
+    </div>
+
+    <div class="side-box" style="margin-top: 15px;">
+        <!-- 广告位：官网-sidebox-1 -->
+        <script>
+            (function () {
+                var s = "_" + Math.random().toString(36).slice(2);
+                document.write('<div id="' + s + '"></div>');
+                (window.slotbydup = window.slotbydup || []).push({
+                    id: '2682074',
+                    container: s,
+                    size: '336,280',
+                    display: 'inlay-fix'
+                });
+            })();
+        </script>
+        <script src="http://dup.baidustatic.com/js/os.js"></script>
+    </div>
+    <script>
+        /*多说配置*/
+        var duoshuoQuery = { short_name: "zyldingfang" };
+        (function () {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript'; ds.async = true;
+            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.unstable.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0]
+             || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+    </script>
+    @*<script type="text/javascript">
+            /*插屏广告*/
+            var cpro_id = "u2697735";
+        </script>
+        <script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>*@
+
+
+</div>
+@*<script src="http://s3.pstatp.com/toutiao/resource/toutiao_web/static/js/lib_fb98a79.js"></script>
+<script>
+    
+    var $indexRight = $('.detail-right'),
+        $win = $(window),
+        winHeight = $win.height(),
+        rightLeft = $indexRight.offset();
+
+    $win.on('resize', function (e) {
+        rightLeft = $indexRight.offset();
+    });
+    $win.on('scroll', _.throttle(function () {
+        var scrollTop = $(this).scrollTop(),
+            indexRightHeight = $indexRight.height(),
+            bottom = scrollTop + winHeight - indexRightHeight;
+
+        if (bottom < 180) {
+            $indexRight.css({
+                position: 'static',
+                marginBottom: 10
+            });
+        } else {
+            // $indexRight.addClass('right-fixed');
+            $indexRight.css({
+                position: 'fixed',
+                left: rightLeft.left,
+                marginBottom: 0,
+                bottom: 240
+            });
+        }
+    }, 60));
+</script>*@

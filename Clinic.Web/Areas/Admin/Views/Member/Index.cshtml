@@ -1,0 +1,315 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<body style="margin:8px;">
+
+    <form id="form_list" name="form_list" method="post" style="padding:2px;">
+        <table id="tab_list"></table>
+        <div id="tab_toolbar" style="padding:  2px;">
+            <table cellpadding="0" cellspacing="0" style="width: 100%">
+                <tr>
+                    <td style="padding: 4px">
+                        <a href="#" onclick="$('#form_edit input').val('');Add();return false;" id="a_add"
+                           class="easyui-linkbutton" iconcls="icon-add">添加</a> <a href="#" onclick="DelData(0);return false;"
+                                                                                  id="a_del" class="easyui-linkbutton" iconcls="icon-cancel">删除</a>
+
+                    </td>
+                    <td style="text-align: right; padding-right: 15px">
+
+                        姓名：
+                        <input id="search_name" name="search_name" type="text" />
+                        手机号：
+                        <input id="search_tel" name="search_tel" type="text" />
+
+                        <a href="#" onclick="Search();return false;"
+                           id="btnSearch" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <div id="edit" class="easyui-dialog" title="编辑员工信息" style="width: 300px; height: 250px;"
+         modal="true" closed="true" buttons="#edit-buttons">
+        <form id="form1" name="form_edit" method="post" url="Employee/UpdateData">
+            <table class="table_edit">
+                <tr>
+                    <td class="tdal">
+                        用户名：
+                    </td>
+                    <td class="tdar">
+                        <input id="UserName" name="UserName" type="text" class="easyui-validatebox"
+                               required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        姓名：
+                    </td>
+                    <td class="tdar">
+                        <input id="RealName" name="RealName" type="text" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        电话：
+                    </td>
+                    <td class="tdar">
+                        <input id="Tel" name="Tel" type="text" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        邮箱：
+                    </td>
+                    <td class="tdar">
+                        <input id="Mail" name="Mail" type="text" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        性别：
+                    </td>
+                    <td class="tdar">
+                        <input name="Sex" type="radio" value="0" class='easyui-validatebox' style="width: 20px;" />男
+                        <input name="Sex" type="radio" value="1" class='easyui-validatebox' style="width: 20px;" />女
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" name="ID" id="ID" />
+        </form>
+    </div>
+
+    <div id="edit-buttons">
+        <a id="btn_add" href="javascript:;" onclick="save(); return false;" class="easyui-linkbutton">提交</a>
+        <a href="javascript:;"
+           class="easyui-linkbutton" onclick="$('#edit').dialog('close');return false;">取消</a>
+    </div>
+    <script type="text/javascript">
+
+        function close() {
+            $('#edit').dialog('close');
+        }
+        var operator;
+        var editor = null;
+
+        function myformatter(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            var d = date.getDate();
+            return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+        }
+        function myparser(s) {
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[0], 10);
+            var m = parseInt(ss[1], 10);
+            var d = parseInt(ss[2], 10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+                return new Date(y, m - 1, d);
+            } else {
+                return new Date();
+            }
+        }
+        $(function () {
+
+            InitGird();
+
+            $("#edit").dialog({
+                onClose: function () {
+                    $("#tab_list").datagrid("reload");
+                }
+            });
+        });
+        //初始化表格
+        function InitGird() {
+            $('#tab_list').datagrid({
+                title: '会员列表', //表格标题
+                url: 'Member/QueryData', //请求数据的页面
+                sortName: 'ID', //排序字段
+                idField: 'ID', //标识字段,主键
+                iconCls: '', //标题左边的图标
+                width: '98%', //宽度
+                height: $(parent.document).find("#tabs").height() - 50 > 0 ? $(parent.document).find("#tabs").height() - 50 : 300, //高度
+                nowrap: false, //是否换行，True 就会把数据显示在一行里
+                striped: true, //True 奇偶行使用不同背景色
+                collapsible: false, //可折叠
+                sortOrder: 'desc', //排序类型
+                remoteSort: true, //定义是否从服务器给数据排序
+                frozenColumns: [[//冻结的列，不会随横向滚动轴移动
+	                { field: 'cbx', checkbox: true },
+                ]],
+                columns: [[
+                    {
+                        title: '操作', field: 'ID', width: 120, formatter: function (value, rec) {
+                            return '<a style="color:red" href="javascript:;" onclick="EditData(\'' + value + '\');$(this).parent().click();return false;">修改</a>&nbsp<a style="color:red" href="javascript:;" onclick="ResetPassword(\'' + value + '\');$(this).parent().click();return false;">密码重置</a>';
+                        }
+                    },
+                    {
+                        title: '创建时间', field: 'CreateTime', width: 120, formatter: function (value, rec) {
+                            var date = new Date(parseInt(value.substr(6)));
+                            return date.format("yyyy-MM-dd hh:mm");
+                        }
+                    },
+                    { title: '用户名', field: 'UserName', width: 200 },
+                    { title: '姓名', field: 'RealName', width: 100 },
+                    { title: '手机号', field: 'Tel', width: 100 },
+                    { title: '邮箱', field: 'Mail', width: 200 },
+                    { title: 'qq', field: 'QQ', width: 100 },
+                    {
+                        title: '性别', field: 'Sex', width: 60, formatter: function (value, rec) {
+                            if (value == 0)
+                                return '男';
+                            else
+                                return '女'
+                        }
+                    },
+                    { title: '年龄', field: 'Age', width: 50 },
+                    { title: '密码', field: 'Password', width: 250 },
+                    {
+                        title: '状态', field: 'Deleted', width: 60, formatter: function (value, rec) {
+                            if (value == "0")
+                                return '正常';
+                            else
+                                return '已删除';
+                        }
+                    }
+                ]],
+                toolbar: "#tab_toolbar",
+                queryParams: { "action": "query", "name": $("#search_name").val(), "tel": $("#search_tel").val() },
+                pagination: true, //是否开启分页
+                pageNumber: 1, //默认索引页
+                pageSize: 10, //默认一页数据条数
+                rownumbers: true //行号
+            });
+        }
+
+
+        //初始化搜索框
+        function Search() {
+            $('#tab_list').datagrid('options').queryParams.name = $("[name='search_name']").val();;
+
+            $('#tab_list').datagrid('options').queryParams.tel = $("#search_tel").val();
+            $("#tab_list").datagrid("reload");
+            $("#tab_list").datagrid("clearChecked");
+
+        }
+        function GetInputData(id, cmd) {
+            var postdata = "{ \"action\":\"" + cmd + "\",";
+            $("#" + id + " input[type!='checkbox']").each(function () {
+                postdata += "\"" + $(this).attr("name") + "\":\"" + $(this).val() + "\",";
+            });
+            $("#" + id + " input[type='checkbox']").each(function () {
+                postdata += "\"" + $(this).attr("name") + "\":\"" + this.checked + "\",";
+            });
+            postdata = postdata.substr(0, postdata.length - 1);
+            postdata += "}";
+            return eval("(" + postdata + ")");
+        }
+
+        //提交按钮事件
+        function Add() {
+
+            operator = "add";
+            $("#form1").form("clear");
+
+            $("#edit").dialog("open");
+        }
+
+        //修改链接 事件
+        function EditData(id) {
+
+            $("#form1").form("clear");
+            $.post("Member/GetDetail", { "id": id }, function (data) {
+                $("#form1").form('load', data);
+            });
+            operator = "edit";
+            $("#edit").dialog("open");
+
+        }
+
+
+        //修改链接 事件
+        function ResetPassword(id) {
+            if (id == undefined) {
+                alert("密码重置失败");
+                return;
+            }
+            $.messager.confirm('提示', '确认将密码重置为111111吗？', function (r) {
+                if (r) {
+
+                    $.post('Member/ResetPassword', { "ID": id }, function (data) {
+                        $.messager.alert('提示', data, 'info', function () {
+                            $("#tab_list").datagrid("reload");
+                            $('#tab_list').datagrid('clearSelections');
+                        });
+                    });
+                }
+
+            });
+
+        }
+        //删除按钮事件
+        function DelData(id) {
+            $.messager.confirm('提示', '确认删除？', function (r) {
+                if (r) {
+                    var selected = "";
+                    if (id <= 0) {
+                        $($('#tab_list').datagrid('getSelections')).each(function () {
+                            selected += this.ID + ",";
+                        });
+                        selected = selected.substr(0, selected.length - 1);
+                        if (selected == "") {
+                            $.messager.alert('提示', '请选择要删除的数据！', 'info');
+                            return;
+                        }
+                    }
+                    else {
+                        selected = id;
+                    }
+                    $.post('Member/Delete', { "cbx_select": selected }, function (data) {
+                        $.messager.alert('提示', data, 'info', function () {
+                            $("#tab_list").datagrid("reload");
+                            $('#tab_list').datagrid('clearSelections');
+                        });
+                    });
+                }
+            });
+        }
+
+
+        function save() {
+            if (!$("#form1").form("validate")) {
+                return;
+            }
+
+            var ID = $("[name='ID']").val()
+            var UserName = $("[name='UserName']").val();
+            var RealName = $("[name='RealName']").val();
+            var Tel = $("[name='Tel']").val();
+            var Mail = $("[name='Mail']").val();
+            var Sex = $("[name='Sex']").val();
+
+            if (operator == "edit") {
+                $.post("Member/Edit", { "ID": ID, "UserName": UserName, "RealName": RealName, "Tel": Tel, "Mail": Mail, "Sex": Sex }, function (data) {
+                    $.messager.alert('提示', data, 'info', function () {
+
+                    });
+                });
+            }
+            else {
+                $.post("Member/Add", { "UserName": UserName, "RealName": RealName, "Tel": Tel, "Mail": Mail, "Sex": Sex }, function (data) {
+                    var result = eval("(" + data + ")");
+                    $.messager.alert('提示', result.msg, 'info', function () {
+                        if (result.msg.indexOf("成功") > 0) {
+                            $("[name='ID']").val(result.id)
+                            operator = "edit";
+                        }
+                    });
+                });
+            }
+        }
+    </script>
+</body>

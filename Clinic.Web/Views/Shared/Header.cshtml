@@ -1,0 +1,174 @@
+﻿@{
+    ViewBag.Title = "Header";
+}
+
+<!--header begin-->
+<header id="amz-header" class="am-topbar-fixed-top header">
+
+    <div class="am-topbar am-topbar-inverse">
+        <h1 class="am-topbar-brand">
+            <a href="/" class="am-text-ir">Amaze UI</a>
+        </h1>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only " data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+        <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li class="am-active"><a href="/index.html"><span class="am-icon-home">&nbsp;首页</span></a></li>
+                <li class="am-dropdown" data-am-dropdown>
+                    <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                        <span class="am-icon-tags">专题 </span>&nbsp;<span class="am-icon-caret-down"></span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <li><a href="/topic/home/index?keywords=成人高考">成人高考</a></li>
+                        <li><a href="/topic/home/index?keywords=研究生考试">研究生考试</a></li>
+                        <li><a href="/topic/home/index?keywords=司法考试">司法考试</a></li>
+                        <li><a href="/topic/home/index?keywords=托福雅思">托福雅思</a></li>
+                    </ul>
+                </li>
+                <li class="am-dropdown" data-am-dropdown>
+                    <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                        <span class="am-icon-newspaper-o">&nbsp;咨讯</span> <span class="am-icon-caret-down"></span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <li><a href="/article/news.htm">考试咨讯</a></li>
+                        <li><a href="/article/news.htm?categorycode=news-gonggao">官网公告</a></li>
+                        <li><a href="/article/news.htm?categorycode=news-examdata">考试资料</a></li>
+                        <li><a href="/article/news.htm?categorycode=news-review">复习秘籍</a></li>
+                        <li><a href="/article/news.htm?categorycode=news-score">成绩查询</a></li>
+                        <li><a href="/article/news.htm?categorycode=news-jingyan">考试经验</a></li>
+                    </ul>
+                </li>
+                <li><a href="/hotel/index.htm"><span class="am-icon-hotel">&nbsp;酒店</span></a></li>
+                <li><a href="/train/index.htm"><span class="am-icon-university">&nbsp;培训</span></a></li>
+                <li><a href="/book/index"><span class="am-icon-book">&nbsp;书籍</span></a></li>
+
+                <li class="am-dropdown" data-am-dropdown>
+                    <a href="/blog/index.htm" ><span class="am-icon-bold"></span> 博客</a>
+                </li>
+
+                <li class="am-dropdown" data-am-dropdown>
+                    <a href="/toutiao/index.htm"><span class="am-icon-newspaper-o"></span> 头条</a>
+                </li>
+
+                <li><a href="http://bbs.zyldingfang.com" ><span class="am-icon-comments-o"></span> 社区</a></li>
+                <!--淘宝订单 begin-->
+                <li> <a href="/product/index"> <span class="am-icon-shopping-cart"></span> 淘宝</a>  </li>
+                <!--淘宝订单 end-->
+                <li class="am-dropdown" data-am-dropdown>
+                    <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+                        <span class="am-icon-star">考生入口 </span>&nbsp;<span class="am-icon-caret-down"></span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <li><a href="/users/userinfo.htm">订房报名</a></li>
+                        <li><a href="/users/examplace.htm">提交考点</a></li>
+                        <li><a href="/users/roominfo.htm">酒店安排</a></li>
+                        <li><a href="/users/map.htm">步行路线</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!--站内搜索 begin-->
+            <!--登录 start-->
+            <div class="am-topbar-left">
+                <ul class="am-nav am-nav-pills am-topbar-nav">
+                    <!--站内搜索 end-->
+                    <li class="amz-cse">
+
+                        <form action="http://so.zyldingfang.com/search.aspx" method="get" target="_blank" class="cse-form">
+                            <input type="text" required="" name="q" placeholder="搜搜看吧" autocomplete="off">
+                            <button>
+                                <span class="am-icon-search"></span>
+                            </button>
+                        </form>
+                        <script>
+                            var e, t = $("#amz-header").find(".amz-cse"), n = t.find('[name="q"]');
+                            n.on("focus", function () {
+                                t.addClass("am-active"),
+                                clearTimeout(e)
+                            }
+                                ).on("blur", function () {
+                                    e = setTimeout(function () {
+                                        t.removeClass("am-active")
+                                    }
+                                    , 1e3)
+                                }
+                                )
+                        </script>
+                    </li>
+
+                    <!--站内搜索 end-->
+                </ul>
+            </div>
+            <div class="am-topbar-right" style="display:none" id="login">
+                <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm">
+                    <span class="am-icon-user"></span>
+                    <a href="/member/login.htm">登录</a>
+                </button>
+                <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm">
+                    <span class="am-icon-pencil"></span>
+                    <a href="/member/register.htm">注册</a>
+                </button>
+                <!--<a href="/member/qqlogin" style="display:inline-block"><img alt="QQ互联登陆" src="~/Content/images/amazeui/Connect_logo_7.png" style="padding-top: 8px;"></a>-->
+                <span id="qqLoginBtn"></span>
+                <script type="text/javascript">
+                    QC.Login({
+                        btnId: "qqLoginBtn"    //插入按钮的节点id
+                    });
+                </script>
+
+            </div>
+            <!--登录 end-->
+            <!--已登录 start-->
+            <div class="am-topbar-right" style="display:none;" id="logined">
+                <ul class="am-nav am-nav-pills am-topbar-nav">
+
+
+                    <li class="am-dropdown" data-am-dropdown="">
+                        <a class="am-dropdown-toggle " data-am-dropdown-toggle="" href="javascript:;">
+                            <img alt="windy" id="picture" class="figure32" src="" data-bd-imgshare-binded="1">
+                            <span class="am-icon-user" id="username">yehui1989个人中心</span>  <span class="am-icon-caret-down"></span>
+                        </a>
+                        <ul class="am-dropdown-content">
+                            <li>
+                                <a href="/member/personalinfo"><span class="am-icon-user am-text-primary"> 我的空间</span></a>
+                            </li>
+                            <li><a href="/users/userinfo.htm"><span class="am-icon-star am-text-primary"> 订房信息</span></a></li>
+                            <li>
+                                <a href="/blog/index.htm?mine=true"><span class="am-icon-rss-square am-text-primary"> 我的博客</span></a>
+                            </li>
+
+                            <li><a href="/member/loginout" onclick="QC.Login.signOut();"><span class="am-icon-power-off am-text-primary"> 安全退出</span></a></li>
+
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    //设置AJax消息
+
+                    $.getJSON("/member/checklogin", function (json) {
+                        if (json.state == "login") {
+                            $("#logined").hide();
+                            $("#login").show();
+                        }
+                        else if (json.state == "logined") {
+                            $("#logined").show();
+                            $("#login").hide();
+                            $("#username").text(json.username);
+
+                            $("#picture").attr("src", json.picture);
+                        }
+                    });
+
+
+                });
+            </script>
+           
+            <!--已登录 end-->
+        </div>
+    </div>
+</header>
+<!--header end-->

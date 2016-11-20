@@ -1,0 +1,282 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <form id="form_list" name="form_list" method="post">
+        <table id="tab_list"></table>
+        <div id="tab_toolbar" style="padding: 0 2px;">
+            <table cellpadding="0" cellspacing="0" style="width: 100%">
+                <tr>
+                    <td style="padding-left: 2px">
+                        <a href="#" onclick="$('#form_edit input').val('');OpenWin();return false;" id="a_add"
+                           class="easyui-linkbutton" iconcls="icon-add">添加</a> <a href="#" onclick="DelData(0);return false;"
+                                                                                  id="a_del" class="easyui-linkbutton" iconcls="icon-cancel">删除</a>
+                    </td>
+                    <td style="text-align: right; padding-right: 15px">
+                        业务员姓名（可模糊查询）：
+                        <input id="Name" name="Name" type="text" />
+                        手机号：
+                        <input id="Tel" name="Tel" type="text" />
+                        <a href="#" onclick="Search();return false;"
+                           id="btnSearch" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <div id="edit" class="easyui-dialog" title="编辑员工信息" style="width: 300px; height: 250px;"
+         modal="true" closed="true" buttons="#edit-buttons">
+        <form id="form_edit" name="form_edit" method="post" url="Employee/UpdateData">
+            <table class="table_edit">
+                <tr>
+                    <td class="tdal">
+                        登陆账号：
+                    </td>
+                    <td class="tdar">
+                        <input id="EmpNo" name="EmpNo" type="text" class="easyui-validatebox"
+                               required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        密码：
+                    </td>
+                    <td class="tdar">
+                        <input id="Pwd" name="Pwd" type="text" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        姓名：
+                    </td>
+                    <td class="tdar">
+                        <input id="Name" name="Name" type="text" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">
+                        电话：
+                    </td>
+                    <td class="tdar">
+                        <input id="Tel" name="Tel" type="text" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdal">角色权限</td>
+                    <td>
+                        <input class="easyui-combobox" style="width:200px;"
+                               name="RoleIDs" id="RoleIDs">
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+    </div>
+    <div id="edit-buttons">
+        <a id="btn_add" href="javascript:;" class="easyui-linkbutton">提交</a> <a href="javascript:;"
+                                                                                class="easyui-linkbutton" onclick="$('#edit').dialog('close');return false;">取消</a>
+    </div>
+    <div id="edit_tree" class="easyui-dialog" title="员工管理的组织机构，可以直接在列表中选取进行人员切换" closed="true" style="width: 400px; height: 450px;">
+        <div class="easyui-panel" style="width: 385px; height: 380px;">
+            <ul id="tree"></ul>
+        </div>
+        <div id="edit-buttons_tree">
+            <a id="btn_add_tree" href="javascript:;" class="easyui-linkbutton">提交</a> <a href="javascript:;"
+                                                                                         class="easyui-linkbutton" onclick="$('#edit_tree').dialog('close');return false;">取消</a>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function InitRoleIDsCombo() {
+            $("#RoleIDs").combobox({
+                valueField: "ID",
+                textField: "Name",
+                multiple: true,
+                panelHeight: "auto",
+                editable: false,
+                url: 'employee/QueryRoleComboJson'
+            });
+        }
+        $(function () {
+            InitGird();
+        });
+        //初始化表格
+        function InitGird() {
+            $('#tab_list').datagrid({
+                title: '员工管理', //表格标题
+                url: "Employee/QueryData", //请求数据的页面
+                sortName: 'ID', //排序字段
+                idField: 'ID', //标识字段,主键
+                iconCls: '', //标题左边的图标
+                width: '100%', //宽度
+                height: $(parent.document).find("#tabs").height() - 50 > 0 ? $(parent.document).find("#tabs").height() - 50 : 300, //高度
+                nowrap: false, //是否换行，True 就会把数据显示在一行里
+                striped: true, //True 奇偶行使用不同背景色
+                collapsible: false, //可折叠
+                sortOrder: 'desc', //排序类型
+                remoteSort: true, //定义是否从服务器给数据排序
+                frozenColumns: [[//冻结的列，不会随横向滚动轴移动
+	                { field: 'cbx', checkbox: true }
+                ]],
+                columns: [[
+                    {
+                        title: 'ID', field: 'ID', width: 100, formatter: function (value, rec) {
+                            return '<a style="color:red" href="javascript:;" onclick="EditData(' + value + ');$(this).parent().click();return false;">修改</a>&nbsp<a style="color:red" href="javascript:;" onclick="InitTreeData(' + value + ');$(this).parent().click();return false;">设置机构</a>';
+                        }
+                    },
+                    { title: '账号', field: 'EmpNo', width: 150 },
+                    { title: '密码', field: 'Pwd', width: 100 },
+                    { title: '姓名', field: 'Name', width: 150 },
+                    { title: '电话', field: 'Tel', width: 200 },
+                    { title: '角色', field: 'RoleNames', width: 200 }
+
+                ]],
+                toolbar: "#tab_toolbar",
+                queryParams: { "action": "query" },
+                pagination: true, //是否开启分页
+                pageNumber: 1, //默认索引页
+                pageSize: 10, //默认一页数据条数
+                rownumbers: true //行号
+            });
+        }
+
+        //初始化搜索框
+        function InitSearch() {
+            $("#ipt_search").searchbox({
+                width: 200,
+                iconCls: 'icon-save',
+                searcher: function (val, name) {
+                    $('#tab_list').datagrid('options').queryParams.search_type = name;
+                    $('#tab_list').datagrid('options').queryParams.search_value = val;
+                    $('#tab_list').datagrid('reload');
+                },
+                prompt: '请输入要查询的信息'
+            });
+        }
+
+        //打开添加窗口
+        function OpenWin() {
+            $("#edit").dialog("open");
+            InitRoleIDsCombo();
+            $("#edit-buttons a:first").attr("onclick", "Add(0); return false;")
+        }
+        function GetInputData(id, cmd) {
+            var postdata = "{ \"action\":\"" + cmd + "\",";
+            $("#" + id + " input[type!='checkbox']").each(function () {
+                postdata += "\"" + $(this).attr("name") + "\":\"" + $(this).val() + "\",";
+            });
+            $("#" + id + " input[type='checkbox']").each(function () {
+                postdata += "\"" + $(this).attr("name") + "\":\"" + this.checked + "\",";
+            });
+            postdata = postdata.substr(0, postdata.length - 1);
+            postdata += "}";
+            return eval("(" + postdata + ")");
+        }
+
+        //提交按钮事件
+        function Add(uid) {
+            if (!$("#form_edit").form("validate")) {
+                return;
+            }
+            var json = GetInputData('edit', 'submit');
+            var RoleIDs = $('#RoleIDs').combotree('getValues');
+            json.id = uid;
+            json.RoleIDs = RoleIDs;
+            $.post("Employee/UpdateData", json, function (data) {
+                $.messager.alert('提示', data, 'info', function () {
+                    if (data.indexOf("成功") > 0) {
+                        console.info(data);
+                        $("#tab_list").datagrid("reload");
+                        $("#edit").dialog("close");
+                    }
+                });
+            });
+        }
+
+        //修改链接 事件
+        function EditData(uid) {
+            $("#edit").dialog("open");
+            InitRoleIDsCombo();
+            $("#btn_add").attr("onclick", "Add(" + uid + "); return false;")
+
+            $.post("Employee/QueryOneData", {  "id": uid }, function (data) {
+                var dataObj = eval("(" + data + ")"); //转换为json对象
+                //console.info(dataObj);
+                $("#form_edit").form('load', dataObj);
+            });
+        }
+
+        //删除按钮事件
+        function DelData(id) {
+            $.messager.confirm('提示', '确认删除？', function (r) {
+                if (r) {
+                    var selected = "";
+                    if (id <= 0) {
+                        $($('#tab_list').datagrid('getSelections')).each(function () {
+
+                            selected += this.ID + ",";
+                        });
+                        selected = selected.substr(0, selected.length - 1);
+                        if (selected == "") {
+                            $.messager.alert('提示', '请选择要删除的数据！', 'info');
+                            return;
+                        }
+                    }
+                    else {
+                        selected = id;
+                    }
+                    $.post("Employee/DelData", { "cbx_select": selected }, function (data) {
+                        $.messager.alert('提示', data, 'info', function () { $("#tab_list").datagrid("reload"); });
+                        $('#tab_list').datagrid('clearSelections');
+                    });
+                }
+            });
+        }
+        function InitTreeData(empid) {
+
+
+            $("#edit_tree").dialog("open");
+            $("#edit-buttons_tree a:first").attr("onclick", "submitTree(" + empid + "); return false;")
+            $('#tree').tree({
+                url: 'Orgnization/GetOrgTree?EmpID=' + empid,
+
+                checkbox: true,
+                onClick: function (node) {
+                    alert(node.text);
+                },
+                onContextMenu: function (e, node) {
+                    e.preventDefault();
+                    $('#tree').tree('select', node.target);
+                    $('#mm').menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+                }
+            });
+        }
+        function submitTree(empid) {
+            var nodes = $('#tree').tree('getChecked');
+            var s = '';
+            for (var i = 0; i < nodes.length; i++) {
+                if (s != '') s += ',';
+                s += nodes[i].id;
+            }
+            //提交机构树选择结果
+            $.post("Orgnization/SaveByEmpID", {  "OrgID": s, "EmpID": empid }, function (data) {
+                $.messager.alert('提示', data, 'info', function () {
+
+                });
+            });
+
+        }
+        //初始化搜索框
+        function Search() {
+            $('#tab_list').datagrid('options').queryParams.Name = $("#Name").val();
+            $('#tab_list').datagrid('options').queryParams.Tel = $("#Tel").val();
+            $("#tab_list").datagrid("reload");
+            $("#tab_list").datagrid("clearChecked");
+
+        }
+    </script>
+</body>

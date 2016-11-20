@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "酒店推荐";
+    ViewBag.Description = "酒店";
+    ViewBag.Keywords = "酒店推荐,酒店,状元乐考试订房";
+    string mine = ViewBag.mine as string;
+    var pagination = ViewBag.Pagination as Windy.WebMVC.Web2.ViewsModels.Pagination;
+    var categoryCode = pagination.CategoryCode;
+    var categoryName = pagination.CategoryName;
+    var order = pagination.Order;
+    var myhotels = ViewBag.myhotels as List<Windy.WebMVC.Web2.Models.Hotel>;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="icon" href="/logo.ico" type="image/x-icon" />
+
+<div class="am-container " id="main">
+
+    <div class="am-g am-g-fixed">
+        <div class="am-u-md-8">
+            <ol class="am-breadcrumb">
+                <li><a href="/index.html" class="am-icon-home">首页</a></li>
+                <li><a href="/@pagination.ActionUrl">酒店推荐</a></li>
+                @if (!string.IsNullOrEmpty(categoryCode))
+                {
+                    <li class="am-active" href="/@pagination.ActionUrl?categorycode=@categoryCode">@categoryName</li>
+                }
+            </ol>
+            <div class="banner_navbg">
+                <div class="am-g">
+                    <div class="am-u-md-12">
+                        <div class="banner_nav am-fr">
+                            <span class="am-icon-caret-right">
+                                排序：
+                            </span>
+                            @if (string.IsNullOrEmpty(order) || order == "default")
+                            {
+                                <a class="banner_hover" href="/@pagination.ActionUrl?categorycode=@categoryCode&&order=default">默认</a>
+                                <a href="/@pagination.ActionUrl?categorycode=@categoryCode&&order=latest">最新</a>
+                                <a href="/@pagination.ActionUrl?categorycode=@categoryCode&&order=hot">最热</a>
+                            }
+                            else if (order == "latest")
+                            {
+                                <a href="/@pagination.ActionUrl?categorycode=@categoryCode&&order=default">默认</a>
+                                <a class="banner_hover" href="/@pagination.ActionUrl?categorycode=@categoryCode&&order=latest">最新</a>
+                                <a href="/@pagination.ActionUrl?categorycode=@categoryCode&&order=hot">最热</a>
+                            }
+                            else if (order == "hot")
+                            {
+                                <a href="/@pagination.ActionUrl?categorycode=@categoryCode&&order=default">默认</a>
+                                <a href="/@pagination.ActionUrl?categorycode=@categoryCode&&order=latest">最新</a>
+                                <a class="banner_hover" href="/@pagination.ActionUrl?categorycode=@categoryCode&&order=hot">最热</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (myhotels != null)
+            {
+                foreach (var item in myhotels)
+                {
+                    <div class="inner-box blog-img">
+                        <div class="am-g">
+                            <div class="am-u-sm-3">
+                                <a class="blog-a-curse" target="_blank" href="/hotel/view/@(new HtmlString(item.ID.ToString() + ".htm"))">
+                                    <img alt="" class="am_img animated"  style="display: inline; " src="~/Content/images/amazeui/loading.gif" data-original="@item.ImagePath">
+                                </a>
+                            </div>
+                            <div class="am-u-sm-9">
+                                <div class="blog-header">
+                                    <a  target="_blank" href="/@pagination.ActionUrl?categorycode=@item.CategoryCode" class="blog-category">@item.CategoryName</a>
+                                    <h2><a target="_blank" href="/hotel/view/@(new HtmlString(item.ID.ToString()+".htm"))">@item.Title</a></h2>
+                                </div>
+
+                                <p class="blog-ext">
+                                    <span class="blog-ext-ico">
+                                        <i class="am-icon-user  blog-ext-ico"></i>
+                                        @item.CreateName
+                                    </span>
+                                    <span class="blog-ext-ico"><i class="am-icon-clock-o  blog-ext-ico"></i>@item.ModifyTime.ToString("yyyy-MM-dd HH:mm")</span>
+                                    <span class="blog-ext-ico">
+                                        <i class="am-icon-eye  blog-ext-ico"></i>
+                                        @item.ViewCount
+                                    </span>
+                                </p>
+                                <p class="blog-content-show">
+                                    @item.Summary...
+                                </p>
+                                <span class="blog-keyword-show">@item.Keywords</span>
+                                
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <center>
+                @Html.Partial("_paginate")
+            </center>
+
+        </div>
+        <div class="am-u-md-4" id="my-side">
+            @Html.Partial("sidebox")
+            @Html.Partial("sidebox2")
+            @Html.Partial("sidebox3")
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<script type="text/javascript">
+
+   
+    $(function () {
+        $(".blog-keyword-show").each(function () {
+            var ht = $(this).html();
+            $(this).html('');
+            if (ht != '' && ht != undefined && ht != ' ') {
+                var arr = ht.split(",");
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].trim() != "") {
+                        $(this).append("<a class='tag' target='_blank' href='http://so.zyldingfang.com/search.aspx?q=" + arr[i] + "'>" + arr[i] + "</a>");
+                    }
+                }
+            }
+        })
+    });
+    $("img").lazyload({ effect: 'fadeIn' });
+</script>

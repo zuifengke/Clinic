@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="cont-box-in">
+    <div style="width: 1024px; float: left">
+        <div style="width:200px;height:300px; float: left;">
+            <ul id="ul_menus"></ul>
+
+        </div>
+        <div style="width: 600px; float: left">
+            <div class="cont-box-form">
+                <form id="form1">
+                    <div class="line">
+                        <label><em>*</em>类型名称：</label>
+                        <input name="Name" id="Name" missingmessage="名称不能为空" required='true' class='easyui-validatebox' style="width: 300px;" />
+                    </div>
+                    <div class="line">
+                        <label><em>*</em>类型代码：</label>
+                        <input name="Code" id="Code" missingmessage="代码不能为空" required='true' class='easyui-validatebox' style="width: 300px;" />
+                    </div>
+                    <div class="btn">
+                        <a>
+                            <input id="btn_submit" class="submit" type="button" name="保存" value="" onclick="save()" />
+                        </a>
+                        <a>
+                            <input id="btn_cancel" class="return" type="reset" name="重置" value="" />
+                        </a>
+                    </div>
+                    <input type="hidden" name="ID" id="ID" value="" />
+                    <input type="hidden" name="ParentID" id="ParentID" value="" />
+                </form>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both;">
+        <div id="menu1" class="easyui-menu" style="width: 120px;">
+            <div data-options="iconCls:'icon-add'" id="cmbtn_add">新增</div>
+            <div data-options="iconCls:'icon-remove'" id="cmbtn_del">删除</div>
+        </div>
+        <div id="win"></div>
+    </div>
+</div>
+<script>
+    var operator;
+    $(document).ready(function () {
+        initTree();
+        $("#cmbtn_add").click(function () {
+            AddCategory();
+        });
+        $("#cmbtn_del").click(function () {
+            DelCategory()
+        });
+
+    });
+
+    //新增
+    function AddCategory() {
+        $("#form1").form("clear");
+        var node = GetTreeNode();
+        if (node) {
+            //帮隐藏表单菜单ID赋值
+            $("#ParentID").val(node.id);
+            operator = "add";
+        }
+        currNode = node;
+    }
+    //删除
+    function DelCategory() {
+        var node = $("#ul_menus").tree("getSelected");
+
+        if (node != undefined) {
+            if (node.id == 0) {
+                $.messager.alert('提示', '根节点不允许删除！', 'info');
+                return;
+            }
+            var msg = "确认删除？";
+            $.messager.confirm('提示', msg, function (r) {
+                if (r) {
+
+                    $.post("Category/Delete", { "ID": node.id }, function (data) {
+                        $.messager.alert('提示', data, 'info', function () {
+                            if (data.indexOf("成功")>0)
+                                $("#ul_menus").tree("remove", node.target);
+                        });
+                    });
+                }
+            });
+        } else {
+            $.messager.alert('提示', '请选择节点！', 'info');
+        }
+    }
+    function GetTreeNode() {
+        var node = $("#ul_menus").tree("getSelected");
+        return node;
+    }
+    //初始化菜单
+    function initTree() {
+        $("#ul_menus").tree({
+            url: "Category/GetTreeJson",
+            onContextMenu: function (e, node) {
+                e.preventDefault();
+                $(this).tree('select', node.target);
+                $('#menu1').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            },
+            onClick: treeNodeClick
+        });
+    }
+    var currNode;
+    function treeNodeClick(node) {
+        var node = $("#ul_menus").tree("getSelected");
+        SetMenuID();
+        currNode = node;
+        //AR.Global.operator = "Update";
+    }
+
+    //获取选中菜单ID
+    function SetMenuID() {
+        var node = $("#ul_menus").tree("getSelected");
+        if (node != undefined && node.id != null) {
+            $("#MenuID").val(node.id);
+            initEdit(node.id);
+        } else {
+            $("#form1").form("clear");
+        }
+        return null;
+    }
+
+    //加载编辑框
+    function initEdit(menuid) {
+        $("#form1").form("clear");
+
+        $.post("Category/GetDetail", { "id": menuid }, function (data) {
+            $("#form1").form('load', data);
+        });
+        operator = "edit";
+    }
+    function save() {
+        var node = $("#ul_menus").tree("getSelected");
+        if (node == null) {
+            $.messager.alert('提示', '请选择节点！', 'info');
+            return;
+        }
+        if (operator == "edit" && node.id == 0) {
+            $.messager.alert('提示', '根节点不允许编辑！', 'info');
+            return;
+        }
+        if (!$("#form1").form("validate")) {
+            return;
+        }
+
+        var ID = $("[name='ID']").val()
+        var Name = $("[name='Name']").val();
+        var Code = $("[name='Code']").val();
+        var ParentID = $("[name='ParentID']").val();
+
+        if (operator == "edit") {
+            $.post("Category/Edit", { "ID": ID, "Name": Name, "Code": Code, "ParentID": ParentID }, function (data) {
+                //$.messager.alert('提示', data, 'info', function () {
+                //    if (data.indexOf("成功") > 0) {
+                //        $("#ul_menus").tree("update", {
+                //            target: currNode.target,
+                //            text: $("[name='Name']").val()
+                //        });
+                //    }
+                //});
+                $.messager.show({
+                    title: '提示',
+                    msg: data,
+                    timeout: 3000,
+                    showType: 'slide'
+                });
+                if (data.indexOf("成功") > 0) {
+                    $("#ul_menus").tree("update", {
+                        target: currNode.target,
+                        text: $("[name='Name']").val()
+                    });
+                }
+            });
+        }
+        else {
+            $.post("Category/Add", { "Name": Name, "Code": Code, "ParentID": ParentID }, function (data) {
+                var result = eval("(" + data + ")");
+                //$.messager.alert('提示', result.msg, 'info', function () {
+                   
+                //});
+                $.messager.show({
+                    title: '提示',
+                    msg: result.msg,
+                    timeout: 3000,
+                    showType: 'slide'
+                });
+                if (result.msg.indexOf("成功") > 0) {
+                    $("#ul_menus").tree("append", {
+                        parent: currNode.target,
+                        data: [{
+                            id: result.id,
+                            text: $("[name='Name']").val()
+                        }]
+                    });
+
+                }
+            });
+        }
+    }
+</script>

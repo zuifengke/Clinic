@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "SendMailView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var email = ViewBag.Email as string;
+}
+
+<div class="am-g">
+    <div class="am-container">
+
+
+        <div class="am-u-md-7">
+            <div class="am-panel am-panel-secondary">
+                <div class="am-panel-hd">
+                    <h4 class="am-panel-title"><i class="am-icon-envelope-o"></i> 发送验证邮件</h4>
+                </div>
+                <div class="am-panel-bd">
+                    <h3><i class="am-icon-btn am-success am-icon-shield"></i> 状元乐提示：</h3>
+                    <ul>
+                        <li>已经把相关信息发送到 @email 邮箱</li>
+                       
+                        <li>
+                            <p>如果你没有收到验证码，请重新发送</p>
+                            <a href="/member/sendmail?email=@email&type=pwd" id="SendMail" class="am-btn am-btn-success am-btn-sm btn-loading-example am-btn-loading" data-am-loading="{spinner: 'circle-o-notch', loadingText: '不能连续发送邮件...'}"> 重新发布激活链接» </a>
+                        </li>
+
+                    </ul>
+                    <p></p>
+                    <p>
+                    </p>
+
+
+                    <script type="text/javascript">
+
+                        $(document).ready(function () {
+
+                            var $btn = $("#SendMail");
+                            $btn.button('loading');
+                            setTimeout(function () {
+                                $btn.button('reset');
+                            }, 5000);
+
+
+
+                        });
+                    </script>
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="am-u-md-5 am-article-lead">
+            <h4><i class="am-icon-info"></i> 没有收到邮件</h4>
+            <ol>
+                <li>请确认是否填写正确的邮箱地址</li>
+                <li>有些邮件需要等待1~10分钟的响应时间。</li>
+                <li>请注意查看您邮箱中的垃圾邮件，可能 www.zyldingfang.com 的邮件被误杀了</li>
+                <li>可能是本站的邮件系统繁忙或者故障，请稍候再试或者联系管理员</li>
+                <li>如果怎么都收不到邮件，可以联系管理员！<br>邮箱：<a href="mailto:yehui1989@qq.com">yehui1989@@qq.com</a><br></li>
+            </ol>
+
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,208 @@
+﻿@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<hr class="am-article-divider">
+<div class="am-g">
+
+    <div class="am-container">
+        <div class="am-panel-group" id="accordion">
+            @*<div class="am-panel am-panel-secondary">
+                    <div class="am-panel-hd">
+                        <h1 class="am-panel-title am-collapsed" data-am-collapse="{parent: '#accordion', target: '#do-not-say-1'}">
+                            <i class="am-icon-users"></i> 第三方账户一键注册
+                        </h1>
+                    </div>
+                    <div id="do-not-say-1" class="am-panel-collapse am-collapse" style="height: 0px;">
+                        <div class="am-panel-bd">
+                            <hr>
+                            <a href="https://api.weibo.com/oauth2/authorize?client_id=3965582335&amp;redirect_uri=http://www.tngou.net/bind/sina&amp;response_type=code&amp;state=http://www.tngou.net/action/reg/execute" class="am-btn am-btn-secondary am-btn-sm am-btn-block am-round"><i class="am-icon-weibo am-icon-sm"></i> 新浪微博</a>
+                            <br>
+                            <a href="https://graph.qq.com/oauth2.0/authorize?client_id=101208506&amp;redirect_uri=http://www.tngou.net/bind/qq&amp;response_type=code&amp;state=http://www.tngou.net/action/reg/execute" class="am-btn am-btn-success am-btn-sm am-btn-block am-round"><i class="am-icon-qq am-icon-sm"></i> 腾讯QQ</a>
+
+                            <hr>
+                        </div>
+                    </div>
+                </div>*@
+            <div class="am-panel am-panel-secondary">
+                <div class="am-panel-hd">
+                    <h1 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-2'}">
+                        <i class="am-icon-envelope-o"></i> 邮件注册 <small>（没有第三方账户，请点击  邮件注册 进行用户注册 ！）</small>
+                    </h1>
+                </div>
+                <div id="do-not-say-2" class="am-panel-collapse am-collapse am-in">
+                    <div class="am-panel-bd">
+                        <hr>
+                        <form class="am-form am-form-horizontal" id="form_user" action="/member/register" method="POST">
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">用户账号</label>
+                                <div class="am-u-md-6">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-user"></i></span>
+                                        <input type="text" class="am-form-field" name="username" id="f_name" minlength="2" maxlength="10" placeholder="账号" required="">
+                                    </div>
+
+                                </div>
+                                <div class="am-u-md-3">
+                                    <small>输入你的名字，让我们记住你。</small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">手机号</label>
+                                <div class="am-u-md-6">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-mobile"></i></span>
+                                        <input type="number" class="am-form-field" name="tel" id="f_tel" minlength="11" maxlength="11" placeholder="手机号" required="">
+                                    </div>
+
+                                </div>
+                                <div class="am-u-md-3">
+                                    <small>输入你的手机号。</small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">电子邮件 / Email</label>
+                                <div class="am-u-md-6">
+                                    <div class="am-input-group  am-input-group-primary">
+                                        <span class="am-input-group-label"><i class="am-icon-envelope-o am-icon-fw"></i></span>
+                                        <input type="email" class="am-form-field" name="mail" id="f_email" placeholder="邮箱 " required="">
+                                    </div>
+
+                                </div>
+                                <div class="am-u-md-3">
+                                    <small>输入你常用的邮箱。</small>
+                                </div>
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">密码</label>
+                                <div class="am-u-md-6">
+                                    <div class="am-input-group  am-input-group-warning">
+                                        <span class="am-input-group-label"><i class="am-icon-key am-icon-fw"></i></span>
+                                        <input type="password" class="am-form-field" name="password" id="f_pwd" placeholder="密码" required="">
+                                    </div>
+
+                                </div>
+                                <div class="am-u-md-3">
+                                    <small>最小值为6位（字母区分大小写）</small>
+                                </div>
+                            </div>
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">确认密码</label>
+                                <div class="am-u-md-6">
+                                    <div class="am-input-group  am-input-group-warning">
+                                        <span class="am-input-group-label"><i class="am-icon-key am-icon-fw"></i></span>
+                                        <input type="password" name="password2" id="f_pwd2" class="am-form-field" placeholder="确认密码 " required="">
+                                    </div>
+
+                                </div>
+                                <div class="am-u-md-3">
+                                    <small></small>
+                                </div>
+                            </div>
+
+
+
+                            <div class="am-form-group">
+                                <label for="user-email" class="am-u-md-3 am-form-label">性别</label>
+                                <div class="am-u-md-6">
+
+                                    <label class="am-radio-inline">
+                                        <input type="radio" value="1" checked="checked" name="gender"> 男
+                                    </label>
+                                    <label class="am-radio-inline ">
+                                        <input type="radio" name="gender" value="2"> 女
+                                    </label>
+                                </div>
+                                <div class="am-u-md-3">
+                                    <small></small>
+                                </div>
+                            </div>
+
+
+
+                            <div class="am-form-group">
+                                <div class="am-u-sm-6 am-u-sm-push-3">
+                                    <div id="error_msg" style="color: #c00;display:none;">正在审核，请您耐心等待...</div>
+
+                                    <button id="forum-user-reg" type="submit" name="sub" class="am-btn am-btn-primary am-btn-block btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">注册个账号</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <script type="text/javascript">
+                            var $btn = $('#forum-user-reg');
+                            var pwd = "";
+                            var pwd2 = "";
+                            $('#form_user').bind('form-pre-serialize', function (event, form, options, veto) {
+                                pwd = $('#f_pwd').val();
+                                pwd2 = $('#f_pwd2').val();
+                                $('#f_pwd').val($('#f_pwd').val());
+                                $('#f_pwd2').val($('#f_pwd2').val());
+                            });
+                            $('#form_user').ajaxForm({
+                                beforeSubmit: function (a, f, o) {
+                                    if ($('#f_email').val().length == 0) {
+                                        $('#f_pwd').val(pwd);
+                                        $('#f_pwd2').val(pwd2);
+                                        $('#f_email').focus();
+                                        $('#error_msg').html(" 邮箱地址必须填写");
+                                        $('#error_msg').show();
+                                        return false;
+                                    }
+                                    if ($('#f_name').val().length < 2) {
+                                        $('#f_name').focus();
+                                        $('#error_msg').html(" 账号必须填写,请填写2~10个字符串！");
+                                        $('#error_msg').show("fast");
+                                        $('#f_pwd').val(pwd);
+                                        $('#f_pwd2').val(pwd2);
+                                        return false;
+                                    }
+                                    if (pwd.length < 6 || $('#f_pwd').val() != $('#f_pwd2').val()) {
+                                        $('#f_pwd').val(pwd);
+                                        $('#f_pwd2').val(pwd2);
+                                        $('#f_pwd').focus();
+                                        $('#error_msg').html(" 两次密码必须填写，且要匹配 (最少6位)");
+                                        $('#error_msg').show();
+                                        return false;
+                                    }
+                                    var notify = $("input[name=gender]:checked").val();
+                                    if (!notify) {
+                                        $('#error_msg').html(" 请选择性别");
+                                        $('#error_msg').show();
+                                        return false;
+                                    }
+
+                                    $('#error_msg').html(" 正在审核，请您耐心等待...");
+                                    $('#error_msg').show();
+                                    $btn.button('loading');
+                                },
+                                success: function (html) {
+                                    if (html.length > 0) {
+                                        $('#f_pwd').val(pwd);
+                                        $('#f_pwd2').val(pwd2);
+                                        $('#error_msg').hide();
+                                        $('#error_msg').html(html);
+                                        $('#error_msg').show();
+                                        $btn.button('reset');
+                                    } else {
+                                        $btn.button('reset');
+                                        //location.href = "http://www.tngou.net/reg/sendmail?email=" + $('#f_email').val() + "&type=activate";
+                                        location.href = "/";
+                                    }
+                                }
+                            });
+                        </script>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

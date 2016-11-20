@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/ckeditor.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/config.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/lang/zh.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/flash/dialogs/flash.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/flash/plugin.js"></script>
+    <script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/flash/lang/zh.js"></script>
+    
+</head>
+<body>
+    <div>
+        <textarea name="Content"></textarea>
+    </div>
+    <script>
+        CKEDITOR.plugins.addExternal('flash', '/plugins/flash/', 'plugin.js');
+        var editor = CKEDITOR
+            .replace('Content', {
+                toolbar: 'full-all',
+                height: 350,
+                extraPlugins: 'flash'
+            });
+
+    </script>
+</body>
+    
+</html>

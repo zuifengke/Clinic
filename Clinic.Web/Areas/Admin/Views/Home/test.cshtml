@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "test";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<form action="Admin/Home/Insert" method="post">
+    <table>
+        <tr>
+            <th>
+                <label for="Content">内容：</label>
+            </th>
+            <td>
+                <textarea id="Content" name="Content" style="width:1024px"></textarea>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script src="//cdn.bootcss.com/ckeditor/4.5.9/plugins/autolink/plugin.js"></script>
+<script type="text/javascript">
+    initEditor();
+    function initEditor() {
+        CKEDITOR.replace('Content', { toolbar: 'Full' });
+    }
+
+</script> 
+<h2>test</h2>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xml>
+  <ToUserName><![CDATA[oi_KMuC_6zjjxzch6slzCHh5kw_8]]></ToUserName>
+  <FromUserName><![CDATA[gh_335dac269805]]></FromUserName>
+  <CreateTime>1467074665</CreateTime>
+  <MsgType><![CDATA[text]]></MsgType>
+  <Content><![CDATA[您点击了view按钮，将打开网页：http://weixin_sandbox.3w.net579.com/weixin/Account]]></Content>
+</xml>

@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "QQConnect";
+}
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript"
+        src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101322948" data-redirecturi="http://www.zyldingfang.com/member/qqconnect" charset="utf-8"></script>
+<script>
+
+    QC.Login.getMe(function (openId, accessToken) {
+        //alert(["当前登录用户的", "openId为：" + openId, "accessToken为：" + accessToken].join("\n"));
+        var paras = {};
+        QC.api("get_user_info", paras)
+            .success(function (s) {//成功回调
+                var NickName = s.data.nickname;
+                var Level = s.data.level;
+                var Vip = s.data.vip;
+                var Gender = s.data.gender;
+                var Figureurl = s.data.figureurl;
+                $.post("/member/QQConnect", {
+                    "NickName": NickName, "Level": Level, "Vip": Vip,
+                    "Gender": Gender, "Figureurl": Figureurl, "OpenID": openId
+                }, function (data) {
+                    if (data == "") {
+                        window.close();
+                        //window.opener.location.reload();
+                        if (window.opener.location.href.indexOf("login") > 0)
+                            window.opener.location.href = "/";
+                        else
+                            window.opener.location.reload();
+                    }
+                    else {
+                        var result = eval(data);
+                        window.close();
+                        window.opener.location.href = "/member/qqregister?OpenID=" + openId + "&NickName=" + NickName + "&Gender=" + Gender + "&ID=" + result.ID;
+                    }
+                });
+
+            })
+            .error(function (f) {//失败回调
+                //alert("获取用户信息失败！");
+            })
+            .complete(function (c) {//完成请求回调
+                //alert("获取用户信息完成！");
+            });
+        //window.close();
+        //window.opener.location.href = "/member/qqregister";
+        //window.opener.location.reload();
+
+    });
+</script>

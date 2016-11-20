@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "SendText";
+}
+
+<h2>发送文本</h2>
+
+<div>
+    @using (Html.BeginForm("SendText", "Home", FormMethod.Post))
+    {
+        <textarea id="text" name="text"></textarea>
+        <button type="submit">发送</button>
+    }
+</div>

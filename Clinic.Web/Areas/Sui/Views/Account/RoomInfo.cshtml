@@ -1,0 +1,51 @@
+﻿@using Windy.WebMVC.Web2.Models
+@{
+    ViewBag.Title = "酒店房卡";
+    Layout = "~/Areas/sui/Views/Shared/_Layout.cshtml";
+    List<Users> roomies = ViewData["roomies"] as List<Users>;
+}
+@model Windy.WebMVC.Web2.Models.Users
+
+<div class="content profile">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left" href="/sui/account/index">
+            <span class="icon icon-left"></span>
+        </a>
+        <h1 class="title">酒店安排</h1>
+    </header>
+    <div class="content">
+        <div class="card demo-card-header-pic">
+            <div valign="bottom" class="card-header color-white no-border no-padding">
+                <img class='card-cover' src="~/Content/Images/sui/room.jpg" alt="">
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <p>@Model.Hotel &nbsp; 房间号：@Model.Room &nbsp;</p>
+
+                    <p> 房费：@Model.HotelExpense &nbsp;已交：@Model.PayMoney &nbsp;</p>
+                    <p> 多退少补：@Model.MoneyBack</p>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <p>
+                    室友：
+                    @if (roomies != null)
+                    {
+                        foreach (Users item in roomies)
+                        {
+                            if (Model.ID == item.ID)
+                            {
+                                continue;
+                            }
+                            <a href="/sui/account/RoomieInfo/@item.ID">@item.Name </a>
+                        }
+                    }
+                </p>
+            </div>
+        </div>
+
+        @Html.Partial("Advert")
+    </div>
+
+</div>

@@ -1,0 +1,97 @@
+﻿@using Windy.WebMVC.Web2.Models
+@using Windy.WebMVC.Web2;
+@{
+    ViewBag.Title = "服务帮助";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Category> categorys = ViewBag.Categorys;
+    List<Article> articles = ViewBag.Articles;
+}
+<style>
+</style>
+<div class="tr-banner">
+    <div class="am-g am-container am-scrollspy-init am-scrollspy-inview am-animation-scale-up" data-am-scrollspy="{animation: 'scale-up', repeat: false}">
+        <h1><i class="am-icon-book"></i>&nbsp;文档</h1>
+    </div>
+</div>
+<div class="am-container tr-main-container" id="docs">
+    <div class="am-g am-g-fixed">
+        <div class="am-u-md-3 am-hide-sm">
+            <div class="am-sticky-placeholder" style="height: 121px; margin: 0px;">
+                <div data-am-scrollspy-nav="" data-am-sticky="{top:80}" style="margin: 0px;" class="">
+                    <ul class="tr-nav-doc">
+                        @if (categorys != null)
+                        {
+                            foreach (var item in categorys)
+                            {
+                                <li class="tr-nav-doc-header">@item.Name</li>
+                                if (articles != null)
+                                {
+                                    foreach (var article in articles.FindAll(m => m.CategoryID == item.ID))
+                                    {
+                                        <li class="tr-nav-doc-children"><a href="#@article.ID">@article.Title</a></li>
+                                    }
+                                }
+                            }
+                        }
+
+                        @*<li class="tr-nav-doc-header">用户指南</li>
+
+                            <li class="tr-nav-doc-children"><a href="#trcloud_intro" class="am-active">泰然云简介</a></li>
+
+                            <li class="tr-nav-doc-children"><a href="#quick_guide" class="">快速上手指南</a></li>
+
+                            <li class="tr-nav-doc-header">常见问题</li>*@
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="am-u-md-9 am-u-sm-10 am-u-sm-centered am-u-md-uncentered tr-article-list tr-docs">
+
+            @if (categorys != null)
+            {
+                foreach (var item in categorys)
+                {
+                    <h3 id="guide">@item.Name</h3>
+                    <hr>
+                    if (articles != null)
+                    {
+                        foreach (var article in articles.FindAll(m => m.CategoryID == item.ID))
+                        {
+
+                            <h4 id="@article.ID">@article.Title</h4>
+                            <blockquote>
+
+                                @Html.Raw(article.Content)
+                            </blockquote>
+                        }
+                    }
+                }
+            }
+
+            @*<div class="am-g">
+                    <h3 id="guide">用户指南</h3>
+                    <hr>
+
+                    <h4 id="trcloud_intro">泰然云简介</h4>
+
+                    <blockquote><p>泰然云是一个提供按需分配、弹性可伸缩的计算能力的公有云服务。通过使用泰然云， 您不必再为了软件开发、测试、以及应用/服务上线运行而购买物理设备了， 也不必投入人力物力进行设备维护。 您可以直接在云中迅速得到任意您需要的计算、存储、网络、安全等方方面面的能力， 并可以随时调整它们的规模。</p><p>泰然云执行按用量收费原则，即，您只需要为您使用了的资源付费。 而且，泰然云是按秒计费的，泰然云中的任何资源都是可以随时调整尺寸/规模的， 这最大程度地降低了您的费用、并为弹性计算提供了计费基础。</p></blockquote>
+
+
+                    <h4 id="quick_guide">快速上手指南</h4>
+
+                    <blockquote><p>想要最快开始使用泰然云，最佳途径就是使用 WEB 控制台。 本篇指南旨在帮助新用户快速上手创建一个主机， 因此只会涉及最基本功能，不会详细探讨泰然云的全部功能。</p><p>如果您需要了解如何使用 SDN 网络功能来构建自己的网络拓扑，请参考网络拓扑指南。</p></blockquote>
+
+
+                </div>
+
+                <div class="am-g">
+                    <h3 id="qa">常见问题</h3>
+                    <hr>
+
+                </div>*@
+
+        </div>
+    </div>
+</div>

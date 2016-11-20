@@ -1,0 +1,61 @@
+﻿@{
+    var pagination = ViewBag.Pagination as Windy.WebMVC.Web2.ViewsModels.Pagination;
+    var actionUrl = pagination.ActionUrl;// book/index
+    var categoryCode = pagination.CategoryCode;
+    var order = pagination.Order;
+    var mine = ViewBag.mine as string;
+    var keyword = pagination.Keyword;
+}
+
+<div class="pagination pagination-lg">
+    <ul>
+        @if (pagination.TotalPageCount > 0)
+        {
+            if (pagination.CurrentPageIndex != 1)
+            {
+                <li>
+                    <a rel="prev" href="/@actionUrl/@pagination.PreviousPageIndex?mine=@mine&categorycode=@categoryCode&&order=@order&&keyword=@keyword" class="prev">上一页</a>
+                </li>
+            }
+            if (pagination.CurrentPageIndex > 4)
+            {
+                <li>
+                    <a href="/@actionUrl/1?mine=@mine&categorycode=@categoryCode&&order=@order&&keyword=@keyword" class="">1</a>
+                </li>
+                                <li>
+                                    <span>...</span>
+                                </li>
+            }
+            for (int i = pagination.StartPage; i <= pagination.EndPage; i++)
+            {
+                if (i == pagination.CurrentPageIndex)
+                {
+                    <li class="active">
+                        <span class="current">@pagination.CurrentPageIndex</span>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="/@actionUrl/@i?mine=@mine&categorycode=@categoryCode&&order=@order&&keyword=@keyword" class="">@i</a>
+                    </li>
+                }
+            }
+
+            if (pagination.TotalPageCount - pagination.CurrentPageIndex >= 4)
+            {
+                <li><span>...</span></li>
+                                <li>
+                                    <a href="/@actionUrl/@pagination.TotalPageCount?mine=@mine&categorycode=@categoryCode&&order=@order&&keyword=@keyword" class="">@pagination.TotalPageCount</a>
+                                </li>
+
+            }
+            if (pagination.CurrentPageIndex < pagination.TotalPageCount)
+            {
+                <li class="next ">
+                    <a href="/@actionUrl/@pagination.NextPageIndex?mine=@mine&categorycode=@categoryCode&&order=@order&&keyword=@keyword" class="next">下一页</a>
+                </li>
+            }
+        }
+    </ul>
+</div>

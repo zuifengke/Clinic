@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "SaveAdvice";
+    var message = ViewBag.Message as string;
+    var url = ViewBag.Url as string;
+}
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<link href="//cdn.bootcss.com/layer/2.3/skin/layer.css" rel="stylesheet">
+<script src="//cdn.bootcss.com/layer/2.3/layer.js"></script>
+
+
+<script type="text/javascript">
+    $(function () {
+        if ("@message" != null || "@message" != "") {
+
+            layer.alert('@message', {
+                skin: 'layui-layer-moilv' //样式类名
+			    , closeBtn: 0
+			    , icon: 0
+            }, function () {
+                if ("@url" == null || "@url" == "") {
+                    history.back();
+                } else {
+                    location.href = "@url";
+                }
+            });
+        } else {
+            if ("@url" == null || "@url" == "") {
+                history.back();
+            } else {
+                location.href = "@url";
+            }
+        }
+    })
+</script>
+
+
+<body style="background: #f4f4f4 !important;color: #666;">
+    <div class="layui-layer-shade" id="layui-layer-shade1" times="1" style="z-index:19891014; background-color:#000; opacity:0.3; filter:alpha(opacity=30);">
+    </div>
+    <div class="layui-layer layui-anim layui-layer-dialog layui-layer-moilv" id="layui-layer1" type="dialog" times="1" showtime="0" contype="string" style="z-index: 19891015; top: 2px; left: 553px;">
+        <div class="layui-layer-title" style="cursor: move;" move="ok">
+            信息
+        </div><div class="layui-layer-content layui-layer-padding">
+            <i class="layui-layer-ico layui-layer-ico0">
+            </i>@message
+        </div><span class="layui-layer-setwin">
+        </span>
+        <div class="layui-layer-btn">
+            <a class="layui-layer-btn0">
+                确定
+            </a>
+        </div>
+    </div>
+</body>

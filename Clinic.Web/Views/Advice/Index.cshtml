@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+
+<div class="am-container " id="main">
+    <div class="am-g am-g-fixed">
+        <div class="am-u-md-8">
+            <form class="am-form" action="/advice/SaveAdvice" method="post" enctype="multipart/form-data">
+                <fieldset>
+                    <legend>意见或留言</legend>
+                    <div class="am-form-group">
+                        <label for="advice-content">请输入您的意见或留言</label>
+                        <div style="padding:5px">
+                            <textarea name="Content" id="Content"></textarea>
+                        </div>
+                    </div>
+
+                    <script>
+
+                        initeditor();
+
+                    </script>
+                    <div class="am-checkbox">
+                        <label>
+                            <input id="index-advice-checkbox" type="checkbox" onclick="niming();"> 匿名
+                        </label>
+                    </div>
+                    <script type="text/javascript">
+                        function niming() {
+                            if ($('#index-advice-checkbox').is(':checked')) {
+                                $("#index-advice-userinputinfo").hide();
+                            } else {
+                                $("#index-advice-userinputinfo").show();
+                            }
+                        }
+                    </script>
+                    <div id="index-advice-userinputinfo" style="display: block;">
+                        <div class="am-input-group am-input-group-primary">
+                            <span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
+                            <input type="text" name="Name" class="am-form-field" placeholder="请输入您的姓名">
+                        </div>
+                        <div class="am-input-group am-input-group-secondary">
+                            <span class="am-input-group-label"><i class="am-icon-comments-o am-icon-fw"></i></span>
+                            <input type="text" name="Contact" class="am-form-field" placeholder="请输入您的联系方式">
+                        </div>
+                    </div>
+
+
+                    <p><button type="submit" class="am-btn am-btn-default">提交</button></p>
+                </fieldset>
+            </form>
+
+
+
+        </div>
+        <div class="am-u-md-4" id="my-side">
+            @Html.Partial("sidebox")
+        </div>
+    </div>
+
+</div>
