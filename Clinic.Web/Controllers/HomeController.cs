@@ -27,7 +27,6 @@ namespace Windy.WebMVC.Web2.Controllers
             ViewBag.Train = TrainServices.GetTrains(SystemConst.CategoryCode.Train, order, 1, 8, out totalCount);
             ViewBag.Hotel = HotelServices.GetHotels(SystemConst.CategoryCode.Hotel, order, 1, 20, out totalCount);
             ViewBag.Blog = BlogServices.GetBlogs(null,0,SystemConst.CategoryCode.Blog, order, 1, 10, out totalCount);
-            ViewBag.Product = ProductServices.GetProducts(null,SystemConst.CategoryCode.Advert, order, 1, 30, out totalCount);
             return View();
         }
         public ActionResult Advise()
