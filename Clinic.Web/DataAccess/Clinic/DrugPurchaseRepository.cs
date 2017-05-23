@@ -18,7 +18,7 @@ namespace Windy.WebMVC.Web2.EFDao
         /// <param name="IsDesc">是否倒序排列</param>
         /// <param name="rowCount">总个数</param>
         /// <returns></returns>
-        public IEnumerable<DrugPurchase> LoadPageList(string Name, int startNum, int pageSize, out int rowCount)
+        public IEnumerable<DrugPurchase> LoadPageList(string Name, int startNum, int pageSize, string szEmpNo, out int rowCount)
         {
             rowCount = 0;
             var result = from p in db.Set<Models.DrugPurchase>()
@@ -43,11 +43,17 @@ namespace Windy.WebMVC.Web2.EFDao
                              p.Specification,
                              p.Supplier,
                              p.Unit,
-                             p.ValidityTerm
+                             p.ValidityTerm,
+                             p.CreateEmpNo,
+                             p.CreateTime
                          };
             if (!string.IsNullOrEmpty(Name))
             {
                 result = result.Where(m => m.DrugName.Contains(Name));
+            }
+            if (!string.IsNullOrEmpty(szEmpNo))
+            {
+                result = result.Where(m => m.CreateEmpNo==szEmpNo);
             }
             rowCount = result.Count();
             result = result.OrderByDescending(m => m.PurchaseDate).Skip(startNum).Take(pageSize);
@@ -70,7 +76,9 @@ namespace Windy.WebMVC.Web2.EFDao
                 Quality = m.Quality,
                 Specification = m.Specification,
                 Supplier = m.Supplier,
-                Unit = m.Unit
+                Unit = m.Unit,
+                CreateTime = m.CreateTime,
+                CreateEmpNo = m.CreateEmpNo
             });
         }
     }

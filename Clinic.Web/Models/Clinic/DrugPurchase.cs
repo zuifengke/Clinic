@@ -78,6 +78,14 @@ namespace Windy.WebMVC.Web2.Models
         /// 验收员
         /// </summary>
         public string Examiner { get; set; }
+        /// <summary>
+        /// 创建人账号
+        /// </summary>
+        public string CreateEmpNo { get; set; }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
     }
 
 }

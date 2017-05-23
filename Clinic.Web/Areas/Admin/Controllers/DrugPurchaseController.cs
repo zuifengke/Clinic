@@ -25,11 +25,12 @@ namespace Windy.WebMVC.Web2.Areas.Admin.Controllers
                 string sort = Request.Form["sort"] != "" ? Request.Form["sort"] : "";
                 string order = Request.Form["order"] != "" ? Request.Form["order"] : "";
                 string Name = Request.Form["Name"] != null ? Request.Form["Name"] : "";
+                string szEmpNo = WebCookieHelper.GetEmployeeInfo(2);
                 if (page < 1) return Content("");
                 
                 int totalCount = 0;
 
-                var result = EnterRepository.GetRepositoryEnter().DrugPurchaseRepository.LoadPageList(Name,(page - 1) * size, size, out totalCount).ToList();
+                var result = EnterRepository.GetRepositoryEnter().DrugPurchaseRepository.LoadPageList(Name,(page - 1) * size, size, szEmpNo, out totalCount).ToList();
                 return Json(new
                 {
                     total = totalCount,
@@ -91,6 +92,9 @@ namespace Windy.WebMVC.Web2.Areas.Admin.Controllers
         {
             try
             {
+                string szEmpNo = WebCookieHelper.GetEmployeeInfo(2);
+                model.CreateEmpNo = szEmpNo;
+                model.CreateTime = DateTime.Now;
                 bool blResult = false;
                 int id = Request.Form["id"] != "" ? Convert.ToInt32(Request.Form["id"]) : 0;
                 //DrugPurchase model = GetData(id);
